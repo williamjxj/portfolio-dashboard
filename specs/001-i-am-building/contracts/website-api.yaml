@@ -1,0 +1,262 @@
+openapi: 3.0.0
+info:
+  title: Website Iteration Dashboard API
+  description: API for managing website data and assets
+  version: 1.0.0
+servers:
+  - url: /api
+    description: Local development server
+
+paths:
+  /websites:
+    get:
+      summary: Get all websites
+      description: Retrieve list of all websites with their metadata
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Website'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /websites/{id}:
+    get:
+      summary: Get website by ID
+      description: Retrieve specific website with all assets
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Website'
+        '404':
+          description: Website not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /websites/{id}/screenshot:
+    get:
+      summary: Get website screenshot
+      description: Retrieve screenshot image for specific website
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Screenshot image
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Screenshot not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /websites/{id}/logo:
+    get:
+      summary: Get website logo
+      description: Retrieve logo image for specific website
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Logo image
+          content:
+            image/svg+xml:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Logo not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /websites/{id}/favicon:
+    get:
+      summary: Get website favicon
+      description: Retrieve favicon image for specific website
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Favicon image
+          content:
+            image/x-icon:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Favicon not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Website:
+      type: object
+      required:
+        - id
+        - name
+        - url
+        - description
+        - screenshot
+        - logo
+        - favicon
+        - requiresAuth
+        - lastUpdated
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+        name:
+          type: string
+          description: Display name
+        url:
+          type: string
+          format: uri
+          description: Website URL
+        description:
+          type: string
+          minLength: 50
+          maxLength: 200
+          description: 2-3 sentence summary
+        screenshot:
+          type: string
+          description: Path to screenshot image
+        logo:
+          type: string
+          description: Path to logo image
+        favicon:
+          type: string
+          description: Path to favicon image
+        requiresAuth:
+          type: boolean
+          description: Whether authentication is required
+        authCredentials:
+          $ref: '#/components/schemas/AuthenticationCredentials'
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Timestamp of last update
+
+    AuthenticationCredentials:
+      type: object
+      properties:
+        method:
+          type: string
+          enum: [email, oauth, sso]
+          description: Authentication method
+        username:
+          type: string
+          description: Username or email
+        password:
+          type: string
+          description: Password (optional)
+        oauthProvider:
+          type: string
+          description: OAuth provider name
+        additionalFields:
+          type: object
+          description: Custom fields for complex auth
+
+    AssetMetadata:
+      type: object
+      required:
+        - websiteId
+        - assetType
+        - filePath
+        - fileSize
+        - dimensions
+        - format
+        - generatedAt
+      properties:
+        websiteId:
+          type: string
+          description: Reference to Website entity
+        assetType:
+          type: string
+          enum: [screenshot, logo, favicon]
+          description: Type of asset
+        filePath:
+          type: string
+          description: Local file path
+        fileSize:
+          type: integer
+          description: File size in bytes
+        dimensions:
+          type: object
+          properties:
+            width:
+              type: integer
+            height:
+              type: integer
+        format:
+          type: string
+          enum: [png, jpg, webp, svg, ico]
+          description: Image format
+        generatedAt:
+          type: string
+          format: date-time
+          description: Timestamp of generation
+        optimized:
+          type: boolean
+          description: Whether asset is optimized
+
+    Error:
+      type: object
+      required:
+        - message
+        - code
+      properties:
+        message:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code
+        details:
+          type: object
+          description: Additional error details
