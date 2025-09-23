@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-09-23T00:04:05.939Z",
+  "websites": 8,
+  "credentials": 1,
+  "config": {
+    "inputFile": "../README.md",
+    "outputDir": "./storage",
+    "credentialsFile": "./data/auth-credentials.json",
+    "batchSize": 3,
+    "retryAttempts": 3,
+    "parallel": true
+  },
+  "stats": {
+    "totalWebsites": 8,
+    "withAuth": 0,
+    "withoutAuth": 8
+  }
+}

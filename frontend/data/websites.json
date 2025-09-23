@@ -1,0 +1,26 @@
+[
+  {
+    "id": "example-1",
+    "name": "Example Website",
+    "url": "https://example.com",
+    "description": "A sample website for demonstration purposes. This website showcases various features and functionality for testing and development.",
+    "screenshot": "/assets/screenshots/example-1.png",
+    "logo": "/assets/logos/example-1.svg",
+    "favicon": "/assets/favicons/example-1.ico",
+    "requiresAuth": false,
+    "lastUpdated": "2025-01-22T23:52:00.000Z",
+    "state": "completed"
+  },
+  {
+    "id": "demo-2",
+    "name": "Demo Site",
+    "url": "https://demo.example.com",
+    "description": "A demonstration website with interactive features and modern design. Perfect for showcasing web development capabilities and user experience design.",
+    "screenshot": "/assets/screenshots/demo-2.png",
+    "logo": "/assets/logos/demo-2.svg",
+    "favicon": "/assets/favicons/demo-2.ico",
+    "requiresAuth": true,
+    "lastUpdated": "2025-01-22T23:52:00.000Z",
+    "state": "completed"
+  }
+]

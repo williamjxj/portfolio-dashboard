@@ -1,0 +1,80 @@
+[
+  {
+    "websiteId": "example-1",
+    "assetType": "screenshot",
+    "filePath": "/assets/screenshots/example-1.png",
+    "fileSize": 245760,
+    "dimensions": {
+      "width": 1920,
+      "height": 1080
+    },
+    "format": "png",
+    "generatedAt": "2025-01-22T23:52:00.000Z",
+    "optimized": true
+  },
+  {
+    "websiteId": "example-1",
+    "assetType": "logo",
+    "filePath": "/assets/logos/example-1.svg",
+    "fileSize": 8192,
+    "dimensions": {
+      "width": 200,
+      "height": 200
+    },
+    "format": "svg",
+    "generatedAt": "2025-01-22T23:52:00.000Z",
+    "optimized": true
+  },
+  {
+    "websiteId": "example-1",
+    "assetType": "favicon",
+    "filePath": "/assets/favicons/example-1.ico",
+    "fileSize": 4096,
+    "dimensions": {
+      "width": 32,
+      "height": 32
+    },
+    "format": "ico",
+    "generatedAt": "2025-01-22T23:52:00.000Z",
+    "optimized": true
+  },
+  {
+    "websiteId": "demo-2",
+    "assetType": "screenshot",
+    "filePath": "/assets/screenshots/demo-2.png",
+    "fileSize": 327680,
+    "dimensions": {
+      "width": 1920,
+      "height": 1080
+    },
+    "format": "png",
+    "generatedAt": "2025-01-22T23:52:00.000Z",
+    "optimized": true
+  },
+  {
+    "websiteId": "demo-2",
+    "assetType": "logo",
+    "filePath": "/assets/logos/demo-2.svg",
+    "fileSize": 12288,
+    "dimensions": {
+      "width": 300,
+      "height": 100
+    },
+    "format": "svg",
+    "generatedAt": "2025-01-22T23:52:00.000Z",
+    "optimized": true
+  },
+  {
+    "websiteId": "demo-2",
+    "assetType": "favicon",
+    "filePath": "/assets/favicons/demo-2.ico",
+    "fileSize": 6144,
+    "dimensions": {
+      "width": 32,
+      "height": 32
+    },
+    "format": "ico",
+    "generatedAt": "2025-01-22T23:52:00.000Z",
+    "optimized": true
+  }
+]
