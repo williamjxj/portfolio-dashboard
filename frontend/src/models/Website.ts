@@ -48,6 +48,13 @@ export class WebsiteModel {
   }
 
   /**
+   * Load websites from data
+   */
+  async loadFromData(websites: Website[]): Promise<void> {
+    this.websites = websites;
+  }
+
+  /**
    * Get all websites
    */
   getAll(): Website[] {

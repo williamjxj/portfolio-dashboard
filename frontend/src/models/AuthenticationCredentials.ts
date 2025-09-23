@@ -15,6 +15,13 @@ export class AuthenticationCredentialsModel {
   }
 
   /**
+   * Load credentials from data
+   */
+  async loadFromData(credentials: AuthenticationCredentials[]): Promise<void> {
+    this.credentials = credentials;
+  }
+
+  /**
    * Get credentials for a website
    */
   getByWebsiteId(websiteId: string): AuthenticationCredentials | undefined {

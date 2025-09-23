@@ -1,17 +1,32 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { WebsiteService } from '@/services/WebsiteService';
 import { WebsiteModel } from '@/models/Website';
 import { AuthenticationCredentialsModel } from '@/models/AuthenticationCredentials';
 import { AssetMetadataModel } from '@/models/AssetMetadata';
+import { DataLoader } from '@/lib/data-loader';
 
-// Initialize services
-const websiteModel = new WebsiteModel();
-const authModel = new AuthenticationCredentialsModel();
-const assetModel = new AssetMetadataModel();
-const websiteService = new WebsiteService(websiteModel, authModel, assetModel);
+// Initialize data loader
+const dataLoader = new DataLoader('./data');
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
+    // Load data from files
+    const websitesData = await dataLoader.loadWebsites();
+    const authData = await dataLoader.loadAuthCredentials();
+    const assetData = await dataLoader.loadAssetMetadata();
+
+    // Initialize models with loaded data
+    const websiteModel = new WebsiteModel();
+    const authModel = new AuthenticationCredentialsModel();
+    const assetModel = new AssetMetadataModel();
+
+    // Load data into models
+    await websiteModel.loadFromData(websitesData);
+    await authModel.loadFromData(authData);
+    await assetModel.loadFromData(assetData);
+
+    // Initialize service
+    const websiteService = new WebsiteService(websiteModel, authModel, assetModel);
     const websites = await websiteService.getAllWebsites();
     
     return NextResponse.json(websites, {

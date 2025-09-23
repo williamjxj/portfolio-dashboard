@@ -22,6 +22,13 @@ export class AssetMetadataModel {
   }
 
   /**
+   * Load assets from data
+   */
+  async loadFromData(assets: AssetMetadata[]): Promise<void> {
+    this.assets = assets;
+  }
+
+  /**
    * Get all assets for a website
    */
   getByWebsiteId(websiteId: string): AssetMetadata[] {
