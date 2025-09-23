@@ -160,7 +160,7 @@ class ScreenshotGenerator {
       const batch = websites.slice(i, i + batchSize);
       
       logger.info('Processing batch', { 
-        batchNumber: Math.floor(i / batchSize) + 1), 
+        batchNumber: Math.floor(i / batchSize) + 1, 
         batchSize: batch.length 
       });
 

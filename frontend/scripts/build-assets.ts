@@ -352,7 +352,7 @@ class AssetBuilder {
 async function main() {
   try {
     const config: BuildConfig = {
-      inputFile: './README.md',
+      inputFile: '../README.md',
       outputDir: './storage',
       credentialsFile: './data/auth-credentials.json',
       batchSize: 3,

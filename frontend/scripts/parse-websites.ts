@@ -303,7 +303,7 @@ class WebsiteParser {
 async function main() {
   try {
     const config: WebsiteParserConfig = {
-      inputFile: './README.md',
+      inputFile: '../README.md',
       outputFile: './data/websites.json'
     };
 

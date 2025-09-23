@@ -39,10 +39,26 @@ export class PlaywrightService {
    */
   async initialize(): Promise<void> {
     try {
-      // This would be implemented with actual Playwright browser initialization
-      // For now, we'll simulate the initialization
       console.log('Initializing Playwright browser...');
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Import playwright dynamically to avoid issues
+      const { chromium } = await import('playwright');
+      
+      // Launch browser
+      this.browser = await chromium.launch({
+        headless: this.options.headless,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      });
+      
+      // Create context
+      this.context = await this.browser.newContext({
+        viewport: this.options.viewport,
+        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+      });
+      
+      // Create page
+      this.page = await this.context.newPage();
+      
       console.log('Browser initialized successfully');
     } catch (error) {
       throw new Error(`Failed to initialize Playwright: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -67,20 +83,49 @@ export class PlaywrightService {
         ...options
       };
 
-      // Navigate to the website
-      await this.page.goto(website.url, { 
-        waitUntil: 'networkidle',
-        timeout: this.options.timeout 
-      });
+      // Retry logic for network issues
+      let lastError: Error | null = null;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          // Navigate to the website
+          await this.page.goto(website.url, { 
+            waitUntil: 'networkidle',
+            timeout: this.options.timeout 
+          });
 
-      // Take screenshot
-      const screenshot = await this.page.screenshot({
-        fullPage: screenshotOptions.fullPage,
-        quality: screenshotOptions.quality,
-        type: screenshotOptions.format
-      });
+          // Handle age verification if present
+          await this.handleAgeVerification();
 
-      return screenshot;
+          // Handle authentication if required
+          if (website.requiresAuth) {
+            await this.handleAuthentication(website);
+          }
+
+          // Take screenshot
+          const screenshotOptions_final: any = {
+            fullPage: screenshotOptions.fullPage,
+            type: screenshotOptions.format
+          };
+          
+          // Only add quality for JPEG format
+          if (screenshotOptions.format === 'jpeg') {
+            screenshotOptions_final.quality = screenshotOptions.quality;
+          }
+          
+          const screenshot = await this.page.screenshot(screenshotOptions_final);
+          return screenshot;
+        } catch (error) {
+          lastError = error instanceof Error ? error : new Error('Unknown error');
+          console.log(`Screenshot attempt ${attempt} failed for ${website.url}: ${lastError.message}`);
+          
+          if (attempt < 3) {
+            // Wait before retry with exponential backoff
+            await new Promise(resolve => setTimeout(resolve, 2000 * attempt));
+          }
+        }
+      }
+
+      throw lastError || new Error('All retry attempts failed');
     } catch (error) {
       throw new Error(`Failed to take screenshot of ${website.url}: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
@@ -286,11 +331,28 @@ export class PlaywrightService {
         throw new Error('Playwright not initialized. Call initialize() first.');
       }
 
-      // Navigate to the website
-      await this.page.goto(website.url, { 
-        waitUntil: 'networkidle',
-        timeout: this.options.timeout 
-      });
+      // Retry logic for network issues
+      let lastError: Error | null = null;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          // Navigate to the website
+          await this.page.goto(website.url, { 
+            waitUntil: 'networkidle',
+            timeout: this.options.timeout 
+          });
+          break; // Success, exit retry loop
+        } catch (error) {
+          lastError = error instanceof Error ? error : new Error('Unknown error');
+          console.log(`Logo navigation attempt ${attempt} failed for ${website.url}: ${lastError.message}`);
+          
+          if (attempt < 3) {
+            // Wait before retry with exponential backoff
+            await new Promise(resolve => setTimeout(resolve, 2000 * attempt));
+          } else {
+            throw lastError;
+          }
+        }
+      }
 
       // Look for logo elements
       const logoSelectors = [
@@ -310,7 +372,8 @@ export class PlaywrightService {
       }
 
       if (!logoElement || !(await logoElement.isVisible())) {
-        throw new Error('Could not find logo element');
+        // Create a fallback logo using the website's first letter
+        return this.createFallbackLogo(website);
       }
 
       // Take screenshot of the logo
@@ -333,11 +396,28 @@ export class PlaywrightService {
         throw new Error('Playwright not initialized. Call initialize() first.');
       }
 
-      // Navigate to the website
-      await this.page.goto(website.url, { 
-        waitUntil: 'networkidle',
-        timeout: this.options.timeout 
-      });
+      // Retry logic for network issues
+      let lastError: Error | null = null;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          // Navigate to the website
+          await this.page.goto(website.url, { 
+            waitUntil: 'networkidle',
+            timeout: this.options.timeout 
+          });
+          break; // Success, exit retry loop
+        } catch (error) {
+          lastError = error instanceof Error ? error : new Error('Unknown error');
+          console.log(`Favicon navigation attempt ${attempt} failed for ${website.url}: ${lastError.message}`);
+          
+          if (attempt < 3) {
+            // Wait before retry with exponential backoff
+            await new Promise(resolve => setTimeout(resolve, 2000 * attempt));
+          } else {
+            throw lastError;
+          }
+        }
+      }
 
       // Look for favicon
       const faviconSelectors = [
@@ -353,23 +433,29 @@ export class PlaywrightService {
       }
 
       if (!faviconElement || !(await faviconElement.isVisible())) {
-        throw new Error('Could not find favicon element');
+        // Create a fallback favicon using the website's first letter
+        return this.createFallbackFavicon(website);
       }
 
       // Get favicon URL and fetch it
       const faviconUrl = await faviconElement.getAttribute('href');
       if (!faviconUrl) {
-        throw new Error('Could not get favicon URL');
+        // Create a fallback favicon using the website's first letter
+        return this.createFallbackFavicon(website);
       }
 
-      // Navigate to favicon URL and take screenshot
-      await this.page.goto(faviconUrl, { timeout: this.options.timeout });
-      const favicon = await this.page.screenshot({
-        type: 'png',
-        clip: { x: 0, y: 0, width: 32, height: 32 }
-      });
-
-      return favicon;
+      try {
+        // Navigate to favicon URL and take screenshot
+        await this.page.goto(faviconUrl, { timeout: this.options.timeout });
+        const favicon = await this.page.screenshot({
+          type: 'png',
+          clip: { x: 0, y: 0, width: 32, height: 32 }
+        });
+        return favicon;
+      } catch (error) {
+        // If favicon URL fails, create fallback
+        return this.createFallbackFavicon(website);
+      }
     } catch (error) {
       throw new Error(`Failed to generate favicon for ${website.url}: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
@@ -398,9 +484,184 @@ export class PlaywrightService {
   }
 
   /**
-   * Check if browser is initialized
+   * Check if Playwright is initialized
    */
   isInitialized(): boolean {
     return this.browser !== null && this.context !== null && this.page !== null;
   }
+
+  /**
+   * Handle age verification gates
+   */
+  private async handleAgeVerification(): Promise<void> {
+    try {
+      // Check for common age verification elements
+      const ageVerificationSelectors = [
+        'text=I am 18 or older',
+        'text=I am 18+',
+        'text=Enter Site',
+        'text=Continue',
+        'button:has-text("I am 18 or older")',
+        'button:has-text("Enter Site")',
+        'button:has-text("Continue")',
+        '[data-testid="age-verification"]',
+        '.age-verification button'
+      ];
+
+      for (const selector of ageVerificationSelectors) {
+        try {
+          const element = await this.page!.locator(selector).first();
+          if (await element.isVisible({ timeout: 2000 })) {
+            await element.click();
+            await this.page!.waitForLoadState('networkidle', { timeout: 5000 });
+            break;
+          }
+        } catch {
+          // Continue to next selector
+        }
+      }
+    } catch (error) {
+      // Age verification handling failed, continue anyway
+      console.log('Age verification handling failed, continuing...');
+    }
+  }
+
+  /**
+   * Handle authentication for websites that require login
+   */
+  private async handleAuthentication(website: Website): Promise<void> {
+    try {
+      // Check if we're on a login page
+      const isLoginPage = await this.isLoginPage();
+      if (!isLoginPage) {
+        return; // Not on a login page, continue
+      }
+
+      // For now, we'll just wait and continue without authentication
+      // In a real implementation, you would use stored credentials
+      console.log(`Authentication required for ${website.url}, but no credentials provided. Continuing without authentication...`);
+      
+      // Wait a bit for any redirects
+      await this.page!.waitForTimeout(2000);
+      
+    } catch (error) {
+      console.log('Authentication handling failed, continuing...');
+    }
+  }
+
+  /**
+   * Check if we're on a login page
+   */
+  private async isLoginPage(): Promise<boolean> {
+    try {
+      const loginIndicators = [
+        'input[type="password"]',
+        'input[name="password"]',
+        'button:has-text("Sign In")',
+        'button:has-text("Login")',
+        'button:has-text("Log In")',
+        'form[action*="login"]',
+        'form[action*="signin"]',
+        '.login-form',
+        '.signin-form'
+      ];
+
+      for (const selector of loginIndicators) {
+        try {
+          const element = await this.page!.locator(selector).first();
+          if (await element.isVisible({ timeout: 1000 })) {
+            return true;
+          }
+        } catch {
+          // Continue to next selector
+        }
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Create a fallback favicon using the website's first letter
+   */
+  private async createFallbackFavicon(website: Website): Promise<Buffer> {
+    try {
+      // Get the first letter of the website name
+      const firstLetter = website.name.charAt(0).toUpperCase();
+      
+      // Create a simple SVG favicon
+      const svgContent = `
+        <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" fill="#4F46E5"/>
+          <text x="16" y="22" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">${firstLetter}</text>
+        </svg>
+      `;
+      
+      // Convert SVG to PNG using Playwright
+      await this.page!.setContent(svgContent);
+      const favicon = await this.page!.screenshot({
+        type: 'png',
+        clip: { x: 0, y: 0, width: 32, height: 32 }
+      });
+      
+      return favicon;
+    } catch (error) {
+      // If even the fallback fails, create a simple colored square
+      const fallbackSvg = `
+        <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" fill="#6B7280"/>
+          <text x="16" y="22" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">?</text>
+        </svg>
+      `;
+      
+      await this.page!.setContent(fallbackSvg);
+      return await this.page!.screenshot({
+        type: 'png',
+        clip: { x: 0, y: 0, width: 32, height: 32 }
+      });
+    }
+  }
+
+  /**
+   * Create a fallback logo using the website's first letter
+   */
+  private async createFallbackLogo(website: Website): Promise<Buffer> {
+    try {
+      // Get the first letter of the website name
+      const firstLetter = website.name.charAt(0).toUpperCase();
+      
+      // Create a simple SVG logo
+      const svgContent = `
+        <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100" height="100" fill="#4F46E5" rx="10"/>
+          <text x="50" y="65" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">${firstLetter}</text>
+        </svg>
+      `;
+      
+      // Convert SVG to PNG using Playwright
+      await this.page!.setContent(svgContent);
+      const logo = await this.page!.screenshot({
+        type: 'png',
+        clip: { x: 0, y: 0, width: 100, height: 100 }
+      });
+      
+      return logo;
+    } catch (error) {
+      // If even the fallback fails, create a simple colored square
+      const fallbackSvg = `
+        <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100" height="100" fill="#6B7280" rx="10"/>
+          <text x="50" y="65" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">?</text>
+        </svg>
+      `;
+      
+      await this.page!.setContent(fallbackSvg);
+      return await this.page!.screenshot({
+        type: 'png',
+        clip: { x: 0, y: 0, width: 100, height: 100 }
+      });
+    }
+  }
+
 }
