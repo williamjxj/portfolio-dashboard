@@ -10,23 +10,22 @@
    → Extract: tech stack, libraries, structure
 2. Load optional design documents:
    → data-model.md: Extract entities → model tasks
-   → contracts/: Each file → contract test task
+   → contracts/: Each file → API implementation task
    → research.md: Extract decisions → setup tasks
 3. Generate tasks by category:
    → Setup: project init, dependencies, linting
-   → Tests: contract tests, integration tests
    → Core: models, services, CLI commands
    → Integration: DB, middleware, logging
-   → Polish: unit tests, performance, docs
+   → Polish: performance, docs
 4. Apply task rules:
    → Different files = mark [P] for parallel
    → Same file = sequential (no [P])
-   → Tests before implementation (TDD)
+   → Core components before dependent features
 5. Number tasks sequentially (T001, T002...)
 6. Generate dependency graph
 7. Create parallel execution examples
 8. Validate task completeness:
-   → All contracts have tests?
+   → All contracts have implementations?
    → All entities have models?
    → All endpoints implemented?
 9. Return: SUCCESS (tasks ready for execution)
@@ -44,56 +43,48 @@
 
 ## Phase 3.1: Setup
 - [ ] T001 Create project structure per implementation plan
-- [ ] T002 Initialize [language] project with [framework] dependencies
-- [ ] T003 [P] Configure linting and formatting tools
+- [ ] T002 Initialize Next.js 15 project with TypeScript and Tailwind CSS
+- [ ] T003 [P] Configure shadcn/ui components and theme system
+- [ ] T004 [P] Configure linting and formatting tools
 
-## Phase 3.2: Tests First (TDD) ⚠️ MUST COMPLETE BEFORE 3.3
-**CRITICAL: These tests MUST be written and MUST FAIL before ANY implementation**
-- [ ] T004 [P] Contract test POST /api/users in tests/contract/test_users_post.py
-- [ ] T005 [P] Contract test GET /api/users/{id} in tests/contract/test_users_get.py
-- [ ] T006 [P] Integration test user registration in tests/integration/test_registration.py
-- [ ] T007 [P] Integration test auth flow in tests/integration/test_auth.py
+## Phase 3.2: Core Implementation
+- [ ] T005 [P] Website model in src/models/Website.ts
+- [ ] T006 [P] WebsiteService CRUD in src/services/WebsiteService.ts
+- [ ] T007 [P] PlaywrightService for asset generation in src/services/PlaywrightService.ts
+- [ ] T008 POST /api/websites endpoint
+- [ ] T009 GET /api/websites/{id} endpoint
+- [ ] T010 Input validation and error handling
+- [ ] T011 shadcn/ui component integration
 
-## Phase 3.3: Core Implementation (ONLY after tests are failing)
-- [ ] T008 [P] User model in src/models/user.py
-- [ ] T009 [P] UserService CRUD in src/services/user_service.py
-- [ ] T010 [P] CLI --create-user in src/cli/user_commands.py
-- [ ] T011 POST /api/users endpoint
-- [ ] T012 GET /api/users/{id} endpoint
-- [ ] T013 Input validation
-- [ ] T014 Error handling and logging
+## Phase 3.3: Integration
+- [ ] T012 Connect WebsiteService to data storage
+- [ ] T013 Authentication middleware for protected routes
+- [ ] T014 Request/response logging and error handling
+- [ ] T015 CORS and security headers
+- [ ] T016 Theme system integration (dark/light mode)
 
-## Phase 3.4: Integration
-- [ ] T015 Connect UserService to DB
-- [ ] T016 Auth middleware
-- [ ] T017 Request/response logging
-- [ ] T018 CORS and security headers
-
-## Phase 3.5: Polish
-- [ ] T019 [P] Unit tests for validation in tests/unit/test_validation.py
-- [ ] T020 Performance tests (<200ms)
-- [ ] T021 [P] Update docs/api.md
-- [ ] T022 Remove duplication
-- [ ] T023 Run manual-testing.md
+## Phase 3.4: Polish
+- [ ] T017 Performance optimization (Lighthouse CI, Core Web Vitals)
+- [ ] T018 [P] Update docs and README
+- [ ] T019 Accessibility validation and WCAG compliance
+- [ ] T020 Asset optimization and compression
+- [ ] T021 Manual validation and user acceptance
 
 ## Dependencies
-- Tests (T004-T007) before implementation (T008-T014)
-- T008 blocks T009, T015
-- T016 blocks T018
-- Implementation before polish (T019-T023)
+- T005 blocks T006, T012
+- T013 blocks T015
+- Implementation before polish (T017-T021)
 
 ## Parallel Example
 ```
-# Launch T004-T007 together:
-Task: "Contract test POST /api/users in tests/contract/test_users_post.py"
-Task: "Contract test GET /api/users/{id} in tests/contract/test_users_get.py"
-Task: "Integration test registration in tests/integration/test_registration.py"
-Task: "Integration test auth in tests/integration/test_auth.py"
+# Launch T005-T007 together:
+Task: "Website model in src/models/Website.ts"
+Task: "WebsiteService CRUD in src/services/WebsiteService.ts"
+Task: "PlaywrightService for asset generation in src/services/PlaywrightService.ts"
 ```
 
 ## Notes
 - [P] tasks = different files, no dependencies
-- Verify tests fail before implementing
 - Commit after each task
 - Avoid: vague tasks, same file conflicts
 
@@ -101,7 +92,7 @@ Task: "Integration test auth in tests/integration/test_auth.py"
 *Applied during main() execution*
 
 1. **From Contracts**:
-   - Each contract file → contract test task [P]
+   - Each contract file → API implementation task [P]
    - Each endpoint → implementation task
    
 2. **From Data Model**:
@@ -109,19 +100,19 @@ Task: "Integration test auth in tests/integration/test_auth.py"
    - Relationships → service layer tasks
    
 3. **From User Stories**:
-   - Each story → integration test [P]
+   - Each story → feature implementation [P]
    - Quickstart scenarios → validation tasks
 
 4. **Ordering**:
-   - Setup → Tests → Models → Services → Endpoints → Polish
+   - Setup → Models → Services → Endpoints → Polish
    - Dependencies block parallel execution
 
 ## Validation Checklist
 *GATE: Checked by main() before returning*
 
-- [ ] All contracts have corresponding tests
+- [ ] All contracts have corresponding implementations
 - [ ] All entities have model tasks
-- [ ] All tests come before implementation
+- [ ] All core components come before dependent features
 - [ ] Parallel tasks truly independent
 - [ ] Each task specifies exact file path
 - [ ] No task modifies same file as another [P] task

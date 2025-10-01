@@ -13,10 +13,10 @@
    → Identify: actors, actions, data, constraints
 3. For each unclear aspect:
    → Mark with [NEEDS CLARIFICATION: specific question]
-4. Fill User Scenarios & Testing section
+4. Fill User Scenarios section
    → If no clear user flow: ERROR "Cannot determine user scenarios"
 5. Generate Functional Requirements
-   → Each requirement must be testable
+   → Each requirement must be verifiable
    → Mark ambiguous requirements
 6. Identify Key Entities (if data involved)
 7. Run Review Checklist
@@ -52,7 +52,7 @@ When creating this spec from a user prompt:
 
 ---
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios *(mandatory)*
 
 ### Primary User Story
 [Describe the main user journey in plain language]
@@ -95,7 +95,7 @@ When creating this spec from a user prompt:
 
 ### Requirement Completeness
 - [ ] No [NEEDS CLARIFICATION] markers remain
-- [ ] Requirements are testable and unambiguous  
+- [ ] Requirements are verifiable and unambiguous  
 - [ ] Success criteria are measurable
 - [ ] Scope is clearly bounded
 - [ ] Dependencies and assumptions identified
