@@ -5,12 +5,12 @@
 **Overview:**
 - **Framework:** Next.js (app router) with React 19.
 - **Language:** TypeScript.
-- **Styling:** TailwindCSS + custom global CSS.
-- **Browser automation & testing:** Playwright used both as a dev dependency and via a `PlaywrightService` for generating screenshots, logos and favicons. Lighthouse CI (`@lhci/cli`) is included for performance checks.
+- **Styling:** TailwindCSS + custom global CSS. UI enhanced with shadcn/ui; patterns inspired by Magic UI and Mobbin.
+- **Browser automation:** Playwright via `PlaywrightService` for generating screenshots, logos and favicons. Testing toolchains have been removed for now.
 
 **Key Directories / Files:**
 - `src/app/` — Next.js app entry points (`layout.tsx`, `page.tsx`).
-- `src/components/` — UI components such as `WebsiteGrid`, `WebsiteCard`, `Layout`.
+- `src/components/` — UI components such as `WebsiteGrid`, `WebsiteCard`, `Layout`. Prefer shadcn/ui primitives (e.g., Card, Badge, Dialog, Tabs).
 - `src/models/` — Domain models and in-memory model implementations (`Website`, `WebsiteModel`, `AssetMetadata`, etc.).
 - `src/services/` — Business logic and integrations: `WebsiteService`, `PlaywrightService`, `AssetGenerationService`, `AuthenticationService`.
 - `src/lib/` — Helpers and integrations: `data-loader.ts`, `playwright-integration.ts`, `logger.ts`, `storage.ts`.
@@ -27,7 +27,7 @@ Notable Implementation Details
 - The services use synchronous in-memory model classes (`WebsiteModel`, `AssetMetadataModel`) with basic validation helpers. Models perform validation for URLs and ISO date strings.
 - The `PlaywrightService` contains robust retry/backoff behavior for navigation and asset capture, and includes fallbacks for missing logos/favicons by rendering SVGs to a headless page and screenshotting them.
 - Logging is centralized via `src/lib/logger.ts` with a lightweight logger class that could be swapped to ship to an external logging service.
-- Scripts in `package.json` include dev, build, test (Jest), Playwright E2E, and Lighthouse CI autorun.
+- Scripts in `package.json` include dev, build, asset generation, and static export. Test and Lighthouse CI scripts removed.
 
 Security & Operational Notes
 - The project stores authentication credentials in JSON under `data/` which is suitable for local experiments but not production — credentials should be stored securely (vault, encrypted DB, or secrets manager) and never committed.
@@ -35,8 +35,7 @@ Security & Operational Notes
 - Long-running Playwright instances should be sandboxed and monitored; consider limiting concurrency and adding resource/cpu/memory guards.
 
 Testing & CI
-- Unit tests via Jest are configured. E2E tests use Playwright (`@playwright/test`) and there is a Playwright config file (`playwright.config.ts`).
-- Lighthouse CI is included for automated performance checks via `test:lighthouse`.
+- Test tooling has been removed (Jest, Playwright runner, Lighthouse CI) to simplify the stack. Consider reintroducing lightweight checks later.
 
 Strengths
 - Clear separation of concerns: models, services, lib helpers, and UI components.
@@ -49,7 +48,7 @@ Areas for Improvement
 - Secrets Management: Move credentials out of repo-managed JSON; integrate a secrets store or encrypted datastore.
 - Error Handling & Observability: Add structured tracing, request IDs, and metrics; integrate a proper logging backend (e.g., Datadog, Logflare, or an ELK stack).
 - Concurrency & Scaling: Asset generation via Playwright is CPU/memory heavy. Introduce a worker queue (BullMQ, RabbitMQ) and worker pool with rate limits.
-- Tests: Add unit tests for `PlaywrightService` with mocked Playwright, and integration tests for `WebsiteService` using fake models.
+- UI Design System: Expand shadcn/ui usage and selectively adopt Magic UI patterns with performance and contrast checks.
 
 Suggested Next Steps for Production Hardening
 1. Replace file-based data persistence with a transactional DB (start with SQLite for quick wins).  

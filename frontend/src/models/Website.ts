@@ -3,9 +3,16 @@ export interface Website {
   name: string;
   url: string;
   description: string;
-  screenshot: string;
-  logo: string;
-  favicon: string;
+  // legacy fields kept for backward compatibility in services/components
+  screenshot?: string;
+  logo?: string;
+  favicon?: string;
+  // new fields aligned with specs/contracts
+  screenshotUrl?: string | null;
+  logoUrl?: string | null;
+  faviconUrl?: string | null;
+  tags?: string[];
+  status?: 'ok' | 'unavailable' | 'missing-assets';
   requiresAuth: boolean;
   authCredentials?: AuthenticationCredentials;
   lastUpdated: string;
@@ -123,16 +130,18 @@ export class WebsiteModel {
       errors.push('Description must be between 50 and 200 characters');
     }
 
-    if (!website.screenshot || typeof website.screenshot !== 'string') {
-      errors.push('Screenshot path is required and must be a string');
+    // allow either legacy asset fields or new *Url fields
+    const hasScreenshot = typeof website.screenshot === 'string' || typeof website.screenshotUrl === 'string';
+    const hasLogo = typeof website.logo === 'string' || typeof website.logoUrl === 'string';
+    const hasFavicon = typeof website.favicon === 'string' || typeof website.faviconUrl === 'string';
+    if (!hasScreenshot) {
+      errors.push('Screenshot is required');
     }
-
-    if (!website.logo || typeof website.logo !== 'string') {
-      errors.push('Logo path is required and must be a string');
+    if (!hasLogo) {
+      errors.push('Logo is required');
     }
-
-    if (!website.favicon || typeof website.favicon !== 'string') {
-      errors.push('Favicon path is required and must be a string');
+    if (!hasFavicon) {
+      errors.push('Favicon is required');
     }
 
     if (typeof website.requiresAuth !== 'boolean') {

@@ -1,0 +1,68 @@
+openapi: 3.0.3
+info:
+  title: Website Dashboard API
+  version: 0.1.0
+paths:
+  /api/websites:
+    get:
+      summary: List websites
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Website'
+  /api/websites/{id}:
+    get:
+      summary: Get a website by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Website'
+        '404':
+          description: Not Found
+components:
+  schemas:
+    Website:
+      type: object
+      required: [id, name, url]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+        description:
+          type: string
+        logoUrl:
+          type: string
+          nullable: true
+        faviconUrl:
+          type: string
+          nullable: true
+        screenshotUrl:
+          type: string
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum: [ok, unavailable, missing-assets]
+
+

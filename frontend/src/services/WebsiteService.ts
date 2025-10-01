@@ -25,11 +25,19 @@ export class WebsiteService {
       const websites = this.websiteModel.getAll();
       
       // Enrich with authentication and asset data
-      return websites.map(website => ({
-        ...website,
-        authCredentials: this.authModel.getByWebsiteId(website.id),
-        assets: this.assetModel.getByWebsiteId(website.id)
-      }));
+      return websites.map(website => {
+        const assets = this.assetModel.getByWebsiteId(website.id);
+        const logo = assets.find(a => a.assetType === 'logo');
+        const favicon = assets.find(a => a.assetType === 'favicon');
+        const screenshot = assets.find(a => a.assetType === 'screenshot');
+        return {
+          ...website,
+          logoUrl: logo ? `/${logo.filePath}` : website.logo ?? null,
+          faviconUrl: favicon ? `/${favicon.filePath}` : website.favicon ?? null,
+          screenshotUrl: screenshot ? `/${screenshot.filePath}` : website.screenshot ?? null,
+          authCredentials: this.authModel.getByWebsiteId(website.id)
+        };
+      });
     } catch (error) {
       throw new Error(`Failed to get websites: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
@@ -43,10 +51,16 @@ export class WebsiteService {
       const website = this.websiteModel.getById(id);
       if (!website) return null;
 
+      const assets = this.assetModel.getByWebsiteId(website.id);
+      const logo = assets.find(a => a.assetType === 'logo');
+      const favicon = assets.find(a => a.assetType === 'favicon');
+      const screenshot = assets.find(a => a.assetType === 'screenshot');
       return {
         ...website,
-        authCredentials: this.authModel.getByWebsiteId(website.id),
-        assets: this.assetModel.getByWebsiteId(website.id)
+        logoUrl: logo ? `/${logo.filePath}` : website.logo ?? null,
+        faviconUrl: favicon ? `/${favicon.filePath}` : website.favicon ?? null,
+        screenshotUrl: screenshot ? `/${screenshot.filePath}` : website.screenshot ?? null,
+        authCredentials: this.authModel.getByWebsiteId(website.id)
       };
     } catch (error) {
       throw new Error(`Failed to get website ${id}: ${error instanceof Error ? error.message : 'Unknown error'}`);

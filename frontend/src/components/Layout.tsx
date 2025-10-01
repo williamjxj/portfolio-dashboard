@@ -2,6 +2,8 @@
 
 import React from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ErrorBoundary } from './ErrorBoundary';
 
 interface LayoutProps {
@@ -17,6 +19,7 @@ export const Layout: React.FC<LayoutProps> = ({
   description = 'A modern dashboard for managing and viewing websites',
   className = ''
 }) => {
+  const pathname = usePathname();
   return (
     <>
       <Head>
@@ -39,18 +42,26 @@ export const Layout: React.FC<LayoutProps> = ({
                 </div>
                 
                 <nav className="hidden md:flex space-x-8">
-                  <a 
+                  <Link 
                     href="/" 
-                    className="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                      pathname === '/' 
+                        ? 'text-blue-600 bg-blue-50' 
+                        : 'text-gray-500 hover:text-gray-900'
+                    }`}
                   >
                     Dashboard
-                  </a>
-                  <a 
+                  </Link>
+                  <Link 
                     href="/about" 
-                    className="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                      pathname === '/about' 
+                        ? 'text-blue-600 bg-blue-50' 
+                        : 'text-gray-500 hover:text-gray-900'
+                    }`}
                   >
                     About
-                  </a>
+                  </Link>
                 </nav>
               </div>
             </div>

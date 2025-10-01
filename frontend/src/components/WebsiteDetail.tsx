@@ -4,6 +4,10 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Website } from '@/models/Website';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 interface WebsiteDetailProps {
   website: Website;
@@ -11,12 +15,16 @@ interface WebsiteDetailProps {
 }
 
 export const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website, className = '' }) => {
+  const screenshotUrl = website.screenshotUrl || website.screenshot;
+  const logoUrl = website.logoUrl || website.logo;
+  const faviconUrl = website.faviconUrl || website.favicon;
+  
   return (
-    <div className={`bg-white rounded-lg shadow-lg overflow-hidden ${className}`}>
+    <Card className={`overflow-hidden ${className}`}>
       {/* Hero Section */}
-      <div className="relative h-64 bg-gray-100">
+      <div className="relative h-64 bg-muted">
         <Image
-          src={website.screenshot}
+          src={screenshotUrl || '/placeholder-screenshot.png'}
           alt={`${website.name} screenshot`}
           fill
           className="object-cover"
@@ -28,7 +36,7 @@ export const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website, className
         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
           <div className="text-center text-white">
             <Image
-              src={website.logo}
+              src={logoUrl || '/placeholder-logo.png'}
               alt={`${website.name} logo`}
               width={80}
               height={80}
@@ -41,11 +49,11 @@ export const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website, className
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <CardContent className="p-6">
         {/* Description */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-3">About</h2>
-          <p className="text-gray-700 leading-relaxed">{website.description}</p>
+          <CardTitle className="text-xl mb-3">About</CardTitle>
+          <p className="text-muted-foreground leading-relaxed">{website.description}</p>
         </div>
 
         {/* Website Info */}
@@ -120,70 +128,120 @@ export const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website, className
 
         {/* Assets */}
         <div className="mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">Assets</h3>
+          <CardTitle className="text-lg mb-3">Assets</CardTitle>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Screenshot */}
-            <div className="text-center">
-              <div className="relative h-32 bg-gray-100 rounded-lg overflow-hidden mb-2">
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="text-center cursor-pointer">
+                  <div className="relative h-32 bg-muted rounded-lg overflow-hidden mb-2">
+                    <Image
+                      src={screenshotUrl || '/placeholder-screenshot.png'}
+                      alt={`${website.name} screenshot`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <p className="text-sm text-muted-foreground">Screenshot</p>
+                </div>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{website.name} Screenshot</DialogTitle>
+                </DialogHeader>
                 <Image
-                  src={website.screenshot}
+                  src={screenshotUrl || '/placeholder-screenshot.png'}
                   alt={`${website.name} screenshot`}
-                  fill
-                  className="object-cover"
+                  width={800}
+                  height={600}
+                  className="object-contain"
                 />
-              </div>
-              <p className="text-sm text-gray-600">Screenshot</p>
-            </div>
+              </DialogContent>
+            </Dialog>
 
             {/* Logo */}
-            <div className="text-center">
-              <div className="relative h-32 bg-gray-100 rounded-lg overflow-hidden mb-2 flex items-center justify-center">
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="text-center cursor-pointer">
+                  <div className="relative h-32 bg-muted rounded-lg overflow-hidden mb-2 flex items-center justify-center">
+                    <Image
+                      src={logoUrl || '/placeholder-logo.png'}
+                      alt={`${website.name} logo`}
+                      width={64}
+                      height={64}
+                      className="object-contain"
+                    />
+                  </div>
+                  <p className="text-sm text-muted-foreground">Logo</p>
+                </div>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{website.name} Logo</DialogTitle>
+                </DialogHeader>
                 <Image
-                  src={website.logo}
+                  src={logoUrl || '/placeholder-logo.png'}
                   alt={`${website.name} logo`}
-                  width={64}
-                  height={64}
+                  width={400}
+                  height={400}
                   className="object-contain"
                 />
-              </div>
-              <p className="text-sm text-gray-600">Logo</p>
-            </div>
+              </DialogContent>
+            </Dialog>
 
             {/* Favicon */}
-            <div className="text-center">
-              <div className="relative h-32 bg-gray-100 rounded-lg overflow-hidden mb-2 flex items-center justify-center">
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="text-center cursor-pointer">
+                  <div className="relative h-32 bg-muted rounded-lg overflow-hidden mb-2 flex items-center justify-center">
+                    <Image
+                      src={faviconUrl || '/placeholder-favicon.png'}
+                      alt={`${website.name} favicon`}
+                      width={32}
+                      height={32}
+                      className="object-contain"
+                    />
+                  </div>
+                  <p className="text-sm text-muted-foreground">Favicon</p>
+                </div>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{website.name} Favicon</DialogTitle>
+                </DialogHeader>
                 <Image
-                  src={website.favicon}
+                  src={faviconUrl || '/placeholder-favicon.png'}
                   alt={`${website.name} favicon`}
-                  width={32}
-                  height={32}
+                  width={200}
+                  height={200}
                   className="object-contain"
                 />
-              </div>
-              <p className="text-sm text-gray-600">Favicon</p>
-            </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-4">
-          <Link
-            href={website.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-center font-medium"
-          >
-            Visit Website
-          </Link>
-          <button
+          <Button asChild className="flex-1">
+            <Link
+              href={website.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Visit Website
+            </Link>
+          </Button>
+          <Button
+            variant="outline"
             onClick={() => window.history.back()}
-            className="flex-1 bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors duration-200 font-medium"
+            className="flex-1"
           >
             Go Back
-          </button>
+          </Button>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
