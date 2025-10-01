@@ -30,9 +30,10 @@ For each site, design a distinctive vector-style logo that reflects its domain, 
 4. Favicon Design
 Create a 16x16 or 32x32 favicon for each project, based on the site’s branding and homepage style, so each tab or shortcut displays a unique, recognizable icon.
 
-Sample Format:
-• Website: `site url`
-• Screenshot: `<img src="generated_screenshot_url" alt="site name preview" />`
-• Description: `2-3 sentence summary text`
-• Logo: `<img src="generated_logo_url" alt="site name logo" />`
-• Favicon: `<link rel="icon" href="generated_favicon_url" />`
+### Sample Format
+
+- Website: `site url`
+- Screenshot: `<img src="generated_screenshot_url" alt="site name preview" />`
+- Description: `2-3 sentence summary text`
+- Logo: `<img src="generated_logo_url" alt="site name logo" />`
+- Favicon: `<link rel="icon" href="generated_favicon_url" />`
