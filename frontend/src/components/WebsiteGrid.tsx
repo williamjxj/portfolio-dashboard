@@ -93,7 +93,7 @@ export const WebsiteGrid: React.FC<WebsiteGridProps> = ({
 
       {/* Grid */}
       <div 
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-slide-up"
         data-testid="website-grid"
         role="grid"
         aria-label="Website dashboard"

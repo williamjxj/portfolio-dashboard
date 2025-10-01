@@ -72,11 +72,12 @@ As a site owner, I want a centralized dashboard listing my websites with key det
 
 ### Functional Requirements
 - **FR-001**: System MUST display a list of exactly eight specified websites with title and URL.
-- **FR-002**: System MUST display for each website a concise description derived from `website-analysis-report.md` and/or `README.md`.
+- **FR-002**: System MUST display for each website a concise description derived from `website-analysis-report.md` and/or `README.md`, with `website-analysis-report.md` taking precedence in case of conflicts.
 - **FR-003**: System MUST show a logo and favicon reference for each website when available; otherwise use a placeholder.
 - **FR-004**: System MUST show a screenshot preview for each website when available; otherwise use a placeholder.
 - **FR-005**: Users MUST be able to navigate to a website detail view containing the full description and larger preview.
 - **FR-006**: System MUST provide simple text search/filter across website name and description.
+- **FR-006a**: System MUST support filtering by technology-based tags (React, Next.js, AI, etc.).
 - **FR-007**: System MUST visibly indicate when asset references (logo/screenshot/favicon) are missing or invalid.
 - **FR-008**: System MUST list and link the following websites: 
   - `https://face-fusion-agent.vercel.app/face-fusion`
@@ -89,12 +90,17 @@ As a site owner, I want a centralized dashboard listing my websites with key det
   - `https://bestitconsultants.vercel.app/`
 - **FR-009**: System MUST reflect content truthfully from the referenced docs; if conflicts arise, the dashboard MUST flag the discrepancy for resolution.
 - **FR-010**: System SHOULD provide quick external links to each site and open in a new tab.
-- **FR-011**: System SHOULD include a reference link to "ref-mcp" resources for future enhancements. [NEEDS CLARIFICATION: concrete link and scope for ref-mcp]
+- **FR-011**: System SHOULD include a reference link to MCP (Model Context Protocol) documentation for future integrations.
+
+### Non-Functional Requirements
+- **NFR-001**: System MUST load the dashboard in under 2 seconds.
+- **NFR-002**: System MUST handle exactly 8 websites as specified.
+- **NFR-003**: System is designed for single-user access (no concurrent user requirements).
+- **NFR-004**: System MUST provide alt text for all images (logos, screenshots, favicons).
+- **NFR-005**: System MUST support keyboard navigation for all interactive elements.
 
 *Ambiguities*
-- **FR-012**: [NEEDS CLARIFICATION: Tagging taxonomy for filtering not specified]
 - **FR-013**: [NEEDS CLARIFICATION: Whether to support manual inline editing vs read-only display]
-- **FR-014**: [NEEDS CLARIFICATION: Source of truth if `website-analysis-report.md` and `README.md` diverge]
 
 ### Key Entities (include if feature involves data)
 - **Website**: name, url, description, logoUrl, faviconUrl, screenshotUrl, tags[]
@@ -119,6 +125,15 @@ As a site owner, I want a centralized dashboard listing my websites with key det
 - [ ] Dependencies and assumptions identified
 
 ---
+
+## Clarifications
+
+### Session 2025-01-27
+- Q: What are the expected performance targets for the dashboard? → A: Load in <2 seconds, handle 8 websites, no concurrent users
+- Q: What accessibility standards should the dashboard meet? → A: Basic accessibility (alt text for images, keyboard navigation)
+- Q: What is the specific scope and link for the "ref-mcp reference"? → A: Link to MCP (Model Context Protocol) documentation for future integrations
+- Q: What tagging taxonomy should be used for website filtering? → A: Technology-based tags (React, Next.js, AI, etc.)
+- Q: If `website-analysis-report.md` and `README.md` contain conflicting information, which should take precedence? → A: `website-analysis-report.md` takes precedence
 
 ## Execution Status
 *Updated by main() during processing*

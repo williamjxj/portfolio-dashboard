@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { Website } from '@/models/Website';
 import { WebsiteGrid } from '@/components/WebsiteGrid';
+import { SummaryTable } from '@/components/SummaryTable';
+import { InteractiveFeatures } from '@/components/InteractiveFeatures';
 import { Layout } from '@/components/Layout';
 
 export default function HomePage() {
@@ -37,48 +39,30 @@ export default function HomePage() {
 
   return (
     <Layout 
-      title="Website Dashboard" 
-      description="A modern dashboard for managing and viewing websites"
+      title="William Jiang's AI Products Dashboard" 
+      description="A comprehensive dashboard showcasing AI-powered applications and products"
     >
       <div className="space-y-8">
         {/* Header */}
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Website Dashboard
+        <div className="text-center animate-fade-in">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            William Jiang's AI Products Dashboard
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Discover and explore a curated collection of websites with detailed information, 
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Discover and explore a curated collection of AI-powered applications with detailed information, 
             screenshots, and insights.
           </p>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-lg shadow p-6 text-center">
-            <div className="text-3xl font-bold text-blue-600 mb-2">
-              {websites.length}
-            </div>
-            <div className="text-gray-600">Total Websites</div>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow p-6 text-center">
-            <div className="text-3xl font-bold text-green-600 mb-2">
-              {websites.filter(w => w.state === 'completed').length}
-            </div>
-            <div className="text-gray-600">Completed</div>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow p-6 text-center">
-            <div className="text-3xl font-bold text-yellow-600 mb-2">
-              {websites.filter(w => w.requiresAuth).length}
-            </div>
-            <div className="text-gray-600">Require Auth</div>
-          </div>
-        </div>
+        {/* Summary Table */}
+        <SummaryTable websites={websites} />
+
+        {/* Interactive Features */}
+        <InteractiveFeatures websites={websites} />
 
         {/* Website Grid */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Websites</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Applications</h2>
           <WebsiteGrid 
             websites={websites}
             loading={loading}

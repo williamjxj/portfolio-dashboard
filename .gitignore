@@ -13,6 +13,7 @@
 /dist
 /.next/
 /out/
+/sites/
 
 # misc
 .DS_Store

@@ -105,8 +105,8 @@ The dashboard currently manages these websites:
 - https://bidmaster-hub.vercel.app/
 - https://nextjs-mcp-template.vercel.app/
 - https://friendshipdaycare.vercel.app/
-- https://bestitconsulting.vercel.app/
-- https://bestitconsultants.vercel.app/
+- https://bestitconsulting.ca/
+- https://bestitconsultants.ca/
 
 ## Architecture
 

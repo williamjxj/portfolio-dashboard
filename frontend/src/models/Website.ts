@@ -20,6 +20,30 @@ export interface Website {
   authError?: string;
   needsManualAuth?: boolean;
   assetError?: string;
+  // Enhanced fields for comprehensive dashboard
+  techStack?: TechStack;
+  deploymentInfo?: DeploymentInfo;
+  features?: string[];
+  demoVideo?: string;
+}
+
+export interface TechStack {
+  frontend: string[];
+  backend: string[];
+  database: string[];
+  deployment: string[];
+  aiTools: string[];
+  other: string[];
+}
+
+export interface DeploymentInfo {
+  platform: 'vercel' | 'netlify' | 'aws' | 'other';
+  url: string;
+  status: 'live' | 'staging' | 'development';
+  lastDeployed?: string;
+  supabaseProject?: string;
+  supabaseUrl?: string;
+  githubRepo?: string;
 }
 
 export type WebsiteState = 'pending' | 'processing' | 'completed' | 'failed' | 'retry';

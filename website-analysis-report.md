@@ -97,7 +97,7 @@
 ---
 
 ## 7. BestIT Consulting
-**Website:** `https://bestitconsulting.vercel.app/`
+**Website:** `https://bestitconsulting.ca/`
 
 **Screenshot:** 
 <img src="Downloads/bestitconsulting-screenshot-2025-09-22T22-18-20-006Z.png" alt="BestIT Consulting preview" width="800" />
@@ -113,7 +113,7 @@
 ---
 
 ## 8. BestITConsulting Ltd
-**Website:** `https://bestitconsultants.vercel.app/`
+**Website:** `https://bestitconsultants.ca/`
 
 **Screenshot:** 
 <img src="Downloads/bestitconsultants-screenshot-2025-09-22T22-18-22-365Z.png" alt="BestITConsulting Ltd preview" width="800" />
