@@ -1,9 +1,9 @@
 <!--
 Sync Impact Report:
-Version change: 3.0.0 → 4.0.0
-Modified principles: None
-Added sections: None
-Removed sections: All testing-related content and requirements
+Version change: 4.0.0 → 5.0.0
+Modified principles: Enhanced Website Dashboard Standards with new asset management and tech stack features
+Added sections: Enhanced Website Model, Playwright Asset Generation, Tech Stack Integration
+Removed sections: None
 Templates requiring updates: ✅ .specify/templates/plan-template.md, ✅ .specify/templates/spec-template.md, ✅ .specify/templates/tasks-template.md
 Follow-up TODOs: None
 -->
@@ -22,10 +22,10 @@ All UI components MUST use shadcn/ui as the foundation with Tailwind CSS for sty
 
 Rationale: shadcn/ui provides consistent, accessible components that work seamlessly with Next.js and Tailwind CSS. The current implementation uses Card, Button, Badge, Dialog, Input, and other shadcn/ui components for the dashboard interface.
 
-### III. Asset Generation & Management
-Website assets (screenshots, logos, favicons) MUST be generated at build time using Playwright automation. Assets MUST be optimized (WebP/AVIF) and stored in version control. Runtime asset generation is NOT permitted for production builds.
+### III. Asset Generation & Management (NON-NEGOTIABLE)
+Website assets (screenshots, logos, favicons) MUST be generated at build time using Playwright automation with comprehensive fallback strategies. Assets MUST be optimized (WebP/AVIF) and stored in version control. The system MUST handle authentication-required websites and provide fallback assets when primary assets are unavailable. Runtime asset generation is NOT permitted for production builds.
 
-Rationale: The project uses Playwright for automated screenshot capture and asset generation. This ensures consistent, high-quality assets while maintaining static site performance.
+Rationale: The project uses Playwright for automated screenshot capture and asset generation with robust retry logic, authentication handling, and fallback generation. This ensures consistent, high-quality assets while maintaining static site performance and resilience.
 
 ### IV. Performance-First (NON-NEGOTIABLE)
 Page load times MUST be under 2 seconds on 3G networks. Core Web Vitals: LCP < 2.5s, FID (or INP) < 100ms, CLS < 0.1. All assets MUST be optimized and compressed. Enforce performance budgets in CI and block regressions.
@@ -36,7 +36,12 @@ Interfaces MUST be responsive and mobile-optimized with minimum 44px touch targe
 ### VI. Accessibility Standards
 WCAG 2.1 AA compliance is MANDATORY: semantic HTML, keyboard navigation, screen reader compatibility, and color contrast ratios ≥ 4.5:1. All interactive elements MUST be accessible.
 
-### VII. Authentication & Security
+### VII. Enhanced Website Model & Tech Stack Integration
+The website model MUST support comprehensive metadata including tech stack information, deployment details, authentication requirements, and asset management. All website data MUST be validated with proper TypeScript interfaces. Tech stack information MUST be displayed in dedicated dashboard sections with detailed breakdowns.
+
+Rationale: The current implementation includes enhanced Website model with TechStackInfo, DeploymentInfo, and comprehensive asset management. This enables rich dashboard experiences with detailed technical information and proper data validation.
+
+### VIII. Authentication & Security
 Authentication credentials MUST be stored securely (not in version control). API endpoints MUST validate inputs and implement proper CORS policies. Security headers MUST be enforced. Error handling MUST not expose sensitive information.
 
 ## Website Dashboard Standards
@@ -44,9 +49,11 @@ Authentication credentials MUST be stored securely (not in version control). API
 ### Build Requirements
 - Next.js 15 with App Router and static generation
 - React 19 with TypeScript for type safety
-- shadcn/ui components with Tailwind CSS
-- Playwright for automated asset generation
+- shadcn/ui components with Tailwind CSS v4
+- Playwright for automated asset generation with fallback strategies
 - next-themes for dark/light mode support
+- Geist font family for typography
+- Lucide React for consistent iconography
 
 ### Performance Standards
 - Lighthouse scores ≥ 90 across all categories
@@ -57,11 +64,14 @@ Authentication credentials MUST be stored securely (not in version control). API
 - Bundle size optimization with tree shaking
 
 ### Asset Management
-- Automated screenshot generation using Playwright
-- Logo and favicon extraction from target websites
+- Automated screenshot generation using Playwright with retry logic
+- Logo and favicon extraction from target websites with fallback generation
+- Authentication handling for protected websites
 - Image optimization (WebP/AVIF) with responsive sizes
-- Asset versioning and cache management
-- Fallback handling for missing assets
+- Asset versioning and cache management in storage/optimized/
+- Comprehensive fallback strategies for missing or inaccessible assets
+- SVG-based fallback generation for logos and favicons
+- Asset metadata tracking with dimensions and format information
 
 ### Component Standards
 - Use shadcn/ui primitives (Card, Button, Badge, Dialog, etc.)
@@ -69,6 +79,23 @@ Authentication credentials MUST be stored securely (not in version control). API
 - Support both light and dark themes
 - Ensure keyboard navigation and screen reader support
 - Maintain responsive design across all breakpoints
+
+### Enhanced Website Model
+- Comprehensive Website interface with tech stack integration
+- TechStackInfo for detailed technical breakdowns
+- DeploymentInfo for platform and status tracking
+- AuthenticationCredentials for protected website access
+- AssetMetadata for comprehensive asset tracking
+- WebsiteModel class for data validation and management
+- Support for both legacy and new asset URL fields
+- Comprehensive validation with error reporting
+
+### Tech Stack Integration
+- Dedicated tech stack dashboard section
+- Detailed breakdown of frontend, backend, database, and deployment technologies
+- AI tools and other technology categorization
+- Visual representation of technology stacks
+- Integration with website deployment information
 
 ## Development Workflow
 
@@ -102,4 +129,4 @@ Compliance Reviews:
 - Enforced on every PR via quality gates and CI checks
 - Periodic review at least quarterly to validate ongoing compliance
 
-**Version**: 4.0.0 | **Ratified**: 2025-01-22 | **Last Amended**: 2025-01-22
+**Version**: 5.0.0 | **Ratified**: 2025-01-22 | **Last Amended**: 2025-01-22
