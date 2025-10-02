@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,7 @@ export function ImageCarousel({ images, title, className = '' }: ImageCarouselPr
   const [loadedImages, setLoadedImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Set images directly without preloading check
+  // Prepare image list: filter to PNGs per requirement and set without preloading
   useEffect(() => {
     if (!images || images.length === 0) {
       setLoadedImages([]);
@@ -26,10 +26,38 @@ export function ImageCarousel({ images, title, className = '' }: ImageCarouselPr
       return;
     }
 
-    // For now, just use all provided images and let Next.js Image handle the loading
-    setLoadedImages(images);
+    // Only loop PNG images (case-insensitive)
+    const pngOnly = images.filter((src) => /\.png$/i.test(src));
+    setLoadedImages(pngOnly);
+    setCurrentIndex(0);
     setLoading(false);
   }, [images]);
+
+  // Auto-advance every ~4 seconds (within 3–5s window), only if multiple images
+  // Use a deterministic per-site interval between 3–5 seconds based on title
+  const intervalMs = useMemo(() => {
+    if (!title) return 4000;
+    // Stable hash from title
+    let hash = 0;
+    for (let i = 0; i < title.length; i++) {
+      hash = ((hash << 5) - hash) + title.charCodeAt(i);
+      hash |= 0; // 32-bit
+    }
+    const min = 3000;
+    const max = 5000;
+    const range = max - min;
+    const positive = Math.abs(hash);
+    const offset = positive % (range + 1);
+    return min + offset;
+  }, [title]);
+
+  useEffect(() => {
+    if (!loadedImages || loadedImages.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % loadedImages.length);
+    }, intervalMs);
+    return () => clearInterval(timer);
+  }, [loadedImages, intervalMs]);
 
   if (loading) {
     return (

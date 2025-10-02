@@ -7,7 +7,7 @@
     "screenshot": "/assets/screenshots/face-fusion-agent-1-screenshot-1758584082446.png",
     "logo": "/assets/logos/face-fusion-agent-1-logo-1758584082600.png",
     "favicon": "/assets/favicons/face-fusion-agent-1-favicon-32x32.ico",
-    "requiresAuth": false,
+    "requiresAuth": true,
     "lastUpdated": "2025-01-22T23:52:00.000Z",
     "state": "completed",
     "techStack": {
@@ -21,13 +21,13 @@
       "backend": [
         "Python",
         "FastAPI",
-        "OpenCV",
-        "TensorFlow"
+        "Node.js",
+        "Supabase"
       ],
       "database": [
         "PostgreSQL",
-        "Redis",
-        "Vector Database"
+        "Supabase",
+        "Neon, Prisma"
       ],
       "deployment": [
         "Vercel",
@@ -72,7 +72,7 @@
     "screenshot": "/assets/screenshots/nextjs-supabase-kappa-nine-2-screenshot-1758584075928.png",
     "logo": "/assets/logos/nextjs-supabase-kappa-nine-2-logo-1758584076750.png",
     "favicon": "/assets/favicons/nextjs-supabase-kappa-nine-2-favicon-32x32.ico",
-    "requiresAuth": false,
+    "requiresAuth": true,
     "lastUpdated": "2025-01-22T23:52:00.000Z",
     "state": "completed",
     "techStack": {
@@ -123,7 +123,7 @@
     "screenshot": "/assets/screenshots/manus-ai-shop-3-screenshot-1758583859104.png",
     "logo": "/assets/logos/manus-ai-shop-3-logo-1758583859278.png",
     "favicon": "/assets/favicons/manus-ai-shop-3-favicon-32x32.ico",
-    "requiresAuth": false,
+    "requiresAuth": true,
     "lastUpdated": "2025-01-22T23:52:00.000Z",
     "state": "completed",
     "techStack": {
@@ -184,7 +184,7 @@
     "screenshot": "/assets/screenshots/bidmaster-hub-4-screenshot-1758584095167.png",
     "logo": "/assets/logos/bidmaster-hub-4-logo-1758584095431.png",
     "favicon": "/assets/favicons/bidmaster-hub-4-favicon-32x32.ico",
-    "requiresAuth": false,
+    "requiresAuth": true,
     "lastUpdated": "2025-01-22T23:52:00.000Z",
     "state": "completed",
     "techStack": {
@@ -243,7 +243,7 @@
     "screenshot": "/assets/screenshots/nextjs-mcp-template-5-screenshot-1758584093569.png",
     "logo": "/assets/logos/nextjs-mcp-template-5-logo-1758584093531.png",
     "favicon": "/assets/favicons/nextjs-mcp-template-5-favicon-32x32.ico",
-    "requiresAuth": false,
+    "requiresAuth": true,
     "lastUpdated": "2025-01-22T23:52:00.000Z",
     "state": "completed",
     "techStack": {

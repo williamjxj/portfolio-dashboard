@@ -7,7 +7,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Website } from '@/models/Website';
-import { ProjectCardState } from '@/models/ProjectCardState';
 import { ImageCarousel } from './ImageCarousel';
 import { 
   ExternalLink, 
@@ -31,6 +30,20 @@ interface ProjectCardProps {
   onWebsiteClick?: (url: string) => void;
 }
 
+// Local state interface to avoid missing external type
+interface ProjectCardState {
+  id: string;
+  websiteId: string;
+  isExpanded: boolean;
+  isHovered: boolean;
+  isSelected: boolean;
+  currentImageIndex: number;
+  isVideoPlaying: boolean;
+  isGalleryOpen: boolean;
+  animationPhase: string;
+  staggerDelay: number;
+}
+
 export function ProjectCard({ 
   website, 
   index, 
@@ -52,7 +65,7 @@ export function ProjectCard({
   });
 
   const handleHover = (isHovered: boolean) => {
-    setCardState(prev => ({ ...prev, isHovered }));
+    setCardState((prev: ProjectCardState) => ({ ...prev, isHovered }));
   };
 
   const handleVideoClick = () => {
@@ -78,12 +91,6 @@ export function ProjectCard({
     // Map website IDs to actual folder names and their specific images
     const imageMap: { [key: string]: string[] } = {
       'face-fusion-agent-1': [
-        '/sites/face-fusion-agent/1.jpg',
-        '/sites/face-fusion-agent/2.jpg',
-        '/sites/face-fusion-agent/3.jpg',
-        '/sites/face-fusion-agent/4.jpg',
-        '/sites/face-fusion-agent/5.jpg',
-        '/sites/face-fusion-agent/6.jpg',
         '/sites/face-fusion-agent/f1.png',
         '/sites/face-fusion-agent/f2.png',
         '/sites/face-fusion-agent/f3.png',
@@ -92,10 +99,6 @@ export function ProjectCard({
         '/sites/face-fusion-agent/f6.png'
       ],
       'nextjs-supabase-kappa-nine-2': [
-        '/sites/nextjs-supabase-kappa-nine/1.jpg',
-        '/sites/nextjs-supabase-kappa-nine/2.jpg',
-        '/sites/nextjs-supabase-kappa-nine/3.jpg',
-        '/sites/nextjs-supabase-kappa-nine/4.png',
         '/sites/nextjs-supabase-kappa-nine/n1.png',
         '/sites/nextjs-supabase-kappa-nine/n2.png',
         '/sites/nextjs-supabase-kappa-nine/n3.png',
@@ -106,7 +109,6 @@ export function ProjectCard({
         '/sites/nextjs-supabase-kappa-nine/n8.png'
       ],
       'manus-ai-shop-3': [
-        '/sites/manus-ai-shop/1.png',
         '/sites/manus-ai-shop/m1.png',
         '/sites/manus-ai-shop/m2.png',
         '/sites/manus-ai-shop/m3.png',
@@ -120,12 +122,11 @@ export function ProjectCard({
         '/sites/bidmaster-hub/b2.png'
       ],
       'nextjs-mcp-template-5': [
-        '/sites/nextjs-mcp-template/1.png',
-        '/sites/nextjs-mcp-template/signin.png'
+        '/sites/nextjs-mcp-template/1.png'
       ],
       'friendshipdaycare-6': [
         '/sites/friendshipdaycare/f1.png',
-        '/sites/friendshipdaycare/f10.png'
+        '/sites/friendshipdaycare/f2.png'
       ],
       'bestitconsulting-7': [
         '/sites/bestitconsulting/1.png'
@@ -143,22 +144,17 @@ export function ProjectCard({
     if (website.requiresAuth) {
       return <Lock className="w-4 h-4 text-amber-500" />;
     }
-    if (website.status === 'ok') {
-      return <CheckCircle className="w-4 h-4 text-green-500" />;
-    }
-    return <AlertCircle className="w-4 h-4 text-red-500" />;
+    return <CheckCircle className="w-4 h-4 text-green-500" />;
   };
 
   const getStatusText = () => {
     if (website.requiresAuth) return 'Requires Auth';
-    if (website.status === 'ok') return 'Active';
-    return 'Unavailable';
+    return 'Active';
   };
 
   const getStatusColor = () => {
     if (website.requiresAuth) return 'bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400';
-    if (website.status === 'ok') return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
-    return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
+    return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
   };
 
   return (
