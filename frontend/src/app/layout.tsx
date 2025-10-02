@@ -27,8 +27,6 @@ export const metadata: Metadata = {
     ]
   },
   manifest: '/manifest.json',
-  themeColor: '#3B82F6',
-  viewport: 'width=device-width, initial-scale=1',
   openGraph: {
     title: "William Jiang's AI Products Dashboard",
     description: "A comprehensive dashboard showcasing AI-powered applications and products",
@@ -40,6 +38,12 @@ export const metadata: Metadata = {
     title: "William Jiang's AI Products Dashboard",
     description: "A comprehensive dashboard showcasing AI-powered applications and products",
   },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#3B82F6',
 };
 
 export default function RootLayout({

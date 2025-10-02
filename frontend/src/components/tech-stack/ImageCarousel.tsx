@@ -18,35 +18,17 @@ export function ImageCarousel({ images, title, className = '' }: ImageCarouselPr
   const [loadedImages, setLoadedImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Filter out images that don't exist by checking if they load
+  // Set images directly without preloading check
   useEffect(() => {
     if (!images || images.length === 0) {
+      setLoadedImages([]);
       setLoading(false);
       return;
     }
 
-    const checkImages = async () => {
-      const validImages: string[] = [];
-      
-      for (const imageSrc of images) {
-        try {
-          const img = new Image();
-          await new Promise((resolve, reject) => {
-            img.onload = () => resolve(true);
-            img.onerror = () => reject(false);
-            img.src = imageSrc;
-          });
-          validImages.push(imageSrc);
-        } catch {
-          // Image failed to load, skip it
-        }
-      }
-      
-      setLoadedImages(validImages);
-      setLoading(false);
-    };
-
-    checkImages();
+    // For now, just use all provided images and let Next.js Image handle the loading
+    setLoadedImages(images);
+    setLoading(false);
   }, [images]);
 
   if (loading) {

@@ -138,22 +138,6 @@ export function ProjectCard({
     return imageMap[website.id] || [];
   };
 
-  const getLogoPath = (website: Website): string => {
-    // Map website IDs to actual folder names
-    const folderMap: { [key: string]: string } = {
-      'face-fusion-agent-1': 'face-fusion-agent',
-      'nextjs-supabase-kappa-nine-2': 'nextjs-supabase-kappa-nine',
-      'manus-ai-shop-3': 'manus-ai-shop',
-      'bidmaster-hub-4': 'bidmaster-hub',
-      'nextjs-mcp-template-5': 'nextjs-mcp-template',
-      'friendshipdaycare-6': 'friendshipdaycare',
-      'bestitconsulting-7': 'bestitconsulting',
-      'bestitconsultants-8': 'bestitconsultants'
-    };
-    
-    const folderName = folderMap[website.id] || website.id;
-    return `/sites/${folderName}/logo.png`;
-  };
 
   const getStatusIcon = () => {
     if (website.requiresAuth) {
@@ -198,7 +182,7 @@ export function ProjectCard({
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
                 <Image
-                  src={getLogoPath(website)}
+                  src={website.logo || '/placeholder-logo.png'}
                   alt={`${website.name} logo`}
                   fill
                   className="object-cover"
