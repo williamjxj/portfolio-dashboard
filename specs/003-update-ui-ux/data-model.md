@@ -1,221 +1,409 @@
-# Data Model: Update UI/UX and Add Tech Stack Tab
+# UI/UX Data Model Specification
 
-**Feature**: 003-update-ui-ux  
-**Date**: 2025-01-27  
-**Status**: Complete
+## Overview
+This document defines the data models for the enhanced UI/UX features of the website dashboard application.
 
-## Entity Definitions
+## Core UI/UX Entities
 
-### TechStackInfo
-Represents the technical information for a website.
+### Theme Configuration
+Theme and styling configuration for the application.
 
-**Fields**:
-- `frontend`: string[] - Frontend frameworks and libraries
-- `backend`: string[] - Backend technologies and frameworks
-- `database`: string[] - Database systems and tools
-- `deployment`: string[] - Deployment platforms and services
-- `aiTools`: string[] - AI/ML tools and frameworks
-- `other`: string[] - Other technologies and tools
-- `version`: string - Version information (optional)
-- `source`: string - Data source or last updated timestamp
-
-**Validation Rules**:
-- All arrays must contain non-empty strings
-- Version must be valid semantic version if provided
-- Source must be non-empty string
-
-**State Transitions**:
-- `draft` → `published` (when data is complete)
-- `published` → `updated` (when data is modified)
-
-### NavigationTab
-Represents the navigation state for the three main tabs.
-
-**Fields**:
-- `id`: string - Unique identifier (dashboard, tech-stack, about)
-- `label`: string - Display name
-- `path`: string - Route path
-- `active`: boolean - Whether tab is currently active
-- `order`: number - Display order
-
-**Validation Rules**:
-- ID must be unique across all tabs
-- Label must be non-empty string
-- Path must be valid route
-- Order must be positive integer
-
-**State Transitions**:
-- `inactive` → `active` (when tab is selected)
-- `active` → `inactive` (when different tab is selected)
-
-### WebsiteTechDetails
-Represents the relationship between websites and their technical specifications.
-
-**Fields**:
-- `websiteId`: string - Reference to website
-- `techStack`: TechStackInfo - Technical information
-- `lastUpdated`: string - ISO timestamp of last update
-- `isComplete`: boolean - Whether all tech stack data is available
-
-**Validation Rules**:
-- WebsiteId must reference existing website
-- TechStack must be valid TechStackInfo object
-- LastUpdated must be valid ISO timestamp
-- IsComplete must be boolean
-
-**State Transitions**:
-- `incomplete` → `complete` (when all required data is added)
-- `complete` → `updated` (when data is modified)
-
-## Data Relationships
-
-### One-to-One Relationships
-- `Website` ↔ `WebsiteTechDetails` (each website has one tech stack record)
-
-### One-to-Many Relationships
-- `NavigationTab` → `Website` (navigation can access multiple websites)
-
-### Many-to-Many Relationships
-- `TechStackInfo` ↔ `Technology` (tech stack can contain multiple technologies)
-
-## Validation Rules
-
-### TechStackInfo Validation
 ```typescript
-interface TechStackInfo {
-  frontend: string[];      // Required, non-empty
-  backend: string[];       // Required, non-empty
-  database: string[];      // Required, non-empty
-  deployment: string[];    // Required, non-empty
-  aiTools: string[];       // Optional, can be empty
-  other: string[];         // Optional, can be empty
-  version?: string;        // Optional, semantic version
-  source: string;          // Required, non-empty
+interface ThemeConfig {
+  id: string;                   // Theme identifier
+  name: string;                 // Theme name
+  type: 'light' | 'dark' | 'auto';
+  colors: ColorPalette;         // Color configuration
+  typography: TypographyConfig; // Typography settings
+  spacing: SpacingConfig;       // Spacing configuration
+  breakpoints: BreakpointConfig; // Responsive breakpoints
+  animations: AnimationConfig;  // Animation settings
+  isDefault: boolean;          // Default theme
+  createdAt: string;           // Creation timestamp
+  updatedAt: string;           // Last update timestamp
 }
 ```
 
-### NavigationTab Validation
+### Color Palette
+Color configuration for themes.
+
 ```typescript
-interface NavigationTab {
-  id: string;             // Required, unique
-  label: string;          // Required, non-empty
-  path: string;           // Required, valid route
-  active: boolean;       // Required, boolean
-  order: number;         // Required, positive integer
+interface ColorPalette {
+  primary: ColorSet;            // Primary colors
+  secondary: ColorSet;         // Secondary colors
+  accent: ColorSet;            // Accent colors
+  neutral: ColorSet;           // Neutral colors
+  semantic: SemanticColors;    // Semantic colors
+  background: BackgroundColors; // Background colors
+  text: TextColors;           // Text colors
 }
 ```
 
-### WebsiteTechDetails Validation
+### Color Set
+Individual color set configuration.
+
 ```typescript
-interface WebsiteTechDetails {
-  websiteId: string;      // Required, references existing website
-  techStack: TechStackInfo; // Required, valid TechStackInfo
-  lastUpdated: string;    // Required, ISO timestamp
-  isComplete: boolean;    // Required, boolean
+interface ColorSet {
+  base: string;                // Base color
+  light: string;              // Light variant
+  dark: string;               // Dark variant
+  contrast: string;           // Contrast color
+  hover: string;              // Hover state
+  active: string;             // Active state
+  disabled: string;           // Disabled state
 }
 ```
 
-## State Transitions
+### Typography Configuration
+Typography settings for the application.
 
-### TechStackInfo States
-1. **Draft**: Initial state when tech stack data is being collected
-2. **Published**: Tech stack data is complete and available
-3. **Updated**: Tech stack data has been modified
+```typescript
+interface TypographyConfig {
+  fontFamily: FontFamily;      // Font family configuration
+  fontSize: FontSizeConfig;    // Font size configuration
+  fontWeight: FontWeightConfig; // Font weight configuration
+  lineHeight: LineHeightConfig; // Line height configuration
+  letterSpacing: LetterSpacingConfig; // Letter spacing
+  textTransform: TextTransformConfig; // Text transform
+}
+```
 
-### NavigationTab States
-1. **Inactive**: Tab is not currently selected
-2. **Active**: Tab is currently selected and visible
+### Font Family Configuration
+Font family settings.
 
-### WebsiteTechDetails States
-1. **Incomplete**: Missing required tech stack information
-2. **Complete**: All required tech stack information is available
-3. **Updated**: Tech stack information has been modified
+```typescript
+interface FontFamily {
+  primary: string;             // Primary font
+  secondary: string;           // Secondary font
+  mono: string;               // Monospace font
+  fallback: string[];         // Fallback fonts
+}
+```
+
+### Spacing Configuration
+Spacing configuration for consistent layout.
+
+```typescript
+interface SpacingConfig {
+  xs: string;                  // Extra small spacing
+  sm: string;                  // Small spacing
+  md: string;                  // Medium spacing
+  lg: string;                  // Large spacing
+  xl: string;                  // Extra large spacing
+  xxl: string;                 // Extra extra large spacing
+  section: string;             // Section spacing
+  component: string;           // Component spacing
+  element: string;             // Element spacing
+}
+```
+
+### Breakpoint Configuration
+Responsive breakpoint configuration.
+
+```typescript
+interface BreakpointConfig {
+  xs: string;                  // Extra small screens
+  sm: string;                  // Small screens
+  md: string;                  // Medium screens
+  lg: string;                  // Large screens
+  xl: string;                  // Extra large screens
+  xxl: string;                 // Extra extra large screens
+}
+```
+
+### Animation Configuration
+Animation settings for enhanced UX.
+
+```typescript
+interface AnimationConfig {
+  duration: DurationConfig;     // Animation duration
+  easing: EasingConfig;        // Animation easing
+  delay: DelayConfig;          // Animation delay
+  stagger: StaggerConfig;      // Staggered animations
+  reducedMotion: ReducedMotionConfig; // Reduced motion support
+}
+```
+
+### Duration Configuration
+Animation duration settings.
+
+```typescript
+interface DurationConfig {
+  fast: string;                // Fast animations
+  normal: string;              // Normal animations
+  slow: string;                // Slow animations
+  verySlow: string;            // Very slow animations
+}
+```
+
+### Easing Configuration
+Animation easing functions.
+
+```typescript
+interface EasingConfig {
+  easeIn: string;              // Ease in
+  easeOut: string;             // Ease out
+  easeInOut: string;           // Ease in out
+  linear: string;              // Linear
+  custom: string[];            // Custom easing functions
+}
+```
+
+### Component Configuration
+Component-specific configuration.
+
+```typescript
+interface ComponentConfig {
+  id: string;                  // Component identifier
+  name: string;               // Component name
+  type: ComponentType;         // Component type
+  props: ComponentProps;       // Component properties
+  styles: ComponentStyles;     // Component styles
+  variants: ComponentVariant[]; // Component variants
+  states: ComponentState[];    // Component states
+  accessibility: AccessibilityConfig; // Accessibility settings
+}
+```
+
+### Component Type
+Types of components in the system.
+
+```typescript
+type ComponentType = 
+  | 'button'
+  | 'input'
+  | 'card'
+  | 'modal'
+  | 'navigation'
+  | 'table'
+  | 'form'
+  | 'layout'
+  | 'icon'
+  | 'badge';
+```
+
+### Component Props
+Component property configuration.
+
+```typescript
+interface ComponentProps {
+  [key: string]: {
+    type: string;              // Property type
+    required: boolean;         // Required property
+    default: any;              // Default value
+    description: string;       // Property description
+    validation: ValidationRule[]; // Validation rules
+  };
+}
+```
+
+### Component Styles
+Component styling configuration.
+
+```typescript
+interface ComponentStyles {
+  base: StyleRule[];           // Base styles
+  variants: StyleVariant[];    // Style variants
+  states: StyleState[];        // Style states
+  responsive: ResponsiveStyle[]; // Responsive styles
+  dark: StyleRule[];           // Dark mode styles
+  light: StyleRule[];          // Light mode styles
+}
+```
+
+### Style Rule
+Individual style rule.
+
+```typescript
+interface StyleRule {
+  property: string;            // CSS property
+  value: string | number;      // CSS value
+  media?: string;              // Media query
+  selector?: string;           // CSS selector
+  pseudo?: string;             // Pseudo selector
+}
+```
+
+### Accessibility Configuration
+Accessibility settings for components.
+
+```typescript
+interface AccessibilityConfig {
+  ariaLabel?: string;          // ARIA label
+  ariaDescription?: string;    // ARIA description
+  ariaExpanded?: boolean;      // ARIA expanded
+  ariaHidden?: boolean;        // ARIA hidden
+  role?: string;               // ARIA role
+  tabIndex?: number;           // Tab index
+  keyboardNavigation: boolean; // Keyboard navigation
+  screenReader: boolean;       // Screen reader support
+  colorContrast: number;       // Color contrast ratio
+}
+```
+
+### Layout Configuration
+Layout configuration for the application.
+
+```typescript
+interface LayoutConfig {
+  id: string;                  // Layout identifier
+  name: string;                // Layout name
+  type: LayoutType;            // Layout type
+  structure: LayoutStructure;   // Layout structure
+  responsive: ResponsiveLayout; // Responsive layout
+  spacing: LayoutSpacing;      // Layout spacing
+  grid: GridConfig;            // Grid configuration
+  flexbox: FlexboxConfig;      // Flexbox configuration
+}
+```
+
+### Layout Type
+Types of layouts in the system.
+
+```typescript
+type LayoutType = 
+  | 'grid'
+  | 'flexbox'
+  | 'absolute'
+  | 'relative'
+  | 'sticky'
+  | 'fixed';
+```
+
+### Layout Structure
+Structure of the layout.
+
+```typescript
+interface LayoutStructure {
+  header?: LayoutSection;      // Header section
+  navigation?: LayoutSection;  // Navigation section
+  main: LayoutSection;         // Main content section
+  sidebar?: LayoutSection;     // Sidebar section
+  footer?: LayoutSection;      // Footer section
+}
+```
+
+### Layout Section
+Individual layout section.
+
+```typescript
+interface LayoutSection {
+  id: string;                  // Section identifier
+  type: SectionType;           // Section type
+  content: SectionContent[];   // Section content
+  styles: StyleRule[];         // Section styles
+  responsive: ResponsiveStyle[]; // Responsive styles
+}
+```
+
+### Section Type
+Types of layout sections.
+
+```typescript
+type SectionType = 
+  | 'header'
+  | 'navigation'
+  | 'main'
+  | 'sidebar'
+  | 'footer'
+  | 'content'
+  | 'container';
+```
+
+### Section Content
+Content within a layout section.
+
+```typescript
+interface SectionContent {
+  id: string;                  // Content identifier
+  type: ContentType;           // Content type
+  component: string;           // Component name
+  props: Record<string, any>;   // Component properties
+  children?: SectionContent[];  // Child content
+}
+```
+
+### Content Type
+Types of content in sections.
+
+```typescript
+type ContentType = 
+  | 'component'
+  | 'text'
+  | 'image'
+  | 'video'
+  | 'form'
+  | 'list'
+  | 'table';
+```
+
+## Data Storage
+
+### Enhanced JSON Files
+- `themes.json` - Array of ThemeConfig objects
+- `components.json` - Array of ComponentConfig objects
+- `layouts.json` - Array of LayoutConfig objects
+- `animations.json` - Array of AnimationConfig objects
+- `accessibility.json` - Array of AccessibilityConfig objects
+
+### File Structure
+```
+data/
+├── themes.json
+├── components.json
+├── layouts.json
+├── animations.json
+└── accessibility.json
+```
+
+## Relationships
+
+### Theme ↔ Components
+- One-to-many relationship
+- Theme can have multiple components
+- Components reference theme via `themeId`
+
+### Layout ↔ Components
+- One-to-many relationship
+- Layout can contain multiple components
+- Components reference layout via `layoutId`
+
+### Component ↔ Accessibility
+- One-to-one relationship
+- Each component has accessibility configuration
+- Referenced via `componentId`
 
 ## Data Flow
 
-### Read Operations
-1. **Get All Websites**: Fetch websites with tech stack data
-2. **Get Tech Stack**: Fetch tech stack information for specific website
-3. **Get Navigation**: Fetch available navigation tabs with active state
+1. **Theme Selection**: User selects theme from available themes
+2. **Component Rendering**: Components rendered with theme configuration
+3. **Layout Application**: Layout applied to components
+4. **Responsive Adaptation**: Layout adapts to screen size
+5. **Accessibility Enhancement**: Accessibility features applied
+6. **Animation Application**: Animations applied based on configuration
 
-### Write Operations
-1. **Update Tech Stack**: Modify tech stack information for website
-2. **Set Active Tab**: Update navigation active state
-3. **Add Tech Stack**: Create new tech stack record for website
+## Validation Rules
 
-## Data Sources
+### Theme
+- `id` must be unique
+- `name` is required
+- `type` must be one of defined values
+- `colors` must be valid color palette
 
-### Primary Sources
-- `websites.json` - Website metadata and basic information
-- `tech-stack.json` - Technical information for each website
-- `assets.json` - Asset metadata and optimization data
+### Component
+- `id` must be unique
+- `name` is required
+- `type` must be one of defined values
+- `props` must be valid component properties
 
-### Secondary Sources
-- Build-time generated data from Playwright
-- User-provided technical information
-- External API integrations (if needed)
+### Layout
+- `id` must be unique
+- `name` is required
+- `type` must be one of defined values
+- `structure` must be valid layout structure
 
-## Migration Strategy
-
-### Existing Data
-- No migration required for existing websites
-- Tech stack data will be added incrementally
-- Existing functionality remains unchanged
-
-### New Data Structure
-- Add `techStack` field to existing website records
-- Create new `tech-stack.json` file for detailed technical information
-- Update navigation to include new "Tech Stack" tab
-
-## Performance Considerations
-
-### Data Loading
-- Tech stack data loaded on-demand for tech stack page
-- Main dashboard remains fast with minimal data
-- Lazy loading for large tech stack datasets
-
-### Caching Strategy
-- Static generation for tech stack page
-- Client-side caching for navigation state
-- Build-time optimization for tech stack data
-
-## Security Considerations
-
-### Data Validation
-- All input data validated against schemas
-- No sensitive information in tech stack data
-- Proper error handling for missing data
-
-### Access Control
-- No authentication required for tech stack viewing
-- Public access to technical information
-- No sensitive technical details exposed
-
-## Error Handling
-
-### Missing Data
-- Show "Information not available" placeholder
-- Graceful degradation for incomplete tech stack
-- Option to add missing information
-
-### Invalid Data
-- Validate all tech stack data against schemas
-- Fallback to default values for invalid data
-- Log errors for debugging
-
-## Testing Strategy
-
-### Unit Tests
-- Test all validation rules
-- Test state transitions
-- Test error handling
-
-### Integration Tests
-- Test data flow between components
-- Test navigation state management
-- Test tech stack data display
-
-### End-to-End Tests
-- Test complete user workflows
-- Test responsive design
-- Test accessibility compliance
+### Accessibility
+- `colorContrast` must be >= 4.5 for normal text
+- `colorContrast` must be >= 3.0 for large text
+- `keyboardNavigation` must be boolean
+- `screenReader` must be boolean

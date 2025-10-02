@@ -1,136 +1,148 @@
-# Data Model: Website Iteration Dashboard
+# Data Model Specification
+
+## Overview
+This document defines the data models for the website dashboard application.
 
 ## Core Entities
 
 ### Website
-**Purpose**: Represents each of the 8 websites to be displayed in the dashboard
-**Attributes**:
-- `id`: Unique identifier (string)
-- `name`: Display name (string)
-- `url`: Website URL (string)
-- `description`: 2-3 sentence summary (string)
-- `screenshot`: Path to screenshot image (string)
-- `logo`: Path to logo image (string)
-- `favicon`: Path to favicon image (string)
-- `requiresAuth`: Boolean flag for authentication requirement
-- `authCredentials`: Optional login credentials (object)
-- `lastUpdated`: Timestamp of last update (Date)
+The main entity representing a website project.
 
-**Validation Rules**:
-- URL must be valid and accessible
-- Description must be 2-3 sentences (50-200 characters)
-- Screenshot, logo, and favicon paths must exist
-- Auth credentials required if requiresAuth is true
+```typescript
+interface Website {
+  id: string;                    // Unique identifier
+  name: string;                  // Display name
+  url: string;                   // Website URL
+  description?: string;          // Project description
+  screenshot?: string;            // Screenshot URL
+  logo?: string;                 // Logo URL
+  favicon?: string;              // Favicon URL
+  requiresAuth: boolean;         // Authentication required
+  lastUpdated: string;           // ISO timestamp
+  state: 'draft' | 'in-progress' | 'completed' | 'archived';
+  techStack: TechStackInfo;      // Technology stack
+  deploymentInfo: DeploymentInfo; // Deployment details
+  features: string[];            // Key features
+  demoVideo?: string;            // Demo video URL
+}
+```
 
-**State Transitions**:
-- `pending` → `processing` → `completed` (screenshot generation)
-- `pending` → `failed` → `retry` (on authentication failure)
+### TechStackInfo
+Technology stack information for a website.
 
-### AuthenticationCredentials
-**Purpose**: Stores login information for websites requiring authentication
-**Attributes**:
-- `websiteId`: Reference to Website entity (string)
-- `method`: Authentication method (enum: 'email', 'oauth', 'sso')
-- `username`: Username or email (string, optional)
-- `password`: Password (string, optional)
-- `oauthProvider`: OAuth provider name (string, optional)
-- `additionalFields`: Custom fields for complex auth (object, optional)
+```typescript
+interface TechStackInfo {
+  frontend: string[];            // Frontend technologies
+  backend: string[];           // Backend technologies
+  database: string[];          // Database technologies
+  deployment: string[];        // Deployment platforms
+  aiTools: string[];           // AI/ML tools
+  other: string[];             // Other technologies
+  source: string;               // Source timestamp
+}
+```
 
-**Validation Rules**:
-- Method must be one of the supported types
-- Username required for email authentication
-- OAuth provider required for OAuth authentication
-- Password required for email authentication
+### DeploymentInfo
+Deployment and hosting information.
+
+```typescript
+interface DeploymentInfo {
+  platform: string;             // Deployment platform
+  url: string;                   // Live URL
+  status: 'live' | 'staging' | 'development' | 'offline';
+  lastDeployed: string;          // ISO timestamp
+  githubRepo?: string;          // GitHub repository
+  supabaseProject?: string;     // Supabase project
+  supabaseUrl?: string;         // Supabase URL
+}
+```
 
 ### AssetMetadata
-**Purpose**: Contains information about generated assets (screenshots, logos, favicons)
-**Attributes**:
-- `websiteId`: Reference to Website entity (string)
-- `assetType`: Type of asset (enum: 'screenshot', 'logo', 'favicon')
-- `filePath`: Local file path (string)
-- `fileSize`: File size in bytes (number)
-- `dimensions`: Image dimensions (object: {width, height})
-- `format`: Image format (string: 'png', 'jpg', 'webp', 'svg')
-- `generatedAt`: Timestamp of generation (Date)
-- `optimized`: Whether asset is optimized (boolean)
+Metadata for website assets (screenshots, logos, favicons).
 
-**Validation Rules**:
-- File path must exist and be accessible
-- Dimensions required for image assets
-- Format must be supported
-- Generated timestamp must be valid
+```typescript
+interface AssetMetadata {
+  id: string;                   // Unique asset ID
+  websiteId: string;            // Associated website ID
+  type: 'screenshot' | 'logo' | 'favicon' | 'video';
+  url: string;                  // Asset URL
+  filename: string;             // Original filename
+  size: number;                 // File size in bytes
+  format: string;               // File format
+  optimized: boolean;           // Whether optimized
+  isFallback: boolean;          // Whether fallback asset
+  lastAccessed: string;         // ISO timestamp
+}
+```
+
+### AuthenticationCredentials
+Authentication information for websites.
+
+```typescript
+interface AuthenticationCredentials {
+  websiteId: string;            // Associated website ID
+  type: 'email' | 'oauth' | 'sso' | 'none';
+  username?: string;            // Username/email
+  password?: string;            // Password (encrypted)
+  oauthProvider?: string;       // OAuth provider
+  ssoProvider?: string;         // SSO provider
+  credentials: Record<string, any>; // Additional credentials
+  lastUpdated: string;          // ISO timestamp
+}
+```
+
+## Data Storage
+
+### JSON Files
+- `websites.json` - Array of Website objects
+- `assets.json` - Array of AssetMetadata objects
+- `auth-credentials.json` - Array of AuthenticationCredentials objects
+
+### File Structure
+```
+data/
+├── websites.json
+├── assets.json
+└── auth-credentials.json
+```
 
 ## Relationships
 
-### Website ↔ AuthenticationCredentials
-- **Type**: One-to-One (optional)
-- **Constraint**: Website may have zero or one authentication credentials
-- **Business Rule**: Only websites with requiresAuth=true can have credentials
+### Website ↔ Assets
+- One-to-many relationship
+- Website can have multiple assets (screenshot, logo, favicon, video)
+- Assets reference website via `websiteId`
 
-### Website ↔ AssetMetadata
-- **Type**: One-to-Many
-- **Constraint**: Each website can have multiple assets (screenshot, logo, favicon)
-- **Business Rule**: Each website must have exactly one of each asset type
+### Website ↔ Authentication
+- One-to-one relationship
+- Each website can have authentication credentials
+- Referenced via `websiteId`
 
 ## Data Flow
 
-### 1. Website Discovery
-```
-Input: README.md URLs
-Process: Parse and validate URLs
-Output: Website entities (pending state)
-```
-
-### 2. Authentication Handling
-```
-Input: Website with requiresAuth=true
-Process: Attempt login with provided credentials
-Output: AuthenticationCredentials (success/failure)
-```
-
-### 3. Asset Generation
-```
-Input: Website entity
-Process: Generate screenshot, logo, favicon
-Output: AssetMetadata entities
-```
-
-### 4. Dashboard Display
-```
-Input: Website + AssetMetadata
-Process: Render dashboard components
-Output: Static HTML/CSS/JS
-```
-
-## State Management
-
-### Website States
-- `pending`: Initial state, waiting for processing
-- `processing`: Currently generating assets
-- `completed`: All assets generated successfully
-- `failed`: Asset generation failed
-- `retry`: Ready for retry after failure
-
-### Asset States
-- `generating`: Asset is being created
-- `completed`: Asset generated successfully
-- `failed`: Asset generation failed
-- `optimized`: Asset has been optimized for web
+1. **Website Creation**: New website added to `websites.json`
+2. **Asset Generation**: Assets created and metadata stored in `assets.json`
+3. **Authentication Setup**: Credentials stored in `auth-credentials.json`
+4. **Updates**: All entities updated via API endpoints
 
 ## Validation Rules
 
-### URL Validation
-- Must be valid HTTP/HTTPS URL
-- Must be accessible (not return 404/500)
-- Must not be a login/signup page (unless authenticated)
+### Website
+- `id` must be unique
+- `name` and `url` are required
+- `url` must be valid URI
+- `state` must be one of defined values
 
-### Asset Validation
-- Screenshots: Must be high-resolution (min 1200px width)
-- Logos: Must be vector format (SVG) or high-res raster
-- Favicons: Must be 16x16 or 32x32 pixels
-- All assets: Must be optimized for web delivery
+### TechStack
+- Arrays should contain valid technology names
+- `source` should be ISO timestamp
 
-### Authentication Validation
-- Credentials must be provided for auth-required websites
-- Authentication must succeed before screenshot capture
-- Failed auth must trigger user intervention workflow
+### Assets
+- `websiteId` must reference existing website
+- `type` must be one of defined values
+- `url` must be valid URI
+
+### Authentication
+- `websiteId` must reference existing website
+- `type` must be one of defined values
+- Credentials should be encrypted for sensitive data

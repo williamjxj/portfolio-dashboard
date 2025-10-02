@@ -1,0 +1,674 @@
+openapi: 3.0.0
+info:
+  title: Website Dashboard API v3
+  description: Enhanced API for the website dashboard application with improved organization and features
+  version: 3.0.0
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
+paths:
+  /websites:
+    get:
+      summary: Get all websites with enhanced filtering and sorting
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [draft, in-progress, completed, archived]
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [name, created, updated, priority]
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: List of websites with pagination
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebsiteListResponse'
+    post:
+      summary: Create a new website
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWebsiteRequest'
+      responses:
+        '201':
+          description: Website created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Website'
+        '400':
+          description: Invalid request data
+  /websites/{id}:
+    get:
+      summary: Get website by ID with full details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: include
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [assets, monitoring, analytics, history]
+      responses:
+        '200':
+          description: Website details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebsiteDetail'
+        '404':
+          description: Website not found
+    put:
+      summary: Update website
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateWebsiteRequest'
+      responses:
+        '200':
+          description: Website updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Website'
+        '404':
+          description: Website not found
+    delete:
+      summary: Delete website
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Website deleted
+        '404':
+          description: Website not found
+  /websites/bulk:
+    post:
+      summary: Bulk operations on websites
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkOperationRequest'
+      responses:
+        '200':
+          description: Bulk operation completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationResponse'
+  /websites/{id}/assets:
+    get:
+      summary: Get website assets
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [screenshot, logo, favicon, video, document]
+        - name: optimized
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Website assets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asset'
+    post:
+      summary: Upload website asset
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                type:
+                  type: string
+                  enum: [screenshot, logo, favicon, video, document]
+                metadata:
+                  type: object
+      responses:
+        '201':
+          description: Asset uploaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+  /websites/{id}/monitoring:
+    get:
+      summary: Get website monitoring data
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: period
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [1h, 24h, 7d, 30d]
+      responses:
+        '200':
+          description: Monitoring data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonitoringData'
+  /websites/{id}/analytics:
+    get:
+      summary: Get website analytics
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: period
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [1h, 24h, 7d, 30d]
+      responses:
+        '200':
+          description: Analytics data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsData'
+components:
+  schemas:
+    Website:
+      type: object
+      required:
+        - id
+        - name
+        - url
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+        name:
+          type: string
+          description: Website name
+        url:
+          type: string
+          format: uri
+          description: Website URL
+        description:
+          type: string
+          description: Website description
+        screenshot:
+          type: string
+          description: Screenshot URL
+        logo:
+          type: string
+          description: Logo URL
+        favicon:
+          type: string
+          description: Favicon URL
+        requiresAuth:
+          type: boolean
+          description: Whether authentication is required
+        lastUpdated:
+          type: string
+          format: date-time
+        state:
+          type: string
+          enum: [draft, in-progress, completed, archived]
+        techStack:
+          $ref: '#/components/schemas/TechStack'
+        deploymentInfo:
+          $ref: '#/components/schemas/DeploymentInfo'
+        features:
+          type: array
+          items:
+            type: string
+        demoVideo:
+          type: string
+          format: uri
+        tags:
+          type: array
+          items:
+            type: string
+        priority:
+          type: integer
+          minimum: 1
+          maximum: 10
+        isPublic:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    WebsiteDetail:
+      allOf:
+        - $ref: '#/components/schemas/Website'
+        - type: object
+          properties:
+            assets:
+              type: array
+              items:
+                $ref: '#/components/schemas/Asset'
+            monitoring:
+              $ref: '#/components/schemas/MonitoringData'
+            analytics:
+              $ref: '#/components/schemas/AnalyticsData'
+            history:
+              type: array
+              items:
+                $ref: '#/components/schemas/HistoryEntry'
+    WebsiteListResponse:
+      type: object
+      properties:
+        websites:
+          type: array
+          items:
+            $ref: '#/components/schemas/Website'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        filters:
+          $ref: '#/components/schemas/FilterOptions'
+    CreateWebsiteRequest:
+      type: object
+      required:
+        - name
+        - url
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        priority:
+          type: integer
+          minimum: 1
+          maximum: 10
+        isPublic:
+          type: boolean
+          default: true
+    UpdateWebsiteRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+        description:
+          type: string
+        state:
+          type: string
+          enum: [draft, in-progress, completed, archived]
+        tags:
+          type: array
+          items:
+            type: string
+        priority:
+          type: integer
+          minimum: 1
+          maximum: 10
+        isPublic:
+          type: boolean
+    TechStack:
+      type: object
+      properties:
+        frontend:
+          type: array
+          items:
+            type: string
+        backend:
+          type: array
+          items:
+            type: string
+        database:
+          type: array
+          items:
+            type: string
+        deployment:
+          type: array
+          items:
+            type: string
+        aiTools:
+          type: array
+          items:
+            type: string
+        other:
+          type: array
+          items:
+            type: string
+        source:
+          type: string
+          format: date-time
+        version:
+          type: string
+        lastUpdated:
+          type: string
+          format: date-time
+    DeploymentInfo:
+      type: object
+      properties:
+        platform:
+          type: string
+        url:
+          type: string
+          format: uri
+        status:
+          type: string
+          enum: [live, staging, development, offline]
+        lastDeployed:
+          type: string
+          format: date-time
+        githubRepo:
+          type: string
+          format: uri
+        supabaseProject:
+          type: string
+        supabaseUrl:
+          type: string
+          format: uri
+        environment:
+          type: string
+        region:
+          type: string
+        healthCheck:
+          type: string
+          format: uri
+        monitoring:
+          $ref: '#/components/schemas/MonitoringInfo'
+    MonitoringInfo:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        uptime:
+          type: number
+          minimum: 0
+          maximum: 100
+        responseTime:
+          type: number
+        errorRate:
+          type: number
+          minimum: 0
+          maximum: 100
+        lastChecked:
+          type: string
+          format: date-time
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alert'
+    Alert:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [error, warning, info]
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        resolved:
+          type: boolean
+    Asset:
+      type: object
+      properties:
+        id:
+          type: string
+        websiteId:
+          type: string
+        type:
+          type: string
+          enum: [screenshot, logo, favicon, video, document]
+        url:
+          type: string
+          format: uri
+        filename:
+          type: string
+        size:
+          type: integer
+        format:
+          type: string
+        optimized:
+          type: boolean
+        isFallback:
+          type: boolean
+        lastAccessed:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+        tags:
+          type: array
+          items:
+            type: string
+        version:
+          type: string
+    MonitoringData:
+      type: object
+      properties:
+        uptime:
+          type: number
+        responseTime:
+          type: number
+        errorRate:
+          type: number
+        requests:
+          type: integer
+        lastChecked:
+          type: string
+          format: date-time
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alert'
+    AnalyticsData:
+      type: object
+      properties:
+        views:
+          type: integer
+        uniqueVisitors:
+          type: integer
+        bounceRate:
+          type: number
+        avgSessionDuration:
+          type: number
+        topPages:
+          type: array
+          items:
+            type: object
+            properties:
+              page:
+                type: string
+              views:
+                type: integer
+        referrers:
+          type: array
+          items:
+            type: object
+            properties:
+              source:
+                type: string
+              visits:
+                type: integer
+    HistoryEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        action:
+          type: string
+        description:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        user:
+          type: string
+        changes:
+          type: object
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        pages:
+          type: integer
+        hasNext:
+          type: boolean
+        hasPrev:
+          type: boolean
+    FilterOptions:
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            type: string
+        status:
+          type: array
+          items:
+            type: string
+        platforms:
+          type: array
+          items:
+            type: string
+        dateRange:
+          type: object
+          properties:
+            start:
+              type: string
+              format: date-time
+            end:
+              type: string
+              format: date-time
+    BulkOperationRequest:
+      type: object
+      required:
+        - operation
+        - websiteIds
+      properties:
+        operation:
+          type: string
+          enum: [update, delete, archive, restore, updateTags, updatePriority]
+        websiteIds:
+          type: array
+          items:
+            type: string
+        data:
+          type: object
+          description: Operation-specific data
+    BulkOperationResponse:
+      type: object
+      properties:
+        success:
+          type: integer
+        failed:
+          type: integer
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              websiteId:
+                type: string
+              error:
+                type: string

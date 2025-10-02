@@ -1,37 +1,42 @@
 openapi: 3.0.0
 info:
-  title: Website Iteration Dashboard API
-  description: API for managing website data and assets
+  title: Website API
+  description: API for managing websites and their assets
   version: 1.0.0
 servers:
-  - url: /api
-    description: Local development server
-
+  - url: http://localhost:3000/api
+    description: Development server
 paths:
   /websites:
     get:
       summary: Get all websites
-      description: Retrieve list of all websites with their metadata
       responses:
         '200':
-          description: Successful response
+          description: List of websites
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Website'
-        '500':
-          description: Internal server error
+    post:
+      summary: Create a new website
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Website'
+      responses:
+        '201':
+          description: Website created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-
+                $ref: '#/components/schemas/Website'
   /websites/{id}:
     get:
       summary: Get website by ID
-      description: Retrieve specific website with all assets
       parameters:
         - name: id
           in: path
@@ -40,28 +45,34 @@ paths:
             type: string
       responses:
         '200':
-          description: Successful response
+          description: Website details
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Website'
         '404':
           description: Website not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /websites/{id}/screenshot:
-    get:
-      summary: Get website screenshot
-      description: Retrieve screenshot image for specific website
+    put:
+      summary: Update website
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Website'
+      responses:
+        '200':
+          description: Website updated
+        '404':
+          description: Website not found
+    delete:
+      summary: Delete website
       parameters:
         - name: id
           in: path
@@ -69,70 +80,10 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: Screenshot image
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
+        '204':
+          description: Website deleted
         '404':
-          description: Screenshot not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /websites/{id}/logo:
-    get:
-      summary: Get website logo
-      description: Retrieve logo image for specific website
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Logo image
-          content:
-            image/svg+xml:
-              schema:
-                type: string
-                format: binary
-        '404':
-          description: Logo not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /websites/{id}/favicon:
-    get:
-      summary: Get website favicon
-      description: Retrieve favicon image for specific website
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Favicon image
-          content:
-            image/x-icon:
-              schema:
-                type: string
-                format: binary
-        '404':
-          description: Favicon not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
+          description: Website not found
 components:
   schemas:
     Website:
@@ -141,122 +92,98 @@ components:
         - id
         - name
         - url
-        - description
-        - screenshot
-        - logo
-        - favicon
-        - requiresAuth
-        - lastUpdated
       properties:
         id:
           type: string
           description: Unique identifier
         name:
           type: string
-          description: Display name
+          description: Website name
         url:
           type: string
           format: uri
           description: Website URL
         description:
           type: string
-          minLength: 50
-          maxLength: 200
-          description: 2-3 sentence summary
+          description: Website description
         screenshot:
           type: string
-          description: Path to screenshot image
+          description: Screenshot URL
         logo:
           type: string
-          description: Path to logo image
+          description: Logo URL
         favicon:
           type: string
-          description: Path to favicon image
+          description: Favicon URL
         requiresAuth:
           type: boolean
           description: Whether authentication is required
-        authCredentials:
-          $ref: '#/components/schemas/AuthenticationCredentials'
         lastUpdated:
           type: string
           format: date-time
-          description: Timestamp of last update
-
-    AuthenticationCredentials:
+        state:
+          type: string
+          enum: [draft, in-progress, completed, archived]
+        techStack:
+          $ref: '#/components/schemas/TechStack'
+        deploymentInfo:
+          $ref: '#/components/schemas/DeploymentInfo'
+        features:
+          type: array
+          items:
+            type: string
+        demoVideo:
+          type: string
+          format: uri
+    TechStack:
       type: object
       properties:
-        method:
-          type: string
-          enum: [email, oauth, sso]
-          description: Authentication method
-        username:
-          type: string
-          description: Username or email
-        password:
-          type: string
-          description: Password (optional)
-        oauthProvider:
-          type: string
-          description: OAuth provider name
-        additionalFields:
-          type: object
-          description: Custom fields for complex auth
-
-    AssetMetadata:
-      type: object
-      required:
-        - websiteId
-        - assetType
-        - filePath
-        - fileSize
-        - dimensions
-        - format
-        - generatedAt
-      properties:
-        websiteId:
-          type: string
-          description: Reference to Website entity
-        assetType:
-          type: string
-          enum: [screenshot, logo, favicon]
-          description: Type of asset
-        filePath:
-          type: string
-          description: Local file path
-        fileSize:
-          type: integer
-          description: File size in bytes
-        dimensions:
-          type: object
-          properties:
-            width:
-              type: integer
-            height:
-              type: integer
-        format:
-          type: string
-          enum: [png, jpg, webp, svg, ico]
-          description: Image format
-        generatedAt:
+        frontend:
+          type: array
+          items:
+            type: string
+        backend:
+          type: array
+          items:
+            type: string
+        database:
+          type: array
+          items:
+            type: string
+        deployment:
+          type: array
+          items:
+            type: string
+        aiTools:
+          type: array
+          items:
+            type: string
+        other:
+          type: array
+          items:
+            type: string
+        source:
           type: string
           format: date-time
-          description: Timestamp of generation
-        optimized:
-          type: boolean
-          description: Whether asset is optimized
-
-    Error:
+    DeploymentInfo:
       type: object
-      required:
-        - message
-        - code
       properties:
-        message:
+        platform:
           type: string
-          description: Error message
-        code:
+        url:
           type: string
-          description: Error code
-        details:
-          type: object
-          description: Additional error details
+          format: uri
+        status:
+          type: string
+          enum: [live, staging, development, offline]
+        lastDeployed:
+          type: string
+          format: date-time
+        githubRepo:
+          type: string
+          format: uri
+        supabaseProject:
+          type: string
+        supabaseUrl:
+          type: string
+          format: uri

@@ -1,68 +1,189 @@
-openapi: 3.0.3
+openapi: 3.0.0
 info:
   title: Website Dashboard API
-  version: 0.1.0
+  description: API for the website dashboard application
+  version: 2.0.0
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
 paths:
-  /api/websites:
+  /websites:
     get:
-      summary: List websites
+      summary: Get all websites
       responses:
         '200':
-          description: OK
+          description: List of websites
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Website'
-  /api/websites/{id}:
+    post:
+      summary: Create a new website
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Website'
+      responses:
+        '201':
+          description: Website created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Website'
+  /websites/{id}:
     get:
-      summary: Get a website by id
+      summary: Get website by ID
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: OK
+          description: Website details
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Website'
         '404':
-          description: Not Found
+          description: Website not found
+    put:
+      summary: Update website
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Website'
+      responses:
+        '200':
+          description: Website updated
+        '404':
+          description: Website not found
+    delete:
+      summary: Delete website
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Website deleted
+        '404':
+          description: Website not found
 components:
   schemas:
     Website:
       type: object
-      required: [id, name, url]
+      required:
+        - id
+        - name
+        - url
       properties:
         id:
           type: string
+          description: Unique identifier
         name:
+          type: string
+          description: Website name
+        url:
+          type: string
+          format: uri
+          description: Website URL
+        description:
+          type: string
+          description: Website description
+        screenshot:
+          type: string
+          description: Screenshot URL
+        logo:
+          type: string
+          description: Logo URL
+        favicon:
+          type: string
+          description: Favicon URL
+        requiresAuth:
+          type: boolean
+          description: Whether authentication is required
+        lastUpdated:
+          type: string
+          format: date-time
+        state:
+          type: string
+          enum: [draft, in-progress, completed, archived]
+        techStack:
+          $ref: '#/components/schemas/TechStack'
+        deploymentInfo:
+          $ref: '#/components/schemas/DeploymentInfo'
+        features:
+          type: array
+          items:
+            type: string
+        demoVideo:
+          type: string
+          format: uri
+    TechStack:
+      type: object
+      properties:
+        frontend:
+          type: array
+          items:
+            type: string
+        backend:
+          type: array
+          items:
+            type: string
+        database:
+          type: array
+          items:
+            type: string
+        deployment:
+          type: array
+          items:
+            type: string
+        aiTools:
+          type: array
+          items:
+            type: string
+        other:
+          type: array
+          items:
+            type: string
+        source:
+          type: string
+          format: date-time
+    DeploymentInfo:
+      type: object
+      properties:
+        platform:
           type: string
         url:
           type: string
           format: uri
-        description:
-          type: string
-        logoUrl:
-          type: string
-          nullable: true
-        faviconUrl:
-          type: string
-          nullable: true
-        screenshotUrl:
-          type: string
-          nullable: true
-        tags:
-          type: array
-          items:
-            type: string
         status:
           type: string
-          enum: [ok, unavailable, missing-assets]
-
-
+          enum: [live, staging, development, offline]
+        lastDeployed:
+          type: string
+          format: date-time
+        githubRepo:
+          type: string
+          format: uri
+        supabaseProject:
+          type: string
+        supabaseUrl:
+          type: string
+          format: uri

@@ -1,242 +1,213 @@
+# UI/UX Enhancement Plan
 
-# Implementation Plan: Update UI/UX and Add Tech Stack Tab
+## Project Overview
+Enhancing the website dashboard with advanced UI/UX features, improved accessibility, and modern design patterns.
 
-**Branch**: `003-update-ui-ux` | **Date**: 2025-01-27 | **Spec**: `/specs/003-update-ui-ux/spec.md`
-**Input**: Feature specification from `/specs/003-update-ui-ux/spec.md`
+## Phase 1: Design System Foundation (Week 1-2)
 
-## Execution Flow (/plan command scope)
-```
-1. Load feature spec from Input path
-   → If not found: ERROR "No feature spec at {path}"
-2. Fill Technical Context (scan for NEEDS CLARIFICATION)
-   → Detect Project Type from file system structure or context (web=frontend+backend, mobile=app+api)
-   → Set Structure Decision based on project type
-3. Fill the Constitution Check section based on the content of the constitution document.
-   → Check compliance with Modern Web Dashboard Architecture principles
-   → Verify shadcn/ui component usage and accessibility standards
-   → Ensure Playwright asset generation aligns with build-time requirements
-4. Evaluate Constitution Check section below
-   → If violations exist: Document in Complexity Tracking
-   → If no justification possible: ERROR "Simplify approach first"
-   → Update Progress Tracking: Initial Constitution Check
-5. Execute Phase 0 → research.md
-   → If NEEDS CLARIFICATION remain: ERROR "Resolve unknowns"
-6. Execute Phase 1 → contracts, data-model.md, quickstart.md, agent-specific template file (e.g., `CLAUDE.md` for Claude Code, `.github/copilot-instructions.md` for GitHub Copilot, `GEMINI.md` for Gemini CLI, `QWEN.md` for Qwen Code or `AGENTS.md` for opencode).
-7. Re-evaluate Constitution Check section
-   → If new violations: Refactor design, return to Phase 1
-   → Update Progress Tracking: Post-Design Constitution Check
-8. Plan Phase 2 → Describe task generation approach (DO NOT create tasks.md)
-9. STOP - Ready for /tasks command
-```
+### 1.1 Design System Setup
+- [ ] Create comprehensive design system
+- [ ] Define color palettes and typography
+- [ ] Set up component library
+- [ ] Create design tokens
+- [ ] Establish spacing and layout rules
 
-**IMPORTANT**: The /plan command STOPS at step 7. Phases 2-4 are executed by other commands:
-- Phase 2: /tasks command creates tasks.md
-- Phase 3-4: Implementation execution (manual or via tools)
+### 1.2 Theme System
+- [ ] Implement light/dark theme support
+- [ ] Create theme switching functionality
+- [ ] Add custom theme creation
+- [ ] Set up theme persistence
+- [ ] Add theme preview functionality
 
-## Summary
-Add a dedicated "Tech Stack" navigation tab to the website dashboard that displays technical information for each website (frontend frameworks, backend technologies, database systems, deployment platforms, AI/ML tools) in organized cards. This preserves the clean main dashboard while providing detailed technical insights in a separate, accessible interface.
+### 1.3 Typography System
+- [ ] Define font families and weights
+- [ ] Create typography scale
+- [ ] Implement responsive typography
+- [ ] Add font loading optimization
+- [ ] Create typography utilities
 
-## Technical Context
-**Language/Version**: TypeScript 5.x, Next.js 15, React 19  
-**Primary Dependencies**: shadcn/ui, Tailwind CSS, Playwright, next-themes  
-**Storage**: JSON files (websites.json, assets.json)  
-**Target Platform**: Web browsers, Vercel deployment  
-**Project Type**: Web application (frontend + backend)  
-**Performance Goals**: LCP < 2.5s, FID < 100ms, Lighthouse 90+  
-**Constraints**: WCAG 2.1 AA, mobile-first, <2s load time  
-**Scale/Scope**: 8 websites, 100+ assets, static data
+## Phase 2: Component Enhancement (Week 3-4)
 
-## Constitution Check
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+### 2.1 Core Components
+- [ ] Enhance existing components
+- [ ] Add new component variants
+- [ ] Implement component states
+- [ ] Add component animations
+- [ ] Create component documentation
 
-### I. Modern Web Dashboard Architecture ✅
-- Uses Next.js 15 with App Router and React 19 ✅
-- Maintains static generation with serverless API routes ✅
-- Client-side interactivity for navigation and theme management ✅
+### 2.2 Advanced Components
+- [ ] Create data table component
+- [ ] Add advanced form components
+- [ ] Implement modal and dialog system
+- [ ] Create navigation components
+- [ ] Add layout components
 
-### II. Component Library Standards ✅
-- Uses shadcn/ui as foundation with Tailwind CSS ✅
-- Maintains WCAG 2.1 AA accessibility ✅
-- Supports light and dark themes ✅
-- Extends shadcn/ui patterns, doesn't replace them ✅
+### 2.3 Interactive Components
+- [ ] Add drag and drop functionality
+- [ ] Implement sortable lists
+- [ ] Create resizable panels
+- [ ] Add collapsible sections
+- [ ] Implement tooltips and popovers
 
-### III. Asset Generation & Management ✅
-- Uses Playwright for automated asset generation ✅
-- Maintains build-time asset optimization ✅
-- No runtime asset generation ✅
+## Phase 3: Layout and Navigation (Week 5-6)
 
-### IV. Performance-First ✅
-- Page load < 2 seconds on 3G networks ✅
-- LCP < 2.5s, FID < 100ms, CLS < 0.1 ✅
-- Asset optimization and compression ✅
+### 3.1 Layout System
+- [ ] Implement responsive grid system
+- [ ] Create flexible layout components
+- [ ] Add container and wrapper components
+- [ ] Implement sidebar navigation
+- [ ] Create header and footer components
 
-### V. Mobile-First Design ✅
-- Responsive design with 44px touch targets ✅
-- Works across all device sizes ✅
+### 3.2 Navigation Enhancement
+- [ ] Improve main navigation
+- [ ] Add breadcrumb navigation
+- [ ] Implement tab navigation
+- [ ] Create mobile navigation
+- [ ] Add keyboard navigation support
 
-### VI. Accessibility Standards ✅
-- WCAG 2.1 AA compliance ✅
-- Semantic HTML and keyboard navigation ✅
-- Screen reader compatibility ✅
+### 3.3 Responsive Design
+- [ ] Optimize for mobile devices
+- [ ] Implement tablet layout
+- [ ] Add desktop enhancements
+- [ ] Create responsive images
+- [ ] Implement responsive typography
 
-### VII. Authentication & Security ✅
-- Secure credential storage ✅
-- API input validation and CORS policies ✅
-- Security headers and error handling ✅
+## Phase 4: Accessibility and UX (Week 7-8)
 
-**Result**: All constitutional principles satisfied. No violations detected.
+### 4.1 Accessibility Enhancement
+- [ ] Implement ARIA attributes
+- [ ] Add keyboard navigation
+- [ ] Create screen reader support
+- [ ] Implement focus management
+- [ ] Add accessibility testing
 
-## Project Structure
+### 4.2 User Experience
+- [ ] Add loading states and skeletons
+- [ ] Implement error boundaries
+- [ ] Create success/error notifications
+- [ ] Add progress indicators
+- [ ] Implement user feedback systems
 
-### Documentation (this feature)
-```
-specs/[###-feature]/
-├── plan.md              # This file (/plan command output)
-├── research.md          # Phase 0 output (/plan command)
-├── data-model.md        # Phase 1 output (/plan command)
-├── quickstart.md        # Phase 1 output (/plan command)
-├── contracts/           # Phase 1 output (/plan command)
-└── tasks.md             # Phase 2 output (/tasks command - NOT created by /plan)
-```
+### 4.3 Performance Optimization
+- [ ] Optimize component rendering
+- [ ] Implement lazy loading
+- [ ] Add memoization
+- [ ] Optimize bundle size
+- [ ] Implement code splitting
 
-### Source Code (repository root)
-```
-frontend/
-├── src/
-│   ├── app/
-│   │   ├── tech-stack/
-│   │   │   └── page.tsx
-│   │   ├── layout.tsx
-│   │   └── page.tsx
-│   ├── components/
-│   │   ├── Navigation.tsx
-│   │   ├── TechStackTab.tsx
-│   │   ├── TechStackCard.tsx
-│   │   └── ui/
-│   │       ├── card.tsx
-│   │       ├── badge.tsx
-│   │       └── tabs.tsx
-│   ├── models/
-│   │   ├── TechStack.ts
-│   │   └── NavigationTab.ts
-│   ├── services/
-│   │   └── TechStackService.ts
-│   └── lib/
-│       └── utils.ts
-├── data/
-│   ├── websites.json
-│   ├── assets.json
-│   └── tech-stack.json
-└── public/
-    └── assets/
-        ├── screenshots/
-        ├── logos/
-        └── favicons/
-```
+## Phase 5: Advanced Features (Week 9-10)
 
-**Structure Decision**: Web application with frontend directory containing Next.js App Router structure, shadcn/ui components, TypeScript models, and JSON data storage. The tech stack feature adds new components and data models while maintaining existing architecture.
+### 5.1 Animation System
+- [ ] Implement page transitions
+- [ ] Add component animations
+- [ ] Create micro-interactions
+- [ ] Implement gesture support
+- [ ] Add animation controls
 
-## Phase 0: Outline & Research
-1. **Extract unknowns from Technical Context** above:
-   - All technical context is clear - no NEEDS CLARIFICATION markers
-   - Dependencies are well-established (shadcn/ui, Tailwind CSS, Playwright)
-   - Integration patterns follow existing Next.js App Router structure
+### 5.2 Advanced Interactions
+- [ ] Add search and filtering
+- [ ] Implement sorting functionality
+- [ ] Create pagination system
+- [ ] Add infinite scrolling
+- [ ] Implement virtual scrolling
 
-2. **Research tasks completed**:
-   - ✅ Component baseline: shadcn/ui with Tailwind CSS
-   - ✅ UI patterns: Card-based layout for tech stack information
-   - ✅ Navigation: Tab-based navigation with active states
-   - ✅ Data structure: JSON-based static data with TypeScript models
-   - ✅ Performance: <2s load time, Lighthouse 90+ scores
-   - ✅ Accessibility: WCAG 2.1 AA compliance with semantic HTML
+### 5.3 Customization
+- [ ] Add user preferences
+- [ ] Implement layout customization
+- [ ] Create component customization
+- [ ] Add theme customization
+- [ ] Implement settings panel
 
-3. **Consolidate findings** in `research.md`:
-   - Decision: Use shadcn/ui Card components for tech stack display
-   - Rationale: Maintains consistency with existing dashboard design
-   - Alternatives considered: Custom components (rejected for consistency)
+## Technical Requirements
 
-**Output**: research.md with all technical decisions documented
+### Frontend
+- Next.js 15+ with App Router
+- React 19+
+- TypeScript
+- Tailwind CSS
+- shadcn/ui components
+- Framer Motion for animations
+- React Hook Form for forms
+- React Query for data fetching
 
-## Phase 1: Design & Contracts
-*Prerequisites: research.md complete*
+### Design System
+- Design tokens
+- Component library
+- Style guide
+- Accessibility guidelines
+- Animation guidelines
 
-1. **Extract entities from feature spec** → `data-model.md`:
-   - TechStackInfo: frontend, backend, database, deployment, aiTools, other, version, source
-   - NavigationTab: Dashboard, Tech Stack, About with active state
-   - WebsiteTechDetails: relationship between websites and tech stack data
+### Testing
+- Visual regression testing
+- Accessibility testing
+- Performance testing
+- Cross-browser testing
+- Mobile testing
 
-2. **Generate API contracts** from functional requirements:
-   - GET /api/websites - return websites with tech stack data
-   - GET /api/tech-stack - return tech stack summary
-   - GET /api/tech-stack/categories - return tech categories
-   - Output OpenAPI schema to `/contracts/tech-stack-api.yaml`
+## Success Metrics
 
-3. **Generate API documentation** from contracts:
-   - Document request/response schemas for all endpoints
-   - Include usage examples and error handling
-   - Create quickstart.md with setup and demonstration steps
+### Design Quality
+- Consistent visual design
+- Accessible interface
+- Responsive design
+- Modern aesthetics
+- Brand consistency
 
-4. **Update agent file incrementally** (O(1) operation):
-   - Run `.specify/scripts/bash/update-agent-context.sh cursor`
-   - Add new tech stack components and navigation patterns
-   - Preserve existing dashboard functionality
-   - Update recent changes (keep last 3)
-   - Keep under 150 lines for token efficiency
+### User Experience
+- Intuitive navigation
+- Fast interactions
+- Clear visual hierarchy
+- Accessible design
+- Mobile-first approach
 
-**Output**: data-model.md, /contracts/tech-stack-api.yaml, quickstart.md, agent-specific file
+### Performance
+- Fast page loads
+- Smooth animations
+- Optimized images
+- Efficient rendering
+- Minimal bundle size
 
-## Phase 2: Task Planning Approach
-*This section describes what the /tasks command will do - DO NOT execute during /plan*
+## Risk Mitigation
 
-**Task Generation Strategy**:
-- Load `.specify/templates/tasks-template.md` as base
-- Generate tasks from Phase 1 design docs (contracts, data model, quickstart)
-- Each contract → API implementation task [P]
-- Each entity → model creation task [P] 
-- Each user story → feature implementation task
-- Implementation tasks to fulfill requirements
+### Design Risks
+- **Inconsistent Design**: Comprehensive design system
+- **Accessibility Issues**: Regular accessibility audits
+- **Performance Impact**: Performance monitoring
+- **Browser Compatibility**: Cross-browser testing
 
-**Ordering Strategy**:
-- Implementation order: Models before services before UI
-- Dependency order: Core components before dependent features
-- Mark [P] for parallel execution (independent files)
+### Technical Risks
+- **Bundle Size**: Regular bundle analysis
+- **Animation Performance**: Performance testing
+- **Responsive Issues**: Device testing
+- **Accessibility**: Automated testing
 
-**Estimated Output**: 25-30 numbered, ordered tasks in tasks.md
+## Next Steps
 
-**IMPORTANT**: This phase is executed by the /tasks command, NOT by /plan
+1. **Complete Phase 1**: Finish design system foundation
+2. **Begin Phase 2**: Start component enhancement
+3. **Regular Reviews**: Weekly design reviews
+4. **User Testing**: Gather user feedback
+5. **Documentation**: Keep design system updated
 
-## Phase 3+: Future Implementation
-*These phases are beyond the scope of the /plan command*
+## Resources
 
-**Phase 3**: Task execution (/tasks command creates tasks.md)  
-**Phase 4**: Implementation (execute tasks.md following constitutional principles)  
-**Phase 5**: Validation (execute quickstart.md, performance validation)
+### Design Tools
+- Figma for design system
+- Tailwind CSS documentation
+- shadcn/ui components
+- Lucide React icons
+- Framer Motion documentation
 
-## Complexity Tracking
-*Fill ONLY if Constitution Check has violations that must be justified*
+### Testing Tools
+- Storybook for component development
+- Chromatic for visual testing
+- axe-core for accessibility testing
+- Lighthouse for performance testing
+- Playwright for E2E testing
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
-
-
-## Progress Tracking
-*This checklist is updated during execution flow*
-
-**Phase Status**:
-- [x] Phase 0: Research complete (/plan command)
-- [x] Phase 1: Design complete (/plan command)
-- [x] Phase 2: Task planning complete (/plan command - describe approach only)
-- [ ] Phase 3: Tasks generated (/tasks command)
-- [ ] Phase 4: Implementation complete
-- [ ] Phase 5: Validation passed
-
-**Gate Status**:
-- [x] Initial Constitution Check: PASS
-- [x] Post-Design Constitution Check: PASS
-- [x] All NEEDS CLARIFICATION resolved
-- [x] Complexity deviations documented
-
----
-*Based on Constitution v4.0.0 - See `/memory/constitution.md`*
+### Development
+- VS Code with extensions
+- Chrome DevTools
+- React DevTools
+- Tailwind CSS IntelliSense
+- TypeScript support

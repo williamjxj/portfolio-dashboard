@@ -27,6 +27,31 @@ export interface Website {
   deploymentInfo?: DeploymentInfo;
   features?: string[];
   demoVideo?: string;
+  
+  // Enhanced fields for visual improvements
+  assets: {
+    logo?: string;
+    favicon?: string;
+    screenshots: string[];
+    videos?: string[];
+    thumbnails?: string[];
+  };
+  
+  // Visual metadata
+  visualMetadata: {
+    primaryColor?: string;
+    secondaryColor?: string;
+    theme?: 'light' | 'dark' | 'auto';
+    layout?: 'grid' | 'list';
+  };
+  
+  // Performance metadata
+  performance: {
+    loadTime?: number;
+    imageCount: number;
+    videoCount: number;
+    lastOptimized: string;
+  };
 }
 
 export interface TechStack {

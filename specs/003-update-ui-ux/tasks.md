@@ -1,320 +1,224 @@
-# Tasks: Update UI/UX and Add Tech Stack Tab
+# UI/UX Enhancement Tasks
 
-**Input**: Design documents from `/specs/003-update-ui-ux/`
-**Prerequisites**: plan.md (required), research.md, data-model.md, contracts/
+## Phase 1: Design System Foundation
 
-## Execution Flow (main)
-```
-1. Load plan.md from feature directory
-   → If not found: ERROR "No implementation plan found"
-   → Extract: tech stack, libraries, structure
-2. Load optional design documents:
-   → data-model.md: Extract entities → model tasks
-   → contracts/: Each file → API implementation task
-   → research.md: Extract decisions → setup tasks
-3. Generate tasks by category:
-   → Setup: project init, dependencies, linting
-   → Core: models, services, CLI commands
-   → Integration: DB, middleware, logging
-   → Polish: performance, docs
-4. Apply task rules:
-   → Different files = mark [P] for parallel
-   → Same file = sequential (no [P])
-   → Core components before dependent features
-5. Number tasks sequentially (T001, T002...)
-6. Generate dependency graph
-7. Create parallel execution examples
-8. Validate task completeness:
-   → All contracts have implementations?
-   → All entities have models?
-   → All endpoints implemented?
-9. Return: SUCCESS (tasks ready for execution)
-```
+### 1.1 Design System Setup
+- [ ] Create comprehensive design system
+- [ ] Define color palettes and typography
+- [ ] Set up component library
+- [ ] Create design tokens
+- [ ] Establish spacing and layout rules
+- [ ] Create design system documentation
+- [ ] Set up Storybook for component library
 
-## Format: `[ID] [P?] Description`
-- **[P]**: Can run in parallel (different files, no dependencies)
-- Include exact file paths in descriptions
+### 1.2 Theme System
+- [ ] Implement light/dark theme support
+- [ ] Create theme switching functionality
+- [ ] Add custom theme creation
+- [ ] Set up theme persistence
+- [ ] Add theme preview functionality
+- [ ] Create theme configuration interface
+- [ ] Add system preference detection
 
-## Path Conventions
-- **Web app**: `frontend/src/` (Next.js 15 with App Router)
-- **Data**: `frontend/data/` (JSON files)
-- **Public assets**: `frontend/public/assets/`
-- All paths shown below are absolute paths from repository root
+### 1.3 Typography System
+- [ ] Define font families and weights
+- [ ] Create typography scale
+- [ ] Implement responsive typography
+- [ ] Add font loading optimization
+- [ ] Create typography utilities
+- [ ] Add font fallback support
+- [ ] Implement text truncation
 
-## Phase 3.1: Setup & Dependencies
-- [x] T001 [P] Verify shadcn/ui setup and add required components
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend`
-  - Actions: Ensure shadcn/ui is properly configured; add tabs, navigation, and additional components as needed
-  - Depends on: None
+## Phase 2: Component Enhancement
 
-- [x] T002 [P] Update package.json with new dependencies
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/package.json`
-  - Actions: Add any missing dependencies for navigation and enhanced UI components
-  - Depends on: T001
+### 2.1 Core Components
+- [ ] Enhance existing components
+- [ ] Add new component variants
+- [ ] Implement component states
+- [ ] Add component animations
+- [ ] Create component documentation
+- [ ] Add component testing
+- [ ] Implement component accessibility
 
-- [x] T003 [P] Verify existing data structure and prepare for tech stack extension
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/data/websites.json`
-  - Actions: Review current data structure and prepare for techStack field addition
-  - Depends on: None
+### 2.2 Advanced Components
+- [ ] Create data table component
+- [ ] Add advanced form components
+- [ ] Implement modal and dialog system
+- [ ] Create navigation components
+- [ ] Add layout components
+- [ ] Create chart components
+- [ ] Add calendar components
 
-## Phase 3.2: Data Models & Types
-- [x] T004 [P] Create TechStackInfo model
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/models/TechStack.ts`
-  - Actions: Create TypeScript interface for TechStackInfo with frontend, backend, database, deployment, aiTools, other, version, source fields
-  - Depends on: T003
+### 2.3 Interactive Components
+- [ ] Add drag and drop functionality
+- [ ] Implement sortable lists
+- [ ] Create resizable panels
+- [ ] Add collapsible sections
+- [ ] Implement tooltips and popovers
+- [ ] Add context menus
+- [ ] Create progress indicators
 
-- [x] T005 [P] Update Website model to include techStack field
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/models/Website.ts`
-  - Actions: Add techStack field of type TechStackInfo to existing Website interface
-  - Depends on: T004
+## Phase 3: Layout and Navigation
 
-- [x] T006 [P] Create NavigationTab model
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/models/NavigationTab.ts`
-  - Actions: Create TypeScript interface for NavigationTab with id, label, href, isActive, icon fields
-  - Depends on: None
+### 3.1 Layout System
+- [ ] Implement responsive grid system
+- [ ] Create flexible layout components
+- [ ] Add container and wrapper components
+- [ ] Implement sidebar navigation
+- [ ] Create header and footer components
+- [ ] Add breadcrumb navigation
+- [ ] Implement tab navigation
 
-## Phase 3.3: API Implementation
-- [x] T007 [P] Implement /api/websites endpoint with tech stack data
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/app/api/websites/route.ts`
-  - Actions: Update existing endpoint to include techStack field in response, ensure backward compatibility
-  - Depends on: T005
+### 3.2 Navigation Enhancement
+- [ ] Improve main navigation
+- [ ] Add breadcrumb navigation
+- [ ] Implement tab navigation
+- [ ] Create mobile navigation
+- [ ] Add keyboard navigation support
+- [ ] Implement navigation state management
+- [ ] Add navigation accessibility
 
-- [x] T008 [P] Implement /api/websites/[id] endpoint with tech stack data
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/app/api/websites/[id]/route.ts`
-  - Actions: Update existing endpoint to include techStack field in response, handle missing tech stack gracefully
-  - Depends on: T005
+### 3.3 Responsive Design
+- [ ] Optimize for mobile devices
+- [ ] Implement tablet layout
+- [ ] Add desktop enhancements
+- [ ] Create responsive images
+- [ ] Implement responsive typography
+- [ ] Add responsive spacing
+- [ ] Create responsive components
 
-- [x] T009 [P] Create /api/tech-stack endpoint
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/app/api/tech-stack/route.ts`
-  - Actions: Create new endpoint that returns aggregated tech stack summary across all websites
-  - Depends on: T005
+## Phase 4: Accessibility and UX
 
-- [x] T010 [P] Create /api/tech-stack/categories endpoint
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/app/api/tech-stack/categories/route.ts`
-  - Actions: Create new endpoint that returns available technology categories
-  - Depends on: T005
+### 4.1 Accessibility Enhancement
+- [ ] Implement ARIA attributes
+- [ ] Add keyboard navigation
+- [ ] Create screen reader support
+- [ ] Implement focus management
+- [ ] Add accessibility testing
+- [ ] Create accessibility documentation
+- [ ] Add color contrast testing
 
-## Phase 3.4: Data Migration & Enhancement
-- [x] T011 [P] Enhance websites.json with tech stack data
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/data/websites.json`
-  - Actions: Add techStack field to all existing website records with appropriate technical information
-  - Depends on: T004
+### 4.2 User Experience
+- [ ] Add loading states and skeletons
+- [ ] Implement error boundaries
+- [ ] Create success/error notifications
+- [ ] Add progress indicators
+- [ ] Implement user feedback systems
+- [ ] Add confirmation dialogs
+- [ ] Create help and tooltip systems
 
-- [x] T012 [P] Create data validation utilities for tech stack
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/lib/validation.ts`
-  - Actions: Add validation functions for TechStackInfo fields with proper constraints
-  - Depends on: T004
+### 4.3 Performance Optimization
+- [ ] Optimize component rendering
+- [ ] Implement lazy loading
+- [ ] Add memoization
+- [ ] Optimize bundle size
+- [ ] Implement code splitting
+- [ ] Add performance monitoring
+- [ ] Optimize images and assets
 
-## Phase 3.5: Navigation Component
-- [x] T013 [P] Create Navigation component with three-tab structure
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/components/Navigation.tsx`
-  - Actions: Create navigation component using shadcn/ui Tabs with Dashboard, Tech Stack, About tabs, active state management
-  - Depends on: T001, T006
+## Phase 5: Advanced Features
 
-- [x] T014 [P] Implement active state management for navigation
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/components/Navigation.tsx`
-  - Actions: Add logic to track and display active tab state, handle navigation transitions
-  - Depends on: T013
+### 5.1 Animation System
+- [ ] Implement page transitions
+- [ ] Add component animations
+- [ ] Create micro-interactions
+- [ ] Implement gesture support
+- [ ] Add animation controls
+- [ ] Create animation presets
+- [ ] Add reduced motion support
 
-- [x] T015 [P] Add mobile responsiveness to navigation
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/components/Navigation.tsx`
-  - Actions: Ensure navigation works properly on mobile devices with appropriate touch targets
-  - Depends on: T013
+### 5.2 Advanced Interactions
+- [ ] Add search and filtering
+- [ ] Implement sorting functionality
+- [ ] Create pagination system
+- [ ] Add infinite scrolling
+- [ ] Implement virtual scrolling
+- [ ] Add bulk operations
+- [ ] Create advanced form features
 
-## Phase 3.6: Tech Stack Page
-- [x] T016 [P] Create tech-stack page route
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/app/tech-stack/page.tsx`
-  - Actions: Create new page component for tech stack display with proper layout and data fetching
-  - Depends on: T009, T010
+### 5.3 Customization
+- [ ] Add user preferences
+- [ ] Implement layout customization
+- [ ] Create component customization
+- [ ] Add theme customization
+- [ ] Implement settings panel
+- [ ] Add workspace customization
+- [ ] Create user profiles
 
-- [x] T017 [P] Create TechStackTab component
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/components/TechStackTab.tsx`
-  - Actions: Create component to display organized technical information for each website
-  - Depends on: T004, T005
+## Phase 6: Testing and Quality
 
-- [x] T018 [P] Implement tech stack data organization and display
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/components/TechStackTab.tsx`
-  - Actions: Add logic to organize and display tech stack data by categories (frontend, backend, database, etc.)
-  - Depends on: T017
+### 6.1 Visual Testing
+- [ ] Set up visual regression testing
+- [ ] Add cross-browser testing
+- [ ] Implement responsive testing
+- [ ] Create accessibility testing
+- [ ] Add performance testing
+- [ ] Implement automated testing
+- [ ] Create testing documentation
 
-- [x] T019 [P] Add expandable sections for detailed tech information
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/components/TechStackTab.tsx`
-  - Actions: Implement expandable sections for detailed technical information display
-  - Depends on: T018
+### 6.2 Component Testing
+- [ ] Add unit tests for components
+- [ ] Implement integration tests
+- [ ] Create E2E tests
+- [ ] Add accessibility tests
+- [ ] Implement performance tests
+- [ ] Add visual tests
+- [ ] Create test documentation
 
-## Phase 3.7: UI/UX Enhancements
-- [x] T020 [P] Enhance WebsiteCard component with improved styling
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/components/WebsiteCard.tsx`
-  - Actions: Improve card design with better spacing, typography, hover effects, and visual hierarchy
-  - Depends on: T001
+### 6.3 Design System Testing
+- [ ] Test component library
+- [ ] Validate design tokens
+- [ ] Test theme switching
+- [ ] Validate responsive design
+- [ ] Test accessibility compliance
+- [ ] Add automated testing
+- [ ] Create testing guidelines
 
-- [x] T021 [P] Enhance WebsiteGrid component with responsive improvements
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/components/WebsiteGrid.tsx`
-  - Actions: Improve grid layout with better responsive design and spacing
-  - Depends on: T020
+## Phase 7: Documentation and Training
 
-- [x] T022 [P] Update main layout with navigation integration
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/app/layout.tsx`
-  - Actions: Integrate Navigation component into main layout, ensure proper structure
-  - Depends on: T013
+### 7.1 Documentation
+- [ ] Create design system documentation
+- [ ] Add component documentation
+- [ ] Create usage guidelines
+- [ ] Add accessibility guidelines
+- [ ] Create best practices guide
+- [ ] Add troubleshooting guide
+- [ ] Create video tutorials
 
-- [x] T023 [P] Enhance theme toggle and dark mode support
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/components/ThemeToggle.tsx`
-  - Actions: Improve theme toggle functionality and ensure proper dark mode support across all components
-  - Depends on: T001
+### 7.2 Training
+- [ ] Create team training materials
+- [ ] Add onboarding documentation
+- [ ] Create development guidelines
+- [ ] Add design guidelines
+- [ ] Create contribution guidelines
+- [ ] Add review guidelines
+- [ ] Create maintenance guidelines
 
-## Phase 3.8: Integration & Testing
-- [x] T024 [P] Update data loading logic to handle tech stack data
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/lib/data-loader.ts`
-  - Actions: Update data loading functions to handle tech stack information
-  - Depends on: T005, T011
+## Phase 8: Maintenance and Updates
 
-- [x] T025 [P] Add error handling for missing tech stack data
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/components/TechStackTab.tsx`
-  - Actions: Implement graceful handling of missing or incomplete tech stack data
-  - Depends on: T018
+### 8.1 Regular Maintenance
+- [ ] Update dependencies
+- [ ] Fix security issues
+- [ ] Update documentation
+- [ ] Review performance
+- [ ] Update accessibility
+- [ ] Review user feedback
+- [ ] Update design system
 
-- [x] T026 [P] Add loading states for tech stack page
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/components/TechStackTab.tsx`
-  - Actions: Implement proper loading indicators while fetching tech stack data
-  - Depends on: T017
+### 8.2 Continuous Improvement
+- [ ] Gather user feedback
+- [ ] Analyze usage data
+- [ ] Identify improvement areas
+- [ ] Plan feature updates
+- [ ] Implement improvements
+- [ ] Test changes
+- [ ] Deploy updates
 
-- [x] T027 [P] Ensure accessibility compliance for all new components
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/components/`
-  - Actions: Add proper ARIA labels, keyboard navigation, and screen reader support
-  - Depends on: T013, T017, T020
-
-## Phase 3.9: Performance & Optimization
-- [x] T028 [P] Optimize tech stack data loading and caching
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/lib/data-loader.ts`
-  - Actions: Implement efficient data loading and caching for tech stack information
-  - Depends on: T024
-
-- [x] T029 [P] Add performance monitoring for new features
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/lib/`
-  - Actions: Add performance tracking for tech stack page load times and navigation
-  - Depends on: T016, T017
-
-## Phase 3.10: Documentation & Polish
-- [x] T030 [P] Update README.md with new features
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/README.md`
-  - Actions: Document new navigation structure, tech stack page, and enhanced UI features
-  - Depends on: T016, T017
-
-- [x] T031 [P] Add component documentation and examples
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/components/`
-  - Actions: Add JSDoc comments and usage examples for new components
-  - Depends on: T013, T017
-
-- [x] T032 [P] Create integration tests for new API endpoints
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/app/api/`
-  - Actions: Add tests for tech stack API endpoints to ensure proper functionality
-  - Depends on: T009, T010
-
-- [x] T033 [P] Add end-to-end tests for navigation and tech stack page
-  - Path: `/Users/william.jiang/my-experiments/website-dashboard/frontend/src/`
-  - Actions: Create tests to verify navigation functionality and tech stack page display
-  - Depends on: T016, T017
-
-## Dependencies
-- T004 blocks T005, T011, T012
-- T005 blocks T007, T008, T009, T010, T024
-- T013 blocks T014, T015, T022
-- T017 blocks T018, T019, T025, T026
-- T020 blocks T021
-- T024 blocks T028
-- T016, T017 block T029, T033
-
-## Parallel Execution Examples
-
-### Phase 1: Setup & Models (Tasks T001-T006)
-```
-# Launch T001, T002, T003 together:
-Task: "Verify shadcn/ui setup and add required components"
-Task: "Update package.json with new dependencies"  
-Task: "Verify existing data structure and prepare for tech stack extension"
-
-# Launch T004, T005, T006 together after T003:
-Task: "Create TechStackInfo model"
-Task: "Update Website model to include techStack field"
-Task: "Create NavigationTab model"
-```
-
-### Phase 2: API Implementation (Tasks T007-T012)
-```
-# Launch T007, T008, T009, T010 together after T005:
-Task: "Implement /api/websites endpoint with tech stack data"
-Task: "Implement /api/websites/[id] endpoint with tech stack data"
-Task: "Create /api/tech-stack endpoint"
-Task: "Create /api/tech-stack/categories endpoint"
-
-# Launch T011, T012 together after T004:
-Task: "Enhance websites.json with tech stack data"
-Task: "Create data validation utilities for tech stack"
-```
-
-### Phase 3: Navigation & Tech Stack (Tasks T013-T019)
-```
-# Launch T013, T014, T015 together after T001, T006:
-Task: "Create Navigation component with three-tab structure"
-Task: "Implement active state management for navigation"
-Task: "Add mobile responsiveness to navigation"
-
-# Launch T016, T017, T018, T019 together after T009, T010:
-Task: "Create tech-stack page route"
-Task: "Create TechStackTab component"
-Task: "Implement tech stack data organization and display"
-Task: "Add expandable sections for detailed tech information"
-```
-
-### Phase 4: UI/UX Enhancements (Tasks T020-T023)
-```
-# Launch T020, T021, T022, T023 together after T001:
-Task: "Enhance WebsiteCard component with improved styling"
-Task: "Enhance WebsiteGrid component with responsive improvements"
-Task: "Update main layout with navigation integration"
-Task: "Enhance theme toggle and dark mode support"
-```
-
-### Phase 5: Integration & Testing (Tasks T024-T033)
-```
-# Launch T024, T025, T026, T027 together:
-Task: "Update data loading logic to handle tech stack data"
-Task: "Add error handling for missing tech stack data"
-Task: "Add loading states for tech stack page"
-Task: "Ensure accessibility compliance for all new components"
-
-# Launch T028, T029 together:
-Task: "Optimize tech stack data loading and caching"
-Task: "Add performance monitoring for new features"
-
-# Launch T030, T031, T032, T033 together:
-Task: "Update README.md with new features"
-Task: "Add component documentation and examples"
-Task: "Create integration tests for new API endpoints"
-Task: "Add end-to-end tests for navigation and tech stack page"
-```
-
-## Execution Order
-1. **Setup Phase**: T001-T006 (models and dependencies)
-2. **API Phase**: T007-T012 (endpoints and data)
-3. **Component Phase**: T013-T019 (navigation and tech stack)
-4. **Enhancement Phase**: T020-T023 (UI/UX improvements)
-5. **Integration Phase**: T024-T033 (testing and documentation)
-
-## Success Criteria
-- [ ] Three-tab navigation working smoothly
-- [ ] Tech stack page displaying organized technical information
-- [ ] Enhanced UI/UX with modern design patterns
-- [ ] All API endpoints returning proper data
-- [ ] Mobile responsiveness maintained
-- [ ] Accessibility compliance (WCAG 2.1 AA)
-- [ ] Performance targets met
-- [ ] No breaking changes to existing functionality
-
-## Notes
-- [P] tasks = different files, no dependencies
-- Commit after each task
-- Avoid: vague tasks, same file conflicts
-- All tasks are immediately executable with specific file paths
-- Each task specifies exact actions and dependencies
+### 8.3 Monitoring and Analytics
+- [ ] Set up performance monitoring
+- [ ] Add usage analytics
+- [ ] Monitor accessibility
+- [ ] Track user feedback
+- [ ] Analyze performance metrics
+- [ ] Monitor error rates
+- [ ] Track user satisfaction

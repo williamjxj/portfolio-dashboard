@@ -1,300 +1,537 @@
-# Quickstart: Update UI/UX and Add Tech Stack Tab
-
-**Feature**: 003-update-ui-ux  
-**Date**: 2025-01-27  
-**Status**: Ready for Implementation
-
-## Overview
-
-This quickstart guide provides step-by-step instructions for implementing the new "Tech Stack" tab in the website dashboard. The feature adds a dedicated navigation tab that displays technical information for each website while preserving the clean design of the main dashboard.
+# UI/UX Quick Start Guide
 
 ## Prerequisites
+- Node.js 18+ 
+- npm or yarn
+- Git
+- VS Code (recommended)
+- Figma (for design)
 
-- Node.js 18+ installed
-- Next.js 15 project setup
-- shadcn/ui components configured
-- Tailwind CSS configured
-- TypeScript configured
+## Installation
 
-## Setup Instructions
-
-### 1. Install Dependencies
-
+### 1. Clone Repository
 ```bash
-# Navigate to frontend directory
+git clone <repository-url>
+cd website-dashboard
+```
+
+### 2. Install Dependencies
+```bash
 cd frontend
-
-# Install required dependencies (if not already installed)
-npm install next-themes
-npm install @radix-ui/react-tabs
-npm install @radix-ui/react-navigation-menu
+npm install
 ```
 
-### 2. Create Tech Stack Data
+### 3. Environment Setup
+Create `.env.local` file:
+```env
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_THEME=light
+NEXT_PUBLIC_ANIMATIONS=enabled
+```
 
-Create the tech stack data file:
-
+### 4. Run Development Server
 ```bash
-# Create tech-stack.json in data directory
-touch data/tech-stack.json
+npm run dev
 ```
 
-Add sample tech stack data:
+Visit `http://localhost:3000` to see the application.
 
-```json
-{
-  "bestitconsultants": {
-    "frontend": ["React", "Next.js", "TypeScript", "Tailwind CSS"],
-    "backend": ["Node.js", "Express", "Python", "FastAPI"],
-    "database": ["PostgreSQL", "MongoDB", "Redis"],
-    "deployment": ["Vercel", "AWS", "Docker"],
-    "aiTools": ["OpenAI API", "LangChain", "Hugging Face"],
-    "other": ["GitHub Actions", "Playwright", "ESLint"],
-    "version": "1.0.0",
-    "source": "2025-01-27T10:00:00Z"
+## Design System
+
+### Theme Configuration
+The application supports multiple themes with customizable colors, typography, and spacing.
+
+#### Available Themes
+- **Light Theme**: Default light theme
+- **Dark Theme**: Dark mode theme
+- **Auto Theme**: System preference based
+- **Custom Themes**: User-defined themes
+
+#### Theme Structure
+```typescript
+interface ThemeConfig {
+  id: string;
+  name: string;
+  type: 'light' | 'dark' | 'auto';
+  colors: ColorPalette;
+  typography: TypographyConfig;
+  spacing: SpacingConfig;
+  breakpoints: BreakpointConfig;
+  animations: AnimationConfig;
+}
+```
+
+### Color System
+The design system uses a comprehensive color palette with semantic colors.
+
+#### Color Categories
+- **Primary**: Main brand colors
+- **Secondary**: Supporting colors
+- **Accent**: Highlight colors
+- **Neutral**: Grayscale colors
+- **Semantic**: Success, warning, error colors
+
+#### Usage Example
+```typescript
+// Using theme colors
+const theme = useTheme();
+const primaryColor = theme.colors.primary.base;
+const backgroundColor = theme.colors.background.primary;
+```
+
+### Typography System
+Consistent typography across the application with responsive scaling.
+
+#### Font Families
+- **Primary**: Inter (sans-serif)
+- **Secondary**: Geist (sans-serif)
+- **Mono**: JetBrains Mono (monospace)
+
+#### Typography Scale
+- **Display**: 48px, 40px, 32px
+- **Heading**: 24px, 20px, 18px
+- **Body**: 16px, 14px, 12px
+- **Caption**: 12px, 10px
+
+#### Usage Example
+```typescript
+// Using typography classes
+<h1 className="text-display-lg font-bold">
+  Main Heading
+</h1>
+<p className="text-body-md text-neutral-600">
+  Body text
+</p>
+```
+
+## Component Library
+
+### Core Components
+The design system includes a comprehensive set of components.
+
+#### Button Component
+```typescript
+<Button 
+  variant="primary" 
+  size="md" 
+  disabled={false}
+  onClick={handleClick}
+>
+  Click me
+</Button>
+```
+
+#### Card Component
+```typescript
+<Card className="p-6">
+  <CardHeader>
+    <CardTitle>Card Title</CardTitle>
+    <CardDescription>Card description</CardDescription>
+  </CardHeader>
+  <CardContent>
+    Card content
+  </CardContent>
+</Card>
+```
+
+#### Input Component
+```typescript
+<Input
+  type="text"
+  placeholder="Enter text"
+  value={value}
+  onChange={handleChange}
+  error={error}
+  disabled={disabled}
+/>
+```
+
+### Advanced Components
+
+#### Data Table
+```typescript
+<DataTable
+  columns={columns}
+  data={data}
+  pagination={true}
+  sorting={true}
+  filtering={true}
+  selection={true}
+/>
+```
+
+#### Modal
+```typescript
+<Modal
+  open={isOpen}
+  onClose={handleClose}
+  title="Modal Title"
+  size="md"
+>
+  Modal content
+</Modal>
+```
+
+#### Navigation
+```typescript
+<Navigation
+  items={navigationItems}
+  orientation="horizontal"
+  variant="default"
+  responsive={true}
+/>
+```
+
+## Layout System
+
+### Grid System
+The application uses a flexible grid system for responsive layouts.
+
+#### Grid Classes
+```css
+/* Grid container */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+}
+
+/* Grid items */
+.col-1 { grid-column: span 1; }
+.col-2 { grid-column: span 2; }
+.col-3 { grid-column: span 3; }
+.col-4 { grid-column: span 4; }
+.col-6 { grid-column: span 6; }
+.col-12 { grid-column: span 12; }
+```
+
+#### Responsive Grid
+```css
+/* Mobile first approach */
+.col-mobile-12 { grid-column: span 12; }
+
+/* Tablet */
+@media (min-width: 768px) {
+  .col-tablet-6 { grid-column: span 6; }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .col-desktop-4 { grid-column: span 4; }
+}
+```
+
+### Flexbox System
+Alternative layout system using flexbox.
+
+#### Flex Classes
+```css
+/* Flex container */
+.flex-container {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Flex items */
+.flex-1 { flex: 1; }
+.flex-2 { flex: 2; }
+.flex-none { flex: none; }
+```
+
+### Spacing System
+Consistent spacing using design tokens.
+
+#### Spacing Scale
+- **xs**: 4px
+- **sm**: 8px
+- **md**: 16px
+- **lg**: 24px
+- **xl**: 32px
+- **xxl**: 48px
+
+#### Usage Example
+```css
+/* Padding */
+.p-xs { padding: 4px; }
+.p-sm { padding: 8px; }
+.p-md { padding: 16px; }
+
+/* Margin */
+.m-xs { margin: 4px; }
+.m-sm { margin: 8px; }
+.m-md { margin: 16px; }
+```
+
+## Animation System
+
+### Animation Configuration
+The design system includes a comprehensive animation system.
+
+#### Animation Types
+- **Fade**: Opacity transitions
+- **Slide**: Transform transitions
+- **Scale**: Size transitions
+- **Rotate**: Rotation transitions
+- **Bounce**: Elastic transitions
+
+#### Animation Properties
+```typescript
+interface AnimationConfig {
+  duration: {
+    fast: '150ms';
+    normal: '300ms';
+    slow: '500ms';
+  };
+  easing: {
+    easeIn: 'cubic-bezier(0.4, 0, 1, 1)';
+    easeOut: 'cubic-bezier(0, 0, 0.2, 1)';
+    easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)';
+  };
+  delay: {
+    none: '0ms';
+    short: '100ms';
+    medium: '200ms';
+    long: '300ms';
+  };
+}
+```
+
+#### Usage Example
+```typescript
+// Using Framer Motion
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.3, ease: 'easeOut' }}
+>
+  Animated content
+</motion.div>
+```
+
+### Micro-interactions
+Small, meaningful animations that enhance user experience.
+
+#### Hover Effects
+```css
+/* Button hover */
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+```
+
+#### Focus Effects
+```css
+/* Input focus */
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  transition: all 0.2s ease;
+}
+```
+
+## Accessibility
+
+### Accessibility Features
+The design system includes comprehensive accessibility features.
+
+#### ARIA Support
+- ARIA labels and descriptions
+- ARIA expanded and hidden
+- ARIA roles and properties
+- ARIA live regions
+
+#### Keyboard Navigation
+- Tab order management
+- Keyboard shortcuts
+- Focus management
+- Escape key handling
+
+#### Screen Reader Support
+- Semantic HTML
+- Alt text for images
+- Descriptive link text
+- Form labels
+
+#### Color Contrast
+- WCAG AA compliance
+- High contrast mode
+- Color blind support
+- Focus indicators
+
+### Usage Example
+```typescript
+// Accessible button
+<Button
+  aria-label="Close dialog"
+  aria-describedby="dialog-description"
+  onClick={handleClose}
+>
+  <Icon name="close" aria-hidden="true" />
+</Button>
+```
+
+## Responsive Design
+
+### Breakpoints
+The design system uses a mobile-first approach with defined breakpoints.
+
+#### Breakpoint System
+- **xs**: 0px - 575px (Mobile)
+- **sm**: 576px - 767px (Large Mobile)
+- **md**: 768px - 991px (Tablet)
+- **lg**: 992px - 1199px (Desktop)
+- **xl**: 1200px - 1399px (Large Desktop)
+- **xxl**: 1400px+ (Extra Large Desktop)
+
+#### Usage Example
+```css
+/* Mobile first */
+.component {
+  padding: 1rem;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .component {
+    padding: 2rem;
+  }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+  .component {
+    padding: 3rem;
   }
 }
 ```
 
-### 3. Create TypeScript Models
+### Responsive Components
+Components that adapt to different screen sizes.
 
-Create the tech stack models:
+#### Responsive Grid
+```typescript
+<Grid
+  columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+  gap={{ xs: 'sm', md: 'md', lg: 'lg' }}
+>
+  {items.map(item => (
+    <GridItem key={item.id}>
+      <Card>{item.content}</Card>
+    </GridItem>
+  ))}
+</Grid>
+```
 
+#### Responsive Typography
+```typescript
+<Text
+  size={{ xs: 'sm', md: 'md', lg: 'lg' }}
+  weight={{ xs: 'normal', md: 'semibold' }}
+>
+  Responsive text
+</Text>
+```
+
+## Development
+
+### Adding New Components
+1. Create component in `src/components/`
+2. Add TypeScript interfaces
+3. Implement responsive design
+4. Add accessibility features
+5. Add tests
+6. Add to storybook
+
+### Customizing Themes
+1. Create theme configuration
+2. Define color palette
+3. Set typography settings
+4. Configure spacing
+5. Add animations
+6. Test across components
+
+### Adding Animations
+1. Define animation configuration
+2. Implement with Framer Motion
+3. Add reduced motion support
+4. Test performance
+5. Test accessibility
+
+## Testing
+
+### Visual Testing
 ```bash
-# Create models directory if it doesn't exist
-mkdir -p src/models
+# Run visual tests
+npm run test:visual
 
-# Create TechStack.ts
-touch src/models/TechStack.ts
-
-# Create NavigationTab.ts
-touch src/models/NavigationTab.ts
+# Update visual snapshots
+npm run test:visual:update
 ```
 
-### 4. Create Components
-
-Create the required components:
-
+### Accessibility Testing
 ```bash
-# Create component files
-touch src/components/Navigation.tsx
-touch src/components/TechStackTab.tsx
-touch src/components/TechStackCard.tsx
+# Run accessibility tests
+npm run test:a11y
+
+# Run axe-core tests
+npm run test:axe
 ```
 
-### 5. Create API Routes
-
-Create the API routes:
-
+### Performance Testing
 ```bash
-# Create API directory structure
-mkdir -p src/app/api/tech-stack
+# Run performance tests
+npm run test:performance
 
-# Create API route files
-touch src/app/api/tech-stack/route.ts
-touch src/app/api/tech-stack/categories/route.ts
+# Run Lighthouse tests
+npm run test:lighthouse
 ```
 
-## Feature Demonstration
+## Deployment
 
-### 1. Navigation Enhancement
-
-**What to test**: Navigation now includes three tabs: Dashboard, Tech Stack, About.
-
-**Steps**:
-1. Navigate to the website dashboard
-2. Verify the navigation shows three tabs
-3. Click on "Tech Stack" tab
-4. Verify the page loads with tech stack information
-5. Click on "Dashboard" tab to return to main dashboard
-
-**Expected Result**: Smooth navigation between tabs with active state indication.
-
-### 2. Tech Stack Page
-
-**What to test**: Tech stack page displays technical information for each website.
-
-**Steps**:
-1. Navigate to the Tech Stack tab
-2. Verify the page loads in under 2 seconds
-3. Check that each website has a tech stack card
-4. Verify technical information is organized by category
-5. Test responsive design on different screen sizes
-
-**Expected Result**: Clean, organized display of technical information with responsive design.
-
-### 3. Tech Stack Cards
-
-**What to test**: Each website displays its technical information in organized cards.
-
-**Steps**:
-1. View the tech stack page
-2. Verify each website has a dedicated card
-3. Check that technical information is categorized (Frontend, Backend, Database, etc.)
-4. Verify missing information shows "Information not available" placeholder
-5. Test card interactions and hover states
-
-**Expected Result**: Well-organized technical information with clear visual hierarchy.
-
-### 4. Data Integration
-
-**What to test**: Tech stack data is properly integrated and displayed.
-
-**Steps**:
-1. Check that tech stack data loads from JSON files
-2. Verify data is properly formatted and displayed
-3. Test error handling for missing data
-4. Verify data updates are reflected in the UI
-
-**Expected Result**: Seamless data integration with proper error handling.
-
-## API Testing
-
-### 1. Test Tech Stack Endpoints
-
+### Build Process
 ```bash
-# Test get all websites with tech stack
-curl -X GET http://localhost:3000/api/websites
+# Build for production
+npm run build
 
-# Test get specific website with tech stack
-curl -X GET http://localhost:3000/api/websites/bestitconsultants
+# Analyze bundle
+npm run analyze
 
-# Test get tech stack summary
-curl -X GET http://localhost:3000/api/tech-stack
-
-# Test get tech stack categories
-curl -X GET http://localhost:3000/api/tech-stack/categories
+# Test production build
+npm run start
 ```
 
-### 2. Verify API Responses
-
-**Expected Response Format**:
-```json
-{
-  "id": "bestitconsultants",
-  "name": "Best IT Consultants",
-  "url": "https://bestitconsultants.com",
-  "techStack": {
-    "frontend": ["React", "Next.js", "TypeScript"],
-    "backend": ["Node.js", "Express"],
-    "database": ["PostgreSQL"],
-    "deployment": ["Vercel"],
-    "aiTools": ["OpenAI API"],
-    "other": ["GitHub Actions"]
-  }
-}
-```
-
-## Performance Validation
-
-### 1. Load Time Testing
-
-**Target**: Page load < 2 seconds
-
-**Steps**:
-1. Open browser developer tools
-2. Navigate to Tech Stack tab
-3. Check Network tab for load times
-4. Verify Lighthouse performance score ≥ 90
-
-**Expected Result**: Fast page load with excellent performance scores.
-
-### 2. Responsive Design Testing
-
-**Target**: Seamless experience across all device sizes
-
-**Steps**:
-1. Test on desktop (1920x1080)
-2. Test on tablet (768x1024)
-3. Test on mobile (375x667)
-4. Verify touch targets are ≥ 44px
-5. Check text readability and contrast
-
-**Expected Result**: Perfect responsive design across all devices.
-
-### 3. Accessibility Testing
-
-**Target**: WCAG 2.1 AA compliance
-
-**Steps**:
-1. Test keyboard navigation
-2. Verify screen reader compatibility
-3. Check color contrast ratios
-4. Test focus indicators
-5. Verify semantic HTML structure
-
-**Expected Result**: Full accessibility compliance with excellent user experience.
+### Environment Variables
+- `NEXT_PUBLIC_THEME` - Default theme
+- `NEXT_PUBLIC_ANIMATIONS` - Animation settings
+- `NEXT_PUBLIC_ACCESSIBILITY` - Accessibility features
 
 ## Troubleshooting
 
 ### Common Issues
 
-**Issue**: Tech stack page not loading
-**Solution**: Check API routes are properly configured and data files exist
+#### Theme Not Loading
+- Check theme configuration
+- Verify CSS variables
+- Check browser support
+- Clear browser cache
 
-**Issue**: Navigation not working
-**Solution**: Verify navigation component is properly integrated and state management is working
+#### Animations Not Working
+- Check Framer Motion setup
+- Verify animation configuration
+- Check reduced motion settings
+- Test performance impact
 
-**Issue**: Performance issues
-**Solution**: Check for large data files, optimize images, and verify static generation
+#### Responsive Issues
+- Check breakpoint configuration
+- Verify CSS media queries
+- Test on different devices
+- Check viewport settings
 
-**Issue**: Responsive design problems
-**Solution**: Verify Tailwind CSS classes are properly applied and breakpoints are correct
-
-### Debug Commands
-
-```bash
-# Check TypeScript compilation
-npm run build
-
-# Check for linting errors
-npm run lint
-
-# Check for accessibility issues
-npm run a11y
-
-# Check performance
-npm run lighthouse
-```
-
-## Success Criteria
-
-### Functional Requirements
-- ✅ Navigation includes three tabs (Dashboard, Tech Stack, About)
-- ✅ Tech stack page displays technical information
-- ✅ Technical information is organized by category
-- ✅ Missing data shows appropriate placeholders
-- ✅ Navigation maintains active state indication
-
-### Non-Functional Requirements
-- ✅ Page load time < 2 seconds
-- ✅ Lighthouse score ≥ 90
-- ✅ WCAG 2.1 AA compliance
-- ✅ Responsive design across all devices
-- ✅ Accessibility standards met
-
-### User Experience
-- ✅ Intuitive navigation between tabs
-- ✅ Clean, organized display of technical information
-- ✅ Consistent design with existing dashboard
-- ✅ Smooth interactions and transitions
-- ✅ Clear visual hierarchy
-
-## Next Steps
-
-After successful implementation:
-
-1. **Data Population**: Add tech stack information for all websites
-2. **Testing**: Comprehensive testing across all devices and browsers
-3. **Optimization**: Performance optimization and asset optimization
-4. **Documentation**: Update user documentation and help guides
-5. **Monitoring**: Set up performance monitoring and error tracking
-
-## Support
-
-For issues or questions:
-- Check the troubleshooting section above
-- Review the API documentation
-- Test with the provided curl commands
-- Verify all prerequisites are met
-- Check browser console for errors
+### Getting Help
+- Check design system documentation
+- Review component examples
+- Test in different browsers
+- Check accessibility guidelines

@@ -1,122 +1,375 @@
-# Feature Specification: Website Iteration Dashboard
+# Technical Specification
 
-**Feature Branch**: `001-i-am-building`  
-**Created**: 2025-01-22  
-**Status**: Draft  
-**Input**: User description: "I am building a modern website to iterate 8 sites: list the screenshot image, site description, site logo, side favicon. The sites url can be found in @README.md . for screenshot, don't use login/signin/signup page directly, instead please use playwright mcp to login, then capture the dashboard/landing page as screenshot. the sample login signature/credentials are showed in signin page."
+## System Architecture
 
-## Execution Flow (main)
+### Overview
+The Website Dashboard is a Next.js application that provides a comprehensive interface for managing and showcasing multiple web projects with their technology stacks, assets, and deployment information.
+
+### Architecture Diagram
 ```
-1. Parse user description from Input
-   → If not found: ERROR "No feature description provided"
-2. Extract key concepts from description
-   → Identify: actors, actions, data, constraints
-3. For each unclear aspect:
-   → Mark with [NEEDS CLARIFICATION: specific question]
-4. Fill User Scenarios & Testing section
-   → If no clear user flow: ERROR "Cannot determine user scenarios"
-5. Generate Functional Requirements
-   → Each requirement must be testable
-   → Mark ambiguous requirements
-6. Identify Key Entities (if data involved)
-7. Run Review Checklist
-   → If any [NEEDS CLARIFICATION]: WARN "Spec has uncertainties"
-   → If implementation details found: ERROR "Remove tech details"
-8. Return: SUCCESS (spec ready for planning)
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │   Backend       │    │   Data Layer    │
+│   (Next.js)     │◄──►│   (API Routes)  │◄──►│   (JSON Files)  │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   UI Components  │    │   Services      │    │   Asset Storage │
+│   (React)        │    │   (Business)    │    │   (Public)     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
----
+## Component Architecture
 
-## ⚡ Quick Guidelines
-- ✅ Focus on WHAT users need and WHY
-- ❌ Avoid HOW to implement (no tech stack, APIs, code structure)
-- 👥 Written for business stakeholders, not developers
+### Frontend Components
 
-### Section Requirements
-- **Mandatory sections**: Must be completed for every feature
-- **Optional sections**: Include only when relevant to the feature
-- When a section doesn't apply, remove it entirely (don't leave as "N/A")
+#### Core Components
+```typescript
+// Layout Components
+- RootLayout: Main application layout
+- Navigation: Top navigation bar
+- Layout: Page layout wrapper
 
-### For AI Generation
-When creating this spec from a user prompt:
-1. **Mark all ambiguities**: Use [NEEDS CLARIFICATION: specific question] for any assumption you'd need to make
-2. **Don't guess**: If the prompt doesn't specify something (e.g., "login system" without auth method), mark it
-3. **Think like a tester**: Every vague requirement should fail the "testable and unambiguous" checklist item
-4. **Common underspecified areas**:
-   - User types and permissions
-   - Data retention/deletion policies  
-   - Performance targets and scale
-   - Error handling behaviors
-   - Integration requirements
-   - Security/compliance needs
+// Website Components  
+- WebsiteGrid: Grid display of websites
+- WebsiteCard: Individual website card
+- WebsiteDetail: Detailed website view
+- TechStackTab: Technology stack display
 
----
+// UI Components
+- Button: Reusable button component
+- Card: Content card wrapper
+- Badge: Status/technology badges
+- Input: Form input components
+```
 
-## User Scenarios & Testing *(mandatory)*
+#### Component Hierarchy
+```
+RootLayout
+├── Navigation
+├── Layout
+│   ├── WebsiteGrid
+│   │   └── WebsiteCard
+│   ├── WebsiteDetail
+│   └── TechStackTab
+└── UI Components
+    ├── Button
+    ├── Card
+    ├── Badge
+    └── Input
+```
 
-### Primary User Story
-As a website administrator, I want to view a dashboard that displays all 8 websites with their screenshots, descriptions, logos, and favicons so that I can easily manage and iterate on multiple web properties from a single interface.
+### Backend Architecture
 
-### Acceptance Scenarios
-1. **Given** the dashboard is loaded, **When** I view the website list, **Then** I see all 8 websites with their screenshots, descriptions, logos, and favicons displayed
-2. **Given** a website requires authentication, **When** I access the screenshot, **Then** the system automatically logs in using provided credentials and captures the authenticated dashboard/landing page
-3. **Given** I want to update a website's information, **When** I modify the description or logo, **Then** the changes are saved and reflected in the dashboard
-4. **Given** I want to view a specific website, **When** I click on a website entry, **Then** I am taken to the actual website in a new tab
+#### API Routes Structure
+```
+/api/
+├── websites/
+│   ├── route.ts           # GET, POST /api/websites
+│   └── [id]/
+│       ├── route.ts       # GET, PUT, DELETE /api/websites/[id]
+│       ├── screenshot/
+│       │   └── route.ts    # GET /api/websites/[id]/screenshot
+│       ├── logo/
+│       │   └── route.ts    # GET /api/websites/[id]/logo
+│       └── favicon/
+│           └── route.ts   # GET /api/websites/[id]/favicon
+├── assets/
+│   └── [websiteId]/
+│       ├── route.ts        # GET, POST /api/assets/[websiteId]
+│       └── [assetId]/
+│           └── route.ts    # GET, PUT, DELETE /api/assets/[websiteId]/[assetId]
+└── tech-stack/
+    ├── route.ts           # GET /api/tech-stack
+    └── categories/
+        └── route.ts       # GET /api/tech-stack/categories
+```
 
-### Edge Cases
-- What happens when a website is down or unreachable?
-- How does the system handle websites that don't have login credentials?
-- What happens when screenshot generation fails?
-- How does the system handle websites with different authentication methods?
+#### Service Layer
+```typescript
+// Core Services
+- WebsiteService: Website CRUD operations
+- PlaywrightService: Screenshot generation
+- AssetService: Asset management
+- AuthenticationService: Auth handling
 
-## Requirements *(mandatory)*
+// Utility Services
+- DataLoader: Data loading and caching
+- Logger: Logging functionality
+- Validation: Input validation
+```
 
-### Functional Requirements
-- **FR-001**: System MUST display all 8 websites from the README.md list with their associated metadata
-- **FR-002**: System MUST generate high-resolution screenshots for each website, suitable for HTML embedding
-- **FR-003**: System MUST create custom vector-style logos for each website reflecting their domain and brand identity
-- **FR-004**: System MUST generate 16x16 or 32x32 favicons for each website based on their branding
-- **FR-005**: System MUST write concise 2-3 sentence descriptions for each website explaining purpose, target audience, and notable features
-- **FR-006**: System MUST handle authentication for websites that require login by using provided credentials from signin pages
-- **FR-007**: System MUST capture authenticated dashboard/landing pages instead of login/signin/signup pages
-- **FR-008**: System MUST format all assets according to the specified template format for HTML embedding
-- **FR-009**: System MUST stop processing and ask user for further action when authentication fails or credentials are invalid
-- **FR-010**: System MUST handle OAuth and other authentication methods by attempting standard login flows first, then falling back to manual credential input if needed
+## Data Models
 
-### Key Entities *(include if feature involves data)*
-- **Website**: Represents each of the 8 websites with URL, screenshot, description, logo, and favicon
-- **Authentication Credentials**: Stores login information for websites that require authentication
-- **Asset Metadata**: Contains information about generated assets (screenshots, logos, favicons) including file paths and formats
+### Core Entities
 
----
+#### Website Entity
+```typescript
+interface Website {
+  id: string;
+  name: string;
+  url: string;
+  description?: string;
+  screenshot?: string;
+  logo?: string;
+  favicon?: string;
+  requiresAuth: boolean;
+  lastUpdated: string;
+  state: 'draft' | 'in-progress' | 'completed' | 'archived';
+  techStack: TechStackInfo;
+  deploymentInfo: DeploymentInfo;
+  features: string[];
+  demoVideo?: string;
+}
+```
 
-## Review & Acceptance Checklist
-*GATE: Automated checks run during main() execution*
+#### TechStackInfo Entity
+```typescript
+interface TechStackInfo {
+  frontend: string[];
+  backend: string[];
+  database: string[];
+  deployment: string[];
+  aiTools: string[];
+  other: string[];
+  source: string;
+}
+```
 
-### Content Quality
-- [ ] No implementation details (languages, frameworks, APIs)
-- [ ] Focused on user value and business needs
-- [ ] Written for non-technical stakeholders
-- [ ] All mandatory sections completed
+#### DeploymentInfo Entity
+```typescript
+interface DeploymentInfo {
+  platform: string;
+  url: string;
+  status: 'live' | 'staging' | 'development' | 'offline';
+  lastDeployed: string;
+  githubRepo?: string;
+  supabaseProject?: string;
+  supabaseUrl?: string;
+}
+```
 
-### Requirement Completeness
-- [ ] No [NEEDS CLARIFICATION] markers remain
-- [ ] Requirements are testable and unambiguous  
-- [ ] Success criteria are measurable
-- [ ] Scope is clearly bounded
-- [ ] Dependencies and assumptions identified
+### Data Storage
 
----
+#### JSON File Structure
+```
+data/
+├── websites.json          # Array of Website objects
+├── assets.json           # Array of AssetMetadata objects
+└── auth-credentials.json # Array of AuthenticationCredentials objects
+```
 
-## Execution Status
-*Updated by main() during processing*
+#### Asset Storage
+```
+public/
+├── assets/
+│   ├── screenshots/       # Website screenshots
+│   ├── logos/            # Website logos
+│   └── favicons/         # Website favicons
+└── sites/               # Project-specific images
+    ├── project-1/
+    ├── project-2/
+    └── ...
+```
 
-- [x] User description parsed
-- [x] Key concepts extracted
-- [x] Ambiguities marked
-- [x] User scenarios defined
-- [x] Requirements generated
-- [x] Entities identified
-- [x] Review checklist passed
+## API Specifications
 
----
+### RESTful API Design
+
+#### Website Endpoints
+```typescript
+// Get all websites
+GET /api/websites
+Response: Website[]
+
+// Get website by ID
+GET /api/websites/[id]
+Response: Website
+
+// Create website
+POST /api/websites
+Body: Website
+Response: Website
+
+// Update website
+PUT /api/websites/[id]
+Body: Website
+Response: Website
+
+// Delete website
+DELETE /api/websites/[id]
+Response: 204 No Content
+```
+
+#### Asset Endpoints
+```typescript
+// Get website assets
+GET /api/assets/[websiteId]
+Response: AssetMetadata[]
+
+// Get specific asset
+GET /api/assets/[websiteId]/[assetId]
+Response: AssetMetadata
+
+// Create asset
+POST /api/assets/[websiteId]
+Body: AssetMetadata
+Response: AssetMetadata
+
+// Update asset
+PUT /api/assets/[websiteId]/[assetId]
+Body: AssetMetadata
+Response: AssetMetadata
+
+// Delete asset
+DELETE /api/assets/[websiteId]/[assetId]
+Response: 204 No Content
+```
+
+### Error Handling
+
+#### HTTP Status Codes
+- `200 OK`: Successful GET, PUT
+- `201 Created`: Successful POST
+- `204 No Content`: Successful DELETE
+- `400 Bad Request`: Invalid request data
+- `404 Not Found`: Resource not found
+- `500 Internal Server Error`: Server error
+
+#### Error Response Format
+```typescript
+interface ErrorResponse {
+  error: string;
+  message?: string;
+  details?: any;
+}
+```
+
+## Security Specifications
+
+### Authentication
+- JWT token-based authentication
+- OAuth integration (GitHub, Google)
+- Session management
+- Password hashing (bcrypt)
+
+### Authorization
+- Role-based access control
+- Resource-level permissions
+- API endpoint protection
+- CSRF protection
+
+### Data Security
+- Input validation and sanitization
+- XSS prevention
+- SQL injection prevention
+- Secure headers (CSP, HSTS)
+
+## Performance Specifications
+
+### Core Web Vitals
+- **LCP (Largest Contentful Paint)**: < 2.5s
+- **FID (First Input Delay)**: < 100ms
+- **CLS (Cumulative Layout Shift)**: < 0.1
+
+### Performance Targets
+- **Page Load Time**: < 2s
+- **Time to Interactive**: < 3s
+- **Bundle Size**: < 500KB
+- **Lighthouse Score**: > 90
+
+### Optimization Strategies
+- Code splitting and lazy loading
+- Image optimization (WebP/AVIF)
+- Static generation where possible
+- CDN caching
+- Bundle analysis and optimization
+
+## Testing Specifications
+
+### Testing Strategy
+- **Unit Tests**: Component and utility functions
+- **Integration Tests**: API routes and services
+- **E2E Tests**: User workflows
+- **Performance Tests**: Load and stress testing
+
+### Testing Tools
+- **Jest**: Unit testing framework
+- **React Testing Library**: Component testing
+- **Playwright**: E2E testing
+- **Lighthouse**: Performance testing
+
+### Test Coverage
+- **Unit Tests**: > 80% coverage
+- **Integration Tests**: All API endpoints
+- **E2E Tests**: Critical user paths
+- **Performance Tests**: Core web vitals
+
+## Deployment Specifications
+
+### Environment Configuration
+```typescript
+// Development
+NODE_ENV=development
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+// Production
+NODE_ENV=production
+NEXT_PUBLIC_APP_URL=https://your-domain.com
+DATABASE_URL=your-database-url
+SUPABASE_URL=your-supabase-url
+SUPABASE_ANON_KEY=your-supabase-key
+```
+
+### Deployment Pipeline
+1. **Code Push**: GitHub repository
+2. **Build Process**: Next.js build
+3. **Testing**: Automated tests
+4. **Deployment**: Vercel deployment
+5. **Monitoring**: Performance monitoring
+
+### Infrastructure Requirements
+- **Hosting**: Vercel (recommended)
+- **Database**: Supabase PostgreSQL
+- **CDN**: Vercel Edge Network
+- **Monitoring**: Vercel Analytics
+
+## Monitoring and Observability
+
+### Metrics Collection
+- **Performance**: Core web vitals
+- **Errors**: JavaScript errors
+- **Usage**: User interactions
+- **API**: Response times and errors
+
+### Logging Strategy
+- **Application Logs**: Structured logging
+- **Error Logs**: Error tracking and alerting
+- **Audit Logs**: User actions and changes
+- **Performance Logs**: Performance metrics
+
+### Alerting
+- **Error Rate**: > 5% error rate
+- **Response Time**: > 2s average
+- **Availability**: < 99% uptime
+- **Performance**: Lighthouse score < 90
+
+## Scalability Considerations
+
+### Horizontal Scaling
+- Stateless application design
+- Database connection pooling
+- CDN for static assets
+- Load balancing
+
+### Vertical Scaling
+- Memory optimization
+- CPU optimization
+- Database query optimization
+- Caching strategies
+
+### Future Scaling
+- Microservices architecture
+- Database sharding
+- Event-driven architecture
+- Real-time features

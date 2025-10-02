@@ -101,3 +101,4 @@ function formatCategoryName(category: string): string {
   return nameMap[category] || category.charAt(0).toUpperCase() + category.slice(1);
 }
 
+

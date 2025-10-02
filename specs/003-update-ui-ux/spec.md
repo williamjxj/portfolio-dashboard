@@ -1,137 +1,740 @@
-# Feature Specification: Update UI/UX and Add Tech Stack Tab
+# UI/UX Technical Specification
 
-**Feature Branch**: `003-update-ui-ux`  
-**Created**: 2025-01-27  
-**Status**: Draft  
-**Input**: User description: "update ui/ux, move all tech-stack info into a new tab besides '/dashboard' and '/about'"
+## Design System Architecture
 
-## Execution Flow (main)
+### Overview
+The UI/UX specification defines a comprehensive design system for the website dashboard application, including components, themes, layouts, and accessibility features.
+
+### Design System Structure
 ```
-1. Parse user description from Input
-   → If empty: ERROR "No feature description provided"
-2. Extract key concepts from description
-   → Identify: actors, actions, data, constraints
-3. For each unclear aspect:
-   → Mark with [NEEDS CLARIFICATION: specific question]
-4. Fill User Scenarios section
-   → If no clear user flow: ERROR "Cannot determine user scenarios"
-5. Generate Functional Requirements
-   → Each requirement must be verifiable
-   → Mark ambiguous requirements
-6. Identify Key Entities (if data involved)
-7. Run Review Checklist
-   → If any [NEEDS CLARIFICATION]: WARN "Spec has uncertainties"
-   → If implementation details found: ERROR "Remove tech details"
-8. Return: SUCCESS (spec ready for planning)
+Design System
+├── Design Tokens
+│   ├── Colors
+│   ├── Typography
+│   ├── Spacing
+│   ├── Shadows
+│   ├── Borders
+│   └── Animations
+├── Components
+│   ├── Atoms
+│   ├── Molecules
+│   ├── Organisms
+│   └── Templates
+├── Layouts
+│   ├── Grid System
+│   ├── Flexbox System
+│   └── Responsive Design
+└── Accessibility
+    ├── ARIA Support
+    ├── Keyboard Navigation
+    └── Screen Reader Support
 ```
 
----
+## Design Tokens
 
-## ⚡ Quick Guidelines
-- ✅ Focus on WHAT users need and WHY
-- ❌ Avoid HOW to implement (no tech stack, APIs, code structure)
-- 👥 Written for business stakeholders, not developers
+### Color System
+```typescript
+interface ColorPalette {
+  primary: {
+    base: string;      // #3B82F6
+    light: string;     // #60A5FA
+    dark: string;      // #1D4ED8
+    contrast: string;  // #FFFFFF
+  };
+  secondary: {
+    base: string;       // #6B7280
+    light: string;     // #9CA3AF
+    dark: string;      // #374151
+    contrast: string;  // #FFFFFF
+  };
+  accent: {
+    base: string;      // #F59E0B
+    light: string;     // #FBBF24
+    dark: string;      // #D97706
+    contrast: string;  // #FFFFFF
+  };
+  neutral: {
+    50: string;        // #F9FAFB
+    100: string;       // #F3F4F6
+    200: string;       // #E5E7EB
+    300: string;       // #D1D5DB
+    400: string;       // #9CA3AF
+    500: string;       // #6B7280
+    600: string;       // #4B5563
+    700: string;       // #374151
+    800: string;       // #1F2937
+    900: string;       // #111827
+  };
+  semantic: {
+    success: string;   // #10B981
+    warning: string;   // #F59E0B
+    error: string;     // #EF4444
+    info: string;      // #3B82F6
+  };
+}
+```
 
-### Section Requirements
-- **Mandatory sections**: Must be completed for every feature
-- **Optional sections**: Include only when relevant to the feature
-- When a section doesn't apply, remove it entirely (don't leave as "N/A")
+### Typography System
+```typescript
+interface TypographyConfig {
+  fontFamily: {
+    primary: string;    // 'Inter', sans-serif
+    secondary: string;  // 'Geist', sans-serif
+    mono: string;       // 'JetBrains Mono', monospace
+  };
+  fontSize: {
+    xs: string;         // 12px
+    sm: string;         // 14px
+    base: string;       // 16px
+    lg: string;         // 18px
+    xl: string;         // 20px
+    '2xl': string;      // 24px
+    '3xl': string;      // 30px
+    '4xl': string;      // 36px
+    '5xl': string;      // 48px
+  };
+  fontWeight: {
+    light: number;     // 300
+    normal: number;     // 400
+    medium: number;      // 500
+    semibold: number;   // 600
+    bold: number;       // 700
+    extrabold: number;  // 800
+  };
+  lineHeight: {
+    tight: number;      // 1.25
+    normal: number;     // 1.5
+    relaxed: number;    // 1.75
+  };
+}
+```
 
-### For AI Generation
-When creating this spec from a user prompt:
-1. **Mark all ambiguities**: Use [NEEDS CLARIFICATION: specific question] for any assumption you'd need to make
-2. **Don't guess**: If the prompt doesn't specify something (e.g., "login system" without auth method), mark it
-3. **Think like a tester**: Every vague requirement should fail the "testable and unambiguous" checklist item
-4. **Common underspecified areas**:
-   - User types and permissions
-   - Data retention/deletion policies  
-   - Performance targets and scale
-   - Error handling behaviors
-   - Integration requirements
-   - Security/compliance needs
+### Spacing System
+```typescript
+interface SpacingConfig {
+  xs: string;          // 4px
+  sm: string;          // 8px
+  md: string;          // 16px
+  lg: string;          // 24px
+  xl: string;          // 32px
+  '2xl': string;       // 48px
+  '3xl': string;       // 64px
+  '4xl': string;       // 96px
+}
+```
 
----
+### Shadow System
+```typescript
+interface ShadowConfig {
+  sm: string;          // 0 1px 2px rgba(0, 0, 0, 0.05)
+  base: string;        // 0 1px 3px rgba(0, 0, 0, 0.1)
+  md: string;          // 0 4px 6px rgba(0, 0, 0, 0.1)
+  lg: string;          // 0 10px 15px rgba(0, 0, 0, 0.1)
+  xl: string;          // 0 20px 25px rgba(0, 0, 0, 0.1)
+  '2xl': string;       // 0 25px 50px rgba(0, 0, 0, 0.25)
+}
+```
 
-## User Scenarios *(mandatory)*
+### Border System
+```typescript
+interface BorderConfig {
+  radius: {
+    none: string;       // 0
+    sm: string;         // 2px
+    base: string;       // 4px
+    md: string;         // 6px
+    lg: string;         // 8px
+    xl: string;         // 12px
+    full: string;       // 9999px
+  };
+  width: {
+    none: string;       // 0
+    thin: string;       // 1px
+    base: string;       // 2px
+    thick: string;      // 4px
+  };
+}
+```
 
-### Primary User Story
-As a site owner, I want to access a dedicated tech stack information tab alongside my dashboard and about pages so that I can view technical details about my projects without cluttering the main dashboard interface.
+### Animation System
+```typescript
+interface AnimationConfig {
+  duration: {
+    fast: string;       // 150ms
+    normal: string;     // 300ms
+    slow: string;       // 500ms
+  };
+  easing: {
+    easeIn: string;     // cubic-bezier(0.4, 0, 1, 1)
+    easeOut: string;    // cubic-bezier(0, 0, 0.2, 1)
+    easeInOut: string;  // cubic-bezier(0.4, 0, 0.2, 1)
+  };
+  delay: {
+    none: string;       // 0ms
+    short: string;       // 100ms
+    medium: string;      // 200ms
+    long: string;        // 300ms
+  };
+}
+```
 
-### Acceptance Scenarios
-1. **Given** the user is on the main dashboard, **When** they navigate to the tech stack tab, **Then** they see a dedicated page with all technical information about the websites.
-2. **Given** the user is on any page, **When** they access the navigation, **Then** they see three main tabs: Dashboard, Tech Stack, and About.
-3. **Given** the user is on the tech stack page, **When** they view the content, **Then** they see organized technical details for each website including frameworks, libraries, and deployment information.
-4. **Given** the user wants to return to the main dashboard, **When** they click the Dashboard tab, **Then** they are taken back to the clean website listing view.
+## Component System
 
-### Edge Cases
-- What happens when tech stack information is missing for a website? → Show "Information not available" placeholder with option to add data.
-- How does the system handle navigation between tabs? → Maintain consistent navigation state and active tab highlighting.
-- What if the tech stack page takes time to load? → Show loading indicator while fetching technical details.
-- What if a website has partial tech stack information? → Display available information with placeholders for missing categories.
+### Atomic Design Structure
 
-## Requirements *(mandatory)*
+#### Atoms
+Basic building blocks of the design system.
 
-### Functional Requirements
-- **FR-001**: System MUST provide a new navigation tab labeled "Tech Stack" alongside existing Dashboard and About tabs.
-- **FR-002**: System MUST display a dedicated tech stack page accessible via the new tab.
-- **FR-003**: System MUST show technical information for each website including frontend frameworks, backend technologies, database systems, deployment platforms, AI/ML tools, and other technologies.
-- **FR-004**: System MUST maintain consistent navigation across all three tabs (Dashboard, Tech Stack, About).
-- **FR-005**: System MUST preserve the clean, uncluttered design of the main dashboard by moving technical details to the dedicated tab.
-- **FR-006**: System MUST handle cases where technical information is not available for a website by showing "Information not available" placeholder with option to add data.
-- **FR-007**: System MUST provide clear navigation between tabs with active state indication.
-- **FR-008**: System MUST maintain the existing functionality of the Dashboard and About pages.
+```typescript
+// Button Atom
+interface ButtonProps {
+  variant: 'primary' | 'secondary' | 'outline' | 'ghost';
+  size: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
+  loading?: boolean;
+  children: React.ReactNode;
+  onClick?: () => void;
+}
 
-*Ambiguities*
-- None remaining
+// Input Atom
+interface InputProps {
+  type: 'text' | 'email' | 'password' | 'number';
+  placeholder?: string;
+  value: string;
+  onChange: (value: string) => void;
+  error?: string;
+  disabled?: boolean;
+  required?: boolean;
+}
 
-### Non-Functional Requirements
-- **NFR-001**: Tech stack page MUST load in under 2 seconds, consistent with main dashboard performance targets.
-- **NFR-002**: Tech stack page MUST maintain accessibility standards (WCAG 2.1 AA) for all technical information display.
-- **NFR-003**: Tech stack page MUST be responsive and work seamlessly across all device sizes.
+// Icon Atom
+interface IconProps {
+  name: string;
+  size?: 'sm' | 'md' | 'lg';
+  color?: string;
+  className?: string;
+}
+```
 
-### Key Entities *(include if feature involves data)*
-- **TechStackInfo**: technical details for each website including frameworks, libraries, deployment platform, version information
-- **NavigationTab**: represents the three main navigation sections (Dashboard, Tech Stack, About)
-- **WebsiteTechDetails**: relationship between websites and their technical specifications
+#### Molecules
+Simple combinations of atoms.
 
-## Clarifications
+```typescript
+// Form Field Molecule
+interface FormFieldProps {
+  label: string;
+  error?: string;
+  required?: boolean;
+  children: React.ReactNode;
+}
 
-### Session 2025-01-27
-- Q: What specific technical information should be displayed in the tech stack tab? → A: Frontend frameworks, backend technologies, database systems, deployment platforms, AI/ML tools, and other technologies
-- Q: How should the tech stack information be organized? → A: By website - each website shows its complete tech stack in a dedicated card
-- Q: Should the tech stack tab show real-time information or static data? → A: Static data - pre-defined technical information that is manually updated
-- Q: What performance targets should the tech stack page meet? → A: Page load < 2 seconds, same as main dashboard
-- Q: How should the system handle missing or incomplete tech stack data? → A: Show "Information not available" placeholder with option to add data
+// Search Input Molecule
+interface SearchInputProps {
+  placeholder: string;
+  value: string;
+  onChange: (value: string) => void;
+  onSearch: () => void;
+  loading?: boolean;
+}
 
----
+// Card Molecule
+interface CardProps {
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+  actions?: React.ReactNode;
+}
+```
 
-## Review & Acceptance Checklist
-*GATE: Automated checks run during main() execution*
+#### Organisms
+Complex components combining molecules.
 
-### Content Quality
-- [ ] No implementation details (languages, frameworks, APIs)
-- [ ] Focused on user value and business needs
-- [ ] Written for non-technical stakeholders
-- [ ] All mandatory sections completed
+```typescript
+// Navigation Organism
+interface NavigationProps {
+  items: NavigationItem[];
+  orientation: 'horizontal' | 'vertical';
+  variant: 'default' | 'minimal' | 'pills';
+  responsive: boolean;
+}
 
-### Requirement Completeness
-- [ ] No [NEEDS CLARIFICATION] markers remain
-- [ ] Requirements are verifiable and unambiguous  
-- [ ] Success criteria are measurable
-- [ ] Scope is clearly bounded
-- [ ] Dependencies and assumptions identified
+// Data Table Organism
+interface DataTableProps {
+  columns: Column[];
+  data: any[];
+  pagination?: boolean;
+  sorting?: boolean;
+  filtering?: boolean;
+  selection?: boolean;
+}
 
----
+// Modal Organism
+interface ModalProps {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+  size: 'sm' | 'md' | 'lg' | 'xl';
+}
+```
 
-## Execution Status
-*Updated by main() during processing*
+### Component Variants
 
-- [ ] User description parsed
-- [ ] Key concepts extracted
-- [ ] Ambiguities marked
-- [ ] User scenarios defined
-- [ ] Requirements generated
-- [ ] Entities identified
-- [ ] Review checklist passed
+#### Button Variants
+```typescript
+const buttonVariants = {
+  primary: {
+    backgroundColor: 'var(--color-primary)',
+    color: 'var(--color-primary-contrast)',
+    border: 'none',
+  },
+  secondary: {
+    backgroundColor: 'var(--color-secondary)',
+    color: 'var(--color-secondary-contrast)',
+    border: 'none',
+  },
+  outline: {
+    backgroundColor: 'transparent',
+    color: 'var(--color-primary)',
+    border: '1px solid var(--color-primary)',
+  },
+  ghost: {
+    backgroundColor: 'transparent',
+    color: 'var(--color-primary)',
+    border: 'none',
+  },
+};
+```
 
----
+#### Input Variants
+```typescript
+const inputVariants = {
+  default: {
+    border: '1px solid var(--color-neutral-300)',
+    backgroundColor: 'var(--color-background)',
+  },
+  error: {
+    border: '1px solid var(--color-error)',
+    backgroundColor: 'var(--color-error-light)',
+  },
+  disabled: {
+    border: '1px solid var(--color-neutral-200)',
+    backgroundColor: 'var(--color-neutral-100)',
+    color: 'var(--color-neutral-400)',
+  },
+};
+```
+
+### Component States
+
+#### Interactive States
+```typescript
+interface ComponentStates {
+  default: CSSProperties;
+  hover: CSSProperties;
+  active: CSSProperties;
+  focus: CSSProperties;
+  disabled: CSSProperties;
+  loading: CSSProperties;
+}
+```
+
+#### State Transitions
+```typescript
+const stateTransitions = {
+  fast: 'transition: all 150ms ease-out;',
+  normal: 'transition: all 300ms ease-out;',
+  slow: 'transition: all 500ms ease-out;',
+};
+```
+
+## Layout System
+
+### Grid System
+```typescript
+interface GridConfig {
+  columns: number;
+  gap: string;
+  breakpoints: {
+    xs: number;
+    sm: number;
+    md: number;
+    lg: number;
+    xl: number;
+  };
+}
+```
+
+#### Grid Classes
+```css
+/* Grid Container */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--spacing-md);
+}
+
+/* Grid Items */
+.col-1 { grid-column: span 1; }
+.col-2 { grid-column: span 2; }
+.col-3 { grid-column: span 3; }
+.col-4 { grid-column: span 4; }
+.col-6 { grid-column: span 6; }
+.col-12 { grid-column: span 12; }
+
+/* Responsive Grid */
+@media (min-width: 768px) {
+  .col-md-6 { grid-column: span 6; }
+}
+
+@media (min-width: 1024px) {
+  .col-lg-4 { grid-column: span 4; }
+}
+```
+
+### Flexbox System
+```typescript
+interface FlexboxConfig {
+  direction: 'row' | 'column';
+  justify: 'start' | 'center' | 'end' | 'between' | 'around';
+  align: 'start' | 'center' | 'end' | 'stretch';
+  wrap: 'nowrap' | 'wrap' | 'wrap-reverse';
+}
+```
+
+#### Flexbox Classes
+```css
+/* Flex Container */
+.flex-container {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+/* Flex Items */
+.flex-1 { flex: 1; }
+.flex-2 { flex: 2; }
+.flex-none { flex: none; }
+
+/* Flex Direction */
+.flex-row { flex-direction: row; }
+.flex-col { flex-direction: column; }
+
+/* Justify Content */
+.justify-start { justify-content: flex-start; }
+.justify-center { justify-content: center; }
+.justify-end { justify-content: flex-end; }
+.justify-between { justify-content: space-between; }
+
+/* Align Items */
+.items-start { align-items: flex-start; }
+.items-center { align-items: center; }
+.items-end { align-items: flex-end; }
+.items-stretch { align-items: stretch; }
+```
+
+### Responsive Design
+
+#### Breakpoint System
+```typescript
+interface BreakpointConfig {
+  xs: '0px';
+  sm: '576px';
+  md: '768px';
+  lg: '1024px';
+  xl: '1280px';
+  '2xl': '1536px';
+}
+```
+
+#### Responsive Classes
+```css
+/* Mobile First */
+.component {
+  padding: var(--spacing-sm);
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .component {
+    padding: var(--spacing-md);
+  }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+  .component {
+    padding: var(--spacing-lg);
+  }
+}
+```
+
+## Animation System
+
+### Animation Types
+```typescript
+interface AnimationTypes {
+  fade: {
+    in: 'opacity: 0 → 1';
+    out: 'opacity: 1 → 0';
+  };
+  slide: {
+    up: 'transform: translateY(20px) → translateY(0)';
+    down: 'transform: translateY(-20px) → translateY(0)';
+    left: 'transform: translateX(20px) → translateX(0)';
+    right: 'transform: translateX(-20px) → translateX(0)';
+  };
+  scale: {
+    in: 'transform: scale(0.95) → scale(1)';
+    out: 'transform: scale(1) → scale(0.95)';
+  };
+  rotate: {
+    in: 'transform: rotate(-5deg) → rotate(0deg)';
+    out: 'transform: rotate(0deg) → rotate(5deg)';
+  };
+}
+```
+
+### Animation Implementation
+```typescript
+// Framer Motion Configuration
+const animationVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 },
+};
+
+const transition = {
+  duration: 0.3,
+  ease: 'easeOut',
+};
+
+// Usage
+<motion.div
+  initial="initial"
+  animate="animate"
+  exit="exit"
+  variants={animationVariants}
+  transition={transition}
+>
+  Content
+</motion.div>
+```
+
+### Micro-interactions
+```typescript
+interface MicroInteractions {
+  hover: {
+    transform: 'translateY(-2px)';
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)';
+    transition: 'all 0.2s ease';
+  };
+  focus: {
+    outline: 'none';
+    borderColor: 'var(--color-primary)';
+    boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.1)';
+    transition: 'all 0.2s ease';
+  };
+  active: {
+    transform: 'translateY(0)';
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)';
+    transition: 'all 0.1s ease';
+  };
+}
+```
+
+## Accessibility System
+
+### ARIA Support
+```typescript
+interface ARIAConfig {
+  labels: {
+    button: string;
+    input: string;
+    link: string;
+    image: string;
+  };
+  descriptions: {
+    form: string;
+    table: string;
+    navigation: string;
+    main: string;
+  };
+  roles: {
+    button: 'button';
+    link: 'link';
+    image: 'img';
+    table: 'table';
+    navigation: 'navigation';
+  };
+}
+```
+
+### Keyboard Navigation
+```typescript
+interface KeyboardNavigation {
+  tabOrder: number[];
+  shortcuts: {
+    'Escape': () => void;
+    'Enter': () => void;
+    'Space': () => void;
+    'ArrowUp': () => void;
+    'ArrowDown': () => void;
+    'ArrowLeft': () => void;
+    'ArrowRight': () => void;
+  };
+  focusManagement: {
+    trapFocus: boolean;
+    restoreFocus: boolean;
+    focusVisible: boolean;
+  };
+}
+```
+
+### Screen Reader Support
+```typescript
+interface ScreenReaderSupport {
+  semanticHTML: boolean;
+  altText: boolean;
+  ariaLabels: boolean;
+  liveRegions: boolean;
+  skipLinks: boolean;
+}
+```
+
+## Theme System
+
+### Theme Configuration
+```typescript
+interface ThemeConfig {
+  id: string;
+  name: string;
+  type: 'light' | 'dark' | 'auto';
+  colors: ColorPalette;
+  typography: TypographyConfig;
+  spacing: SpacingConfig;
+  shadows: ShadowConfig;
+  borders: BorderConfig;
+  animations: AnimationConfig;
+}
+```
+
+### Theme Switching
+```typescript
+interface ThemeSwitcher {
+  currentTheme: string;
+  availableThemes: string[];
+  switchTheme: (themeId: string) => void;
+  persistTheme: boolean;
+  systemPreference: boolean;
+}
+```
+
+### CSS Custom Properties
+```css
+:root {
+  /* Colors */
+  --color-primary: #3B82F6;
+  --color-primary-light: #60A5FA;
+  --color-primary-dark: #1D4ED8;
+  --color-primary-contrast: #FFFFFF;
+  
+  /* Typography */
+  --font-family-primary: 'Inter', sans-serif;
+  --font-size-base: 16px;
+  --font-weight-normal: 400;
+  --line-height-normal: 1.5;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  
+  /* Borders */
+  --border-radius-sm: 2px;
+  --border-radius-md: 4px;
+  --border-radius-lg: 8px;
+  
+  /* Animations */
+  --animation-duration-fast: 150ms;
+  --animation-duration-normal: 300ms;
+  --animation-duration-slow: 500ms;
+  --animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+```
+
+## Performance Specifications
+
+### Rendering Performance
+```typescript
+interface RenderingPerformance {
+  targetFPS: 60;
+  maxRenderTime: 16.67; // 60fps
+  componentLazyLoading: boolean;
+  imageOptimization: boolean;
+  bundleSplitting: boolean;
+  treeShaking: boolean;
+}
+```
+
+### Animation Performance
+```typescript
+interface AnimationPerformance {
+  gpuAcceleration: boolean;
+  reducedMotion: boolean;
+  performanceBudget: number;
+  frameRate: number;
+  memoryUsage: number;
+}
+```
+
+### Loading Performance
+```typescript
+interface LoadingPerformance {
+  criticalPath: string[];
+  aboveTheFold: string[];
+  lazyLoading: boolean;
+  preloading: boolean;
+  caching: boolean;
+}
+```
+
+## Testing Specifications
+
+### Visual Testing
+```typescript
+interface VisualTesting {
+  screenshotTesting: boolean;
+  visualRegression: boolean;
+  crossBrowser: boolean;
+  responsiveTesting: boolean;
+  accessibilityTesting: boolean;
+}
+```
+
+### Component Testing
+```typescript
+interface ComponentTesting {
+  unitTests: boolean;
+  integrationTests: boolean;
+  e2eTests: boolean;
+  accessibilityTests: boolean;
+  performanceTests: boolean;
+}
+```
+
+### Design System Testing
+```typescript
+interface DesignSystemTesting {
+  componentLibrary: boolean;
+  designTokens: boolean;
+  themeTesting: boolean;
+  responsiveTesting: boolean;
+  accessibilityTesting: boolean;
+}

@@ -1,140 +1,186 @@
-# Quickstart: Website Iteration Dashboard
-
-## Overview
-This guide demonstrates how to use the Website Iteration Dashboard to manage and display 8 websites with their screenshots, descriptions, logos, and favicons.
+# Quick Start Guide
 
 ## Prerequisites
-- Node.js 18+ installed
-- Git repository cloned
-- 8 websites accessible (from README.md)
+- Node.js 18+ 
+- npm or yarn
+- Git
 
-## Setup Instructions
+## Installation
 
-### 1. Install Dependencies
+### 1. Clone Repository
 ```bash
+git clone <repository-url>
+cd website-dashboard
+```
+
+### 2. Install Dependencies
+```bash
+cd frontend
 npm install
 ```
 
-### 2. Configure Environment
-```bash
-cp .env.example .env.local
-# Edit .env.local with your configuration
+### 3. Environment Setup
+Create `.env.local` file:
+```env
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+DATABASE_URL=your-database-url
 ```
 
-### 3. Generate Assets
-```bash
-npm run generate-assets
-```
-This command will:
-- Parse websites from README.md
-- Handle authentication where required
-- Generate screenshots, logos, and favicons
-- Optimize all assets for web delivery
-
-### 4. Build Static Site
-```bash
-npm run build
-```
-
-### 5. Start Development Server
+### 4. Run Development Server
 ```bash
 npm run dev
 ```
 
-## User Scenarios
+Visit `http://localhost:3000` to see the application.
 
-### Scenario 1: View Website Dashboard
-**Given** the dashboard is loaded  
-**When** I visit the homepage  
-**Then** I see all 8 websites displayed with:
-- High-resolution screenshots
-- 2-3 sentence descriptions
-- Custom logos
-- Favicons
-- Clickable links to original websites
+## Project Structure
 
-### Scenario 2: Handle Authentication
-**Given** a website requires login  
-**When** the system attempts to generate a screenshot  
-**Then** the system:
-- Attempts automatic login with provided credentials
-- Captures the authenticated dashboard/landing page
-- Falls back to manual credential input if needed
-- Asks user for guidance on authentication failures
+```
+frontend/
+├── src/
+│   ├── app/                 # Next.js app router
+│   ├── components/          # React components
+│   ├── lib/                 # Utility functions
+│   ├── models/              # TypeScript interfaces
+│   └── services/            # Business logic
+├── public/                  # Static assets
+├── data/                    # JSON data files
+└── package.json
+```
 
-### Scenario 3: Mobile Responsive Design
-**Given** I access the dashboard on a mobile device  
-**When** I view the website list  
-**Then** I see:
-- Responsive grid layout
-- Touch-friendly interactions (44px minimum)
-- Optimized images for mobile
-- Fast loading times (<2s on 3G)
+## Key Features
 
-### Scenario 4: Accessibility Compliance
-**Given** I use a screen reader  
-**When** I navigate the dashboard  
-**Then** I can:
-- Navigate using keyboard only
-- Hear descriptive text for all images
-- Access all functionality without mouse
-- Experience proper color contrast
+### 1. Website Management
+- View all websites in grid layout
+- Add/edit/delete websites
+- Search and filter functionality
+- Website detail pages
 
-## Testing Scenarios
+### 2. Technology Stack
+- Visual tech stack display
+- Technology categorization
+- Stack comparison
+- Technology filtering
 
-### Manual Testing Checklist
-- [ ] All 8 websites display correctly
-- [ ] Screenshots are high-resolution and clear
-- [ ] Descriptions are 2-3 sentences and informative
-- [ ] Logos are distinctive and brand-appropriate
-- [ ] Favicons are recognizable and properly sized
-- [ ] Mobile responsive design works on all screen sizes
-- [ ] Accessibility features function with screen readers
-- [ ] Performance meets Lighthouse score ≥90
-- [ ] All links open correct websites
-- [ ] Authentication handling works for protected sites
+### 3. Asset Management
+- Screenshot generation
+- Logo and favicon creation
+- Image optimization
+- Asset metadata tracking
 
-### Performance Testing
-- [ ] Page load time <2 seconds on 3G
-- [ ] First Contentful Paint <1.5s
-- [ ] Largest Contentful Paint <2.5s
-- [ ] Cumulative Layout Shift <0.1
-- [ ] Time to Interactive <3.5s
+### 4. Deployment Integration
+- Deployment status tracking
+- Platform integration
+- Health monitoring
+- Deployment history
 
-### Cross-Browser Testing
-- [ ] Chrome (latest)
-- [ ] Firefox (latest)
-- [ ] Safari (latest)
-- [ ] Edge (latest)
-- [ ] Mobile browsers (iOS Safari, Chrome Mobile)
+## API Endpoints
+
+### Websites
+- `GET /api/websites` - Get all websites
+- `GET /api/websites/[id]` - Get website by ID
+- `POST /api/websites` - Create website
+- `PUT /api/websites/[id]` - Update website
+- `DELETE /api/websites/[id]` - Delete website
+
+### Assets
+- `GET /api/assets/[websiteId]` - Get website assets
+- `GET /api/assets/[websiteId]/[assetId]` - Get specific asset
+- `POST /api/assets/[websiteId]` - Create asset
+- `PUT /api/assets/[websiteId]/[assetId]` - Update asset
+- `DELETE /api/assets/[websiteId]/[assetId]` - Delete asset
+
+### Tech Stack
+- `GET /api/tech-stack` - Get tech stack data
+- `GET /api/tech-stack/categories` - Get tech stack categories
+
+## Data Files
+
+### websites.json
+Contains array of website objects with all project information.
+
+### assets.json
+Contains array of asset metadata for screenshots, logos, and favicons.
+
+### auth-credentials.json
+Contains authentication credentials for websites that require login.
+
+## Development
+
+### Adding New Website
+1. Add website data to `data/websites.json`
+2. Generate assets (screenshots, logos, favicons)
+3. Update tech stack information
+4. Test website functionality
+
+### Adding New Component
+1. Create component in `src/components/`
+2. Add TypeScript interfaces
+3. Implement responsive design
+4. Add to storybook (if applicable)
+
+### Adding New API Route
+1. Create route file in `src/app/api/`
+2. Implement CRUD operations
+3. Add error handling
+4. Add validation
+5. Update API documentation
+
+## Deployment
+
+### Vercel Deployment
+1. Connect GitHub repository to Vercel
+2. Configure environment variables
+3. Deploy automatically on push
+4. Monitor deployment status
+
+### Environment Variables
+- `NEXT_PUBLIC_APP_URL` - Application URL
+- `DATABASE_URL` - Database connection string
+- `SUPABASE_URL` - Supabase project URL
+- `SUPABASE_ANON_KEY` - Supabase anonymous key
 
 ## Troubleshooting
 
-### Authentication Issues
-If a website fails to authenticate:
-1. Check credentials in configuration
-2. Verify website is accessible
-3. Try manual login process
-4. Contact user for additional credentials
+### Common Issues
 
-### Asset Generation Failures
-If assets fail to generate:
-1. Check website accessibility
-2. Verify Playwright installation
-3. Review error logs
-4. Retry generation process
+#### Build Errors
+- Check TypeScript errors
+- Verify all imports are correct
+- Ensure all dependencies are installed
 
-### Performance Issues
-If performance is below standards:
-1. Check image optimization
-2. Verify asset compression
-3. Review bundle size
-4. Test on slower networks
+#### Runtime Errors
+- Check browser console for errors
+- Verify API endpoints are working
+- Check data file format
 
-## Success Criteria
-- All 8 websites display with complete metadata
-- Screenshots capture authenticated pages (not login screens)
-- Mobile-first responsive design works perfectly
-- Accessibility compliance (WCAG 2.1 AA)
-- Performance meets all constitution requirements
-- Assets are optimized for web delivery
+#### Performance Issues
+- Optimize images
+- Check bundle size
+- Monitor Lighthouse scores
+
+### Getting Help
+- Check documentation
+- Review error logs
+- Test in different browsers
+- Verify environment setup
+
+## Contributing
+
+### Code Style
+- Use TypeScript for all new code
+- Follow ESLint rules
+- Use Prettier for formatting
+- Write meaningful commit messages
+
+### Testing
+- Write unit tests for utilities
+- Write integration tests for API routes
+- Test responsive design
+- Verify accessibility
+
+### Pull Requests
+- Create feature branches
+- Write descriptive PR descriptions
+- Include tests for new features
+- Update documentation as needed

@@ -1,150 +1,505 @@
-# Feature Specification: Website Dashboard Management App
+# Technical Specification v2
 
-**Feature Branch**: `002-this-website-dashboard`  
-**Created**: 2025-10-01  
-**Status**: Draft  
-**Input**: User description: "this website dashboard management app should implement/improve: 1) list all specified websites, 2) use details in website-analysis-report.md and README.md, general-purpose dashboard entry, use ref-mcp as reference"
+## Enhanced System Architecture
 
-## Execution Flow (main)
+### Overview
+The Website Dashboard v2 is an enhanced Next.js application that provides advanced features for managing and showcasing multiple web projects with improved technology stacks, assets, and deployment information.
+
+### Enhanced Architecture Diagram
 ```
-1. Parse user description from Input
-   → If empty: ERROR "No feature description provided"
-2. Extract key concepts from description
-   → Identify: actors, actions, data, constraints
-3. For each unclear aspect:
-   → Mark with [NEEDS CLARIFICATION: specific question]
-4. Fill User Scenarios & Testing section
-   → If no clear user flow: ERROR "Cannot determine user scenarios"
-5. Generate Functional Requirements
-   → Each requirement must be testable
-   → Mark ambiguous requirements
-6. Identify Key Entities (if data involved)
-7. Run Review Checklist
-   → If any [NEEDS CLARIFICATION]: WARN "Spec has uncertainties"
-   → If implementation details found: ERROR "Remove tech details"
-8. Return: SUCCESS (spec ready for planning)
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │   Backend       │    │   Data Layer    │
+│   (Next.js 15+) │◄──►│   (API Routes)  │◄──►│   (JSON Files)  │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   UI Components  │    │   Services      │    │   Asset Storage │
+│   (React 19+)    │    │   (Enhanced)    │    │   (Optimized)   │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Monitoring    │    │   Real-time     │    │   Analytics     │
+│   (Enhanced)    │    │   (WebSocket)   │    │   (Advanced)    │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
----
+## Enhanced Component Architecture
 
-## ⚡ Quick Guidelines
-- ✅ Focus on WHAT users need and WHY
-- ❌ Avoid HOW to implement (no tech stack, APIs, code structure)
-- 👥 Written for business stakeholders, not developers
+### Frontend Components
 
-### Section Requirements
-- **Mandatory sections**: Must be completed for every feature
-- **Optional sections**: Include only when relevant to the feature
-- When a section doesn't apply, remove it entirely (don't leave as "N/A")
+#### Core Components
+```typescript
+// Layout Components
+- RootLayout: Enhanced main application layout
+- Navigation: Advanced top navigation bar
+- Layout: Enhanced page layout wrapper
+- Dashboard: Main dashboard component
 
-### For AI Generation
-When creating this spec from a user prompt:
-1. **Mark all ambiguities**: Use [NEEDS CLARIFICATION: specific question] for any assumption you'd need to make
-2. **Don't guess**: If the prompt doesn't specify something (e.g., "login system" without auth method), mark it
-3. **Think like a tester**: Every vague requirement should fail the "testable and unambiguous" checklist item
-4. **Common underspecified areas**:
-   - User types and permissions
-   - Data retention/deletion policies  
-   - Performance targets and scale
-   - Error handling behaviors
-   - Integration requirements
-   - Security/compliance needs
+// Website Components  
+- WebsiteGrid: Enhanced grid display of websites
+- WebsiteCard: Advanced individual website card
+- WebsiteDetail: Enhanced detailed website view
+- TechStackTab: Advanced technology stack display
 
----
+// UI Components
+- Button: Enhanced reusable button component
+- Card: Advanced content card wrapper
+- Badge: Enhanced status/technology badges
+- Input: Advanced form input components
+- DataTable: Advanced data table component
+- Modal: Enhanced modal component
+```
 
-## User Scenarios & Testing (mandatory)
+#### Enhanced Component Hierarchy
+```
+RootLayout
+├── Navigation
+├── Dashboard
+│   ├── WebsiteGrid
+│   │   └── WebsiteCard
+│   ├── WebsiteDetail
+│   ├── TechStackTab
+│   └── Analytics
+├── Monitoring
+│   ├── Status
+│   ├── Metrics
+│   └── Alerts
+└── UI Components
+    ├── Button
+    ├── Card
+    ├── Badge
+    ├── Input
+    ├── DataTable
+    └── Modal
+```
 
-### Primary User Story
-As a site owner, I want a centralized dashboard listing my websites with key details, logos, screenshots, and quick links so that I can quickly review, compare, and navigate to each site.
+### Enhanced Backend Architecture
 
-### Acceptance Scenarios
-1. **Given** the dashboard loads, **When** I view the list, **Then** I see all eight websites with title, URL, logo, screenshot preview, and a brief description sourced from `website-analysis-report.md` and `README.md`.
-2. **Given** the dashboard list, **When** I click a website card, **Then** I am taken to a detail view that shows the full description, logo, favicon reference, and a larger screenshot preview.
-3. **Given** the dashboard list, **When** I use basic filtering (e.g., by tag or text), **Then** only matching websites remain visible.
-4. **Given** the dashboard list, **When** an asset reference is missing, **Then** the dashboard shows a graceful placeholder with an explanation and does not break layout.
+#### API Routes Structure
+```
+/api/
+├── websites/
+│   ├── route.ts           # GET, POST /api/websites
+│   ├── search/
+│   │   └── route.ts        # GET /api/websites/search
+│   ├── bulk/
+│   │   └── route.ts        # POST /api/websites/bulk
+│   └── [id]/
+│       ├── route.ts        # GET, PUT, DELETE /api/websites/[id]
+│       ├── screenshot/
+│       │   └── route.ts    # GET /api/websites/[id]/screenshot
+│       ├── logo/
+│       │   └── route.ts    # GET /api/websites/[id]/logo
+│       └── favicon/
+│           └── route.ts   # GET /api/websites/[id]/favicon
+├── assets/
+│   └── [websiteId]/
+│       ├── route.ts        # GET, POST /api/assets/[websiteId]
+│       ├── batch/
+│       │   └── route.ts    # POST /api/assets/batch
+│       └── [assetId]/
+│           └── route.ts    # GET, PUT, DELETE /api/assets/[websiteId]/[assetId]
+├── tech-stack/
+│   ├── route.ts           # GET /api/tech-stack
+│   ├── categories/
+│   │   └── route.ts       # GET /api/tech-stack/categories
+│   ├── recommendations/
+│   │   └── route.ts       # GET /api/tech-stack/recommendations
+│   └── compatibility/
+│       └── route.ts       # GET /api/tech-stack/compatibility
+└── monitoring/
+    ├── status/
+    │   └── route.ts       # GET /api/monitoring/status
+    ├── metrics/
+    │   └── route.ts       # GET /api/monitoring/metrics
+    └── alerts/
+        └── route.ts       # GET, POST /api/monitoring/alerts
+```
 
-### Edge Cases
-- What happens when a URL becomes unreachable? → Show status as "Unavailable" with retry.
-- How does system handle missing or malformed image data? → Fallback placeholders and error badges.
-- What if descriptions exceed recommended length? → Truncate with "Read more" on detail view.
+#### Enhanced Service Layer
+```typescript
+// Core Services
+- WebsiteService: Enhanced website CRUD operations
+- PlaywrightService: Advanced screenshot generation
+- AssetService: Enhanced asset management
+- AuthenticationService: Advanced auth handling
 
-## Requirements (mandatory)
+// Enhanced Services
+- MonitoringService: Real-time monitoring
+- AnalyticsService: Advanced analytics
+- NotificationService: Alert management
+- CacheService: Enhanced caching
 
-### Functional Requirements
-- **FR-001**: System MUST display a list of exactly eight specified websites with title and URL.
-- **FR-002**: System MUST display for each website a concise description derived from `website-analysis-report.md` and/or `README.md`, with `website-analysis-report.md` taking precedence in case of conflicts.
-- **FR-003**: System MUST show a logo and favicon reference for each website when available; otherwise use a placeholder.
-- **FR-004**: System MUST show a screenshot preview for each website when available; otherwise use a placeholder.
-- **FR-005**: Users MUST be able to navigate to a website detail view containing the full description and larger preview.
-- **FR-006**: System MUST provide simple text search/filter across website name and description.
-- **FR-006a**: System MUST support filtering by technology-based tags (React, Next.js, AI, etc.).
-- **FR-007**: System MUST visibly indicate when asset references (logo/screenshot/favicon) are missing or invalid.
-- **FR-008**: System MUST list and link the following websites: 
-  - `https://face-fusion-agent.vercel.app/face-fusion`
-  - `https://nextjs-supabase-kappa-nine.vercel.app/`
-  - `https://manus-ai-shop.vercel.app/`
-  - `https://bidmaster-hub.vercel.app/`
-  - `https://nextjs-mcp-template.vercel.app/`
-  - `https://friendshipdaycare.vercel.app/`
-  - `https://bestitconsulting.ca/`
-  - `https://bestitconsultants.ca/`
-- **FR-009**: System MUST reflect content truthfully from the referenced docs; if conflicts arise, the dashboard MUST flag the discrepancy for resolution.
-- **FR-010**: System SHOULD provide quick external links to each site and open in a new tab.
-- **FR-011**: System SHOULD include a reference link to MCP (Model Context Protocol) documentation for future integrations.
+// Utility Services
+- DataLoader: Enhanced data loading and caching
+- Logger: Advanced logging functionality
+- Validation: Enhanced input validation
+- Security: Advanced security features
+```
 
-### Non-Functional Requirements
-- **NFR-001**: System MUST load the dashboard in under 2 seconds.
-- **NFR-002**: System MUST handle exactly 8 websites as specified.
-- **NFR-003**: System is designed for single-user access (no concurrent user requirements).
-- **NFR-004**: System MUST provide alt text for all images (logos, screenshots, favicons).
-- **NFR-005**: System MUST support keyboard navigation for all interactive elements.
+## Enhanced Data Models
 
-*Ambiguities*
-- **FR-013**: [NEEDS CLARIFICATION: Whether to support manual inline editing vs read-only display]
+### Core Entities
 
-### Key Entities (include if feature involves data)
-- **Website**: name, url, description, logoUrl, faviconUrl, screenshotUrl, tags[]
-- **Asset**: type (logo|favicon|screenshot), path/url, status
+#### Enhanced Website Entity
+```typescript
+interface Website {
+  id: string;
+  name: string;
+  url: string;
+  description?: string;
+  screenshot?: string;
+  logo?: string;
+  favicon?: string;
+  requiresAuth: boolean;
+  lastUpdated: string;
+  state: 'draft' | 'in-progress' | 'completed' | 'archived';
+  techStack: TechStackInfo;
+  deploymentInfo: DeploymentInfo;
+  features: string[];
+  demoVideo?: string;
+  tags: string[];
+  priority: number;
+  isPublic: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+```
 
----
+#### Enhanced TechStackInfo Entity
+```typescript
+interface TechStackInfo {
+  frontend: string[];
+  backend: string[];
+  database: string[];
+  deployment: string[];
+  aiTools: string[];
+  other: string[];
+  source: string;
+  version: string;
+  lastUpdated: string;
+}
+```
 
-## Review & Acceptance Checklist
-*GATE: Automated checks run during main() execution*
+#### Enhanced DeploymentInfo Entity
+```typescript
+interface DeploymentInfo {
+  platform: string;
+  url: string;
+  status: 'live' | 'staging' | 'development' | 'offline';
+  lastDeployed: string;
+  githubRepo?: string;
+  supabaseProject?: string;
+  supabaseUrl?: string;
+  environment: string;
+  region: string;
+  healthCheck: string;
+  monitoring: MonitoringInfo;
+}
+```
 
-### Content Quality
-- [ ] No implementation details (languages, frameworks, APIs)
-- [ ] Focused on user value and business needs
-- [ ] Written for non-technical stakeholders
-- [ ] All mandatory sections completed
+#### New MonitoringInfo Entity
+```typescript
+interface MonitoringInfo {
+  enabled: boolean;
+  uptime: number;
+  responseTime: number;
+  errorRate: number;
+  lastChecked: string;
+  alerts: Alert[];
+}
+```
 
-### Requirement Completeness
-- [ ] No [NEEDS CLARIFICATION] markers remain
-- [ ] Requirements are testable and unambiguous  
-- [ ] Success criteria are measurable
-- [ ] Scope is clearly bounded
-- [ ] Dependencies and assumptions identified
+#### New Alert Entity
+```typescript
+interface Alert {
+  id: string;
+  type: 'error' | 'warning' | 'info';
+  message: string;
+  timestamp: string;
+  resolved: boolean;
+}
+```
 
----
+### Enhanced Data Storage
 
-## Clarifications
+#### Enhanced JSON File Structure
+```
+data/
+├── websites.json          # Array of Website objects
+├── assets.json           # Array of AssetMetadata objects
+├── auth-credentials.json # Array of AuthenticationCredentials objects
+├── monitoring.json       # Array of MonitoringInfo objects
+└── tags.json            # Array of tag definitions
+```
 
-### Session 2025-01-27
-- Q: What are the expected performance targets for the dashboard? → A: Load in <2 seconds, handle 8 websites, no concurrent users
-- Q: What accessibility standards should the dashboard meet? → A: Basic accessibility (alt text for images, keyboard navigation)
-- Q: What is the specific scope and link for the "ref-mcp reference"? → A: Link to MCP (Model Context Protocol) documentation for future integrations
-- Q: What tagging taxonomy should be used for website filtering? → A: Technology-based tags (React, Next.js, AI, etc.)
-- Q: If `website-analysis-report.md` and `README.md` contain conflicting information, which should take precedence? → A: `website-analysis-report.md` takes precedence
+#### Enhanced Asset Storage
+```
+public/
+├── assets/
+│   ├── screenshots/       # Website screenshots
+│   ├── logos/            # Website logos
+│   └── favicons/         # Website favicons
+└── sites/               # Project-specific images
+    ├── project-1/
+    ├── project-2/
+    └── ...
+```
 
-## Execution Status
-*Updated by main() during processing*
+## Enhanced API Specifications
 
-- [ ] User description parsed
-- [ ] Key concepts extracted
-- [ ] Ambiguities marked
-- [ ] User scenarios defined
-- [ ] Requirements generated
-- [ ] Entities identified
-- [ ] Review checklist passed
+### RESTful API Design
 
----
+#### Enhanced Website Endpoints
+```typescript
+// Get all websites
+GET /api/websites
+Response: Website[]
 
+// Get website by ID
+GET /api/websites/[id]
+Response: Website
+
+// Create website
+POST /api/websites
+Body: Website
+Response: Website
+
+// Update website
+PUT /api/websites/[id]
+Body: Website
+Response: Website
+
+// Delete website
+DELETE /api/websites/[id]
+Response: 204 No Content
+
+// Search websites
+GET /api/websites/search?q=query&filters=...
+Response: Website[]
+
+// Bulk operations
+POST /api/websites/bulk
+Body: BulkOperation
+Response: BulkResult
+```
+
+#### Enhanced Asset Endpoints
+```typescript
+// Get website assets
+GET /api/assets/[websiteId]
+Response: AssetMetadata[]
+
+// Get specific asset
+GET /api/assets/[websiteId]/[assetId]
+Response: AssetMetadata
+
+// Create asset
+POST /api/assets/[websiteId]
+Body: AssetMetadata
+Response: AssetMetadata
+
+// Update asset
+PUT /api/assets/[websiteId]/[assetId]
+Body: AssetMetadata
+Response: AssetMetadata
+
+// Delete asset
+DELETE /api/assets/[websiteId]/[assetId]
+Response: 204 No Content
+
+// Batch asset processing
+POST /api/assets/batch
+Body: BatchAssetOperation
+Response: BatchAssetResult
+```
+
+#### New Monitoring Endpoints
+```typescript
+// Get monitoring status
+GET /api/monitoring/status
+Response: MonitoringStatus
+
+// Get performance metrics
+GET /api/monitoring/metrics
+Response: PerformanceMetrics
+
+// Get active alerts
+GET /api/monitoring/alerts
+Response: Alert[]
+
+// Create alert
+POST /api/monitoring/alerts
+Body: Alert
+Response: Alert
+```
+
+### Enhanced Error Handling
+
+#### HTTP Status Codes
+- `200 OK`: Successful GET, PUT
+- `201 Created`: Successful POST
+- `204 No Content`: Successful DELETE
+- `400 Bad Request`: Invalid request data
+- `401 Unauthorized`: Authentication required
+- `403 Forbidden`: Access denied
+- `404 Not Found`: Resource not found
+- `429 Too Many Requests`: Rate limit exceeded
+- `500 Internal Server Error`: Server error
+
+#### Enhanced Error Response Format
+```typescript
+interface ErrorResponse {
+  error: string;
+  message?: string;
+  details?: any;
+  timestamp: string;
+  requestId: string;
+}
+```
+
+## Enhanced Security Specifications
+
+### Advanced Authentication
+- Enhanced JWT token-based authentication
+- Multi-factor authentication support
+- Advanced OAuth integration
+- Enhanced session management
+- Advanced password hashing
+
+### Enhanced Authorization
+- Role-based access control
+- Resource-level permissions
+- API endpoint protection
+- Enhanced CSRF protection
+- Advanced security headers
+
+### Enhanced Data Security
+- Advanced input validation and sanitization
+- Enhanced XSS prevention
+- Advanced SQL injection prevention
+- Enhanced secure headers (CSP, HSTS)
+- Advanced encryption
+
+## Enhanced Performance Specifications
+
+### Core Web Vitals
+- **LCP (Largest Contentful Paint)**: < 1.5s
+- **FID (First Input Delay)**: < 50ms
+- **CLS (Cumulative Layout Shift)**: < 0.05
+
+### Enhanced Performance Targets
+- **Page Load Time**: < 1.5s
+- **Time to Interactive**: < 2s
+- **Bundle Size**: < 400KB
+- **Lighthouse Score**: > 95
+
+### Enhanced Optimization Strategies
+- Advanced code splitting and lazy loading
+- Enhanced image optimization (WebP/AVIF)
+- Advanced static generation
+- Enhanced CDN caching
+- Advanced bundle analysis and optimization
+
+## Enhanced Testing Specifications
+
+### Advanced Testing Strategy
+- **Unit Tests**: Enhanced component and utility functions
+- **Integration Tests**: Advanced API routes and services
+- **E2E Tests**: Enhanced user workflows
+- **Performance Tests**: Advanced load and stress testing
+- **Security Tests**: Advanced security testing
+
+### Enhanced Testing Tools
+- **Jest**: Enhanced unit testing framework
+- **React Testing Library**: Advanced component testing
+- **Playwright**: Enhanced E2E testing
+- **Lighthouse**: Advanced performance testing
+- **Sentry**: Enhanced error tracking
+
+### Enhanced Test Coverage
+- **Unit Tests**: > 90% coverage
+- **Integration Tests**: All API endpoints
+- **E2E Tests**: Critical user paths
+- **Performance Tests**: Enhanced core web vitals
+- **Security Tests**: Comprehensive security testing
+
+## Enhanced Deployment Specifications
+
+### Enhanced Environment Configuration
+```typescript
+// Development
+NODE_ENV=development
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+// Production
+NODE_ENV=production
+NEXT_PUBLIC_APP_URL=https://your-domain.com
+DATABASE_URL=your-database-url
+SUPABASE_URL=your-supabase-url
+SUPABASE_ANON_KEY=your-supabase-key
+SENTRY_DSN=your-sentry-dsn
+MONITORING_API_KEY=your-monitoring-key
+```
+
+### Enhanced Deployment Pipeline
+1. **Code Push**: GitHub repository
+2. **Build Process**: Enhanced Next.js build
+3. **Testing**: Advanced automated tests
+4. **Deployment**: Enhanced Vercel deployment
+5. **Monitoring**: Advanced performance monitoring
+
+### Enhanced Infrastructure Requirements
+- **Hosting**: Enhanced Vercel platform
+- **Database**: Enhanced Supabase PostgreSQL
+- **CDN**: Enhanced Vercel Edge Network
+- **Monitoring**: Advanced Vercel Analytics
+- **Security**: Enhanced security features
+
+## Enhanced Monitoring and Observability
+
+### Advanced Metrics Collection
+- **Performance**: Enhanced core web vitals
+- **Errors**: Advanced JavaScript error tracking
+- **Usage**: Enhanced user interaction analytics
+- **API**: Advanced response times and error tracking
+- **Security**: Advanced security monitoring
+
+### Enhanced Logging Strategy
+- **Application Logs**: Advanced structured logging
+- **Error Logs**: Enhanced error tracking and alerting
+- **Audit Logs**: Advanced user actions and changes
+- **Performance Logs**: Enhanced performance metrics
+- **Security Logs**: Advanced security monitoring
+
+### Enhanced Alerting
+- **Error Rate**: > 3% error rate
+- **Response Time**: > 1.5s average
+- **Availability**: < 99.5% uptime
+- **Performance**: Lighthouse score < 95
+- **Security**: Security incidents
+
+## Enhanced Scalability Considerations
+
+### Advanced Horizontal Scaling
+- Enhanced stateless application design
+- Advanced database connection pooling
+- Enhanced CDN for static assets
+- Advanced load balancing
+- Enhanced caching strategies
+
+### Advanced Vertical Scaling
+- Enhanced memory optimization
+- Advanced CPU optimization
+- Enhanced database query optimization
+- Advanced caching strategies
+- Enhanced performance monitoring
+
+### Future Scaling
+- Advanced microservices architecture
+- Enhanced database sharding
+- Advanced event-driven architecture
+- Enhanced real-time features
+- Advanced AI integration

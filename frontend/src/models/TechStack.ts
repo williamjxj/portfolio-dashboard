@@ -93,9 +93,23 @@ export type TechStackCategory = typeof TECH_STACK_CATEGORIES[keyof typeof TECH_S
 export interface TechStackSummary {
   totalWebsites: number;
   totalTechnologies: number;
-  categories: {
-    name: string;
-    count: number;
-    technologies: string[];
-  }[];
+  categories: string[];
+  
+  // Enhanced statistics
+  statistics: {
+    activeProjects: number;
+    completedProjects: number;
+    projectsWithVideos: number;
+    projectsWithScreenshots: number;
+    averageLoadTime: number;
+  };
+  
+  // Technology breakdown
+  technologyBreakdown: {
+    frontend: string[];
+    backend: string[];
+    database: string[];
+    deployment: string[];
+    tools: string[];
+  };
 }

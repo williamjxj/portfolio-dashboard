@@ -4,6 +4,8 @@ Auto-generated from all feature plans. Last updated: 2025-10-01
 
 ## Active Technologies
 - TypeScript 5.x, Next.js 15, React 19 + shadcn/ui, Tailwind CSS, Playwright, next-themes (003-update-ui-ux)
+- TypeScript 5.x, Next.js 15, React 19 + shadcn/ui, Tailwind CSS, Framer Motion, Lucide Reac (005-improve-to-organize)
+- JSON files for website data, static assets in public/ directory (005-improve-to-organize)
 
 ## Project Structure
 ```
@@ -17,6 +19,7 @@ npm test [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNO
 TypeScript 5.x, Next.js 15, React 19: Follow standard conventions
 
 ## Recent Changes
+- 005-improve-to-organize: Added TypeScript 5.x, Next.js 15, React 19 + shadcn/ui, Tailwind CSS, Framer Motion, Lucide Reac
 - 003-update-ui-ux: Added TypeScript 5.x, Next.js 15, React 19 + shadcn/ui, Tailwind CSS, Playwright, next-themes
 
 <!-- MANUAL ADDITIONS START -->

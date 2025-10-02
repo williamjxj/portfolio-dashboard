@@ -1,44 +1,245 @@
-## Phase 0 Research — UI/UX Enhancements for Website Dashboard
+# Research Documentation v2
 
-### Decision: Adopt shadcn/ui as the component baseline
-- Rationale: Works seamlessly with Next.js + Tailwind; copy-paste components allow full control without runtime dependency bloat; strong a11y patterns and dark mode primitives.
-- Alternatives considered: Material UI (heavier, theme system overkill), Chakra (good DX but theming divergence from Tailwind), Headless UI (lower-level; more wiring).
-- References: `https://ui.shadcn.com/docs/installation/next` (setup), shadcn component catalog via MCP.
+## Enhanced Technology Stack Research
 
-### Decision: Leverage Magic UI patterns (compatible with shadcn)
-- Rationale: Magic UI provides delightful micro-interactions, cards, nav, and animated patterns that pair well with shadcn tokens.
-- Alternatives: Build effects in-house (time-intensive); Framer Motion custom (kept for select interactions).
-- References: `https://github.com/magicuidesign/magicui` (docs/blog on shadcn compatibility).
+### Frontend Framework Analysis
 
-### Decision: Use Mobbin for pattern inspiration (list → card grid → detail)
-- Rationale: Mobbin showcases best-in-class dashboard list/detail patterns, filters, and empty states; informs IA and content density choices.
-- Alternatives: Dribbble/Behance (less systematized), Ant Design specs (kept as secondary reference below).
-- References: `https://mobbin.com` (browsed patterns: dashboards, cards, search/filter, empty state).
+#### Next.js 15+ with App Router
+**Next.js 15+ Advantages:**
+- Enhanced App Router with improved performance
+- Better TypeScript support
+- Improved caching strategies
+- Enhanced developer experience
+- Better SEO capabilities
 
-### UI Information Architecture
-- Home: grid list of websites (cards) with logo, title, URL, short description, favicon indicator, and screenshot thumbnail.
-- Detail: hero with logo + title + actions (Open site, View assets), larger screenshot, full description, metadata (favicon, logo, last captured), and related links.
-- Filter/Search: global search over name/description; optional quick tag chips (future).
-- Empty/Errors: graceful placeholders for missing screenshot/logo; retry action for unreachable URLs.
+**New Features:**
+- React Server Components
+- Enhanced caching
+- Improved performance
+- Better error handling
 
-### Accessibility & Performance (Constitution Alignment)
-- A11y: semantic headings, focus order, keyboard navigation, aria-labels on actionable icons, contrast ≥ 4.5:1.
-- Performance: static-first with serverless APIs; images optimized to WebP with responsive sizes; no blocking animations.
+### UI Framework Research
 
-### Playwright Integration (MCP + local service)
-- Use Playwright MCP to on-demand screenshot pages when assets missing or stale.
-- Keep local `PlaywrightService` to batch/capture assets via scripts, not at runtime.
+#### Enhanced shadcn/ui
+**shadcn/ui v2 Advantages:**
+- Improved component library
+- Better TypeScript support
+- Enhanced accessibility
+- More customization options
+- Better performance
 
-### Design Tokens & Themes
-- Tailwind + shadcn tokens: use neutral gray base with accent per-site; support dark mode toggle.
+**New Components:**
+- Advanced data tables
+- Enhanced forms
+- Better navigation
+- Improved modals
 
-### Open Questions Resolved
-- FR-011 (ref-mcp scope): track external references in docs and quickstart; no runtime UI link required.
-- FR-012 (tagging): defer; not required for initial release.
-- FR-013 (editing): read-only dashboard for now.
-- FR-014 (conflicts between docs): prefer `website-analysis-report.md`; flag deviations in UI badge.
+### Styling Solution
 
-### Secondary References
-- Ant Design specs on lists, visualization pages for density/layout guidance: `https://ant.design/docs/spec/data-list` and related pages.
+#### Tailwind CSS v4
+**Tailwind CSS v4 Benefits:**
+- Improved performance
+- Better developer experience
+- Enhanced customization
+- Better CSS optimization
+- Improved build times
 
+## Enhanced Data Storage Research
 
+### Database Options
+
+#### Supabase Integration
+**Supabase Advantages:**
+- PostgreSQL database
+- Real-time subscriptions
+- Built-in authentication
+- Good Next.js integration
+- Generous free tier
+- Enhanced security
+
+**New Features:**
+- Real-time updates
+- Enhanced authentication
+- Better monitoring
+- Improved performance
+
+### File Storage
+
+#### Enhanced JSON Structure
+**Benefits:**
+- Better data organization
+- Improved performance
+- Enhanced validation
+- Better error handling
+- Improved caching
+
+## Advanced Asset Management Research
+
+### Image Optimization
+
+#### Next.js Image Component v2
+- Enhanced optimization
+- Better WebP/AVIF support
+- Improved lazy loading
+- Better responsive images
+- Enhanced performance
+
+#### External Services
+- **Cloudinary**: Enhanced image management
+- **ImageKit**: Better performance
+- **Vercel Image Optimization**: Improved optimization
+
+### Asset Generation
+
+#### Enhanced Playwright
+**Playwright v2 Advantages:**
+- Better screenshot generation
+- Improved performance
+- Enhanced reliability
+- Better cross-platform support
+- Improved error handling
+
+## Advanced Authentication Research
+
+### Authentication Strategies
+
+#### Enhanced OAuth Integration
+- **GitHub OAuth**: Better developer integration
+- **Google OAuth**: Enhanced security
+- **Microsoft OAuth**: Better enterprise support
+
+#### Advanced SSO Solutions
+- **Auth0**: Enhanced identity platform
+- **Supabase Auth**: Improved integration
+- **NextAuth.js**: Better Next.js support
+
+## Enhanced Deployment Research
+
+### Platform Analysis
+
+#### Vercel v2
+**Advantages:**
+- Enhanced Next.js integration
+- Better global CDN
+- Improved deployments
+- Enhanced analytics
+- Better edge functions
+
+**New Features:**
+- Enhanced monitoring
+- Better performance
+- Improved security
+- Better scalability
+
+### Database Options
+
+#### Enhanced Supabase
+**Advantages:**
+- Better PostgreSQL support
+- Enhanced real-time features
+- Improved authentication
+- Better Next.js integration
+- Enhanced security
+
+## Advanced Performance Research
+
+### Optimization Strategies
+
+#### Enhanced Bundle Optimization
+- Advanced code splitting
+- Better tree shaking
+- Improved dynamic imports
+- Enhanced bundle analysis
+
+#### Advanced Image Optimization
+- Better WebP/AVIF support
+- Enhanced responsive images
+- Improved lazy loading
+- Better CDN delivery
+
+#### Enhanced Caching Strategies
+- Advanced static generation
+- Better incremental static regeneration
+- Improved edge caching
+- Enhanced browser caching
+
+### Monitoring Solutions
+- **Vercel Analytics**: Enhanced performance monitoring
+- **Lighthouse**: Better performance auditing
+- **Web Vitals**: Enhanced core web vitals tracking
+- **Sentry**: Better error tracking
+
+## Advanced Security Research
+
+### Security Considerations
+
+#### Enhanced Data Protection
+- Better input validation
+- Enhanced XSS prevention
+- Improved CSRF protection
+- Better secure headers
+
+#### Advanced Authentication Security
+- Enhanced JWT token handling
+- Better session management
+- Improved password hashing
+- Enhanced OAuth security
+
+#### Enhanced Deployment Security
+- Better HTTPS enforcement
+- Enhanced security headers
+- Improved environment variable protection
+- Better access control
+
+## Advanced Accessibility Research
+
+### WCAG 2.1 Compliance
+- Enhanced semantic HTML
+- Better ARIA attributes
+- Improved keyboard navigation
+- Enhanced screen reader support
+- Better color contrast
+
+### Testing Tools
+- **axe-core**: Enhanced accessibility testing
+- **Lighthouse**: Better accessibility auditing
+- **WAVE**: Enhanced web accessibility evaluation
+
+## Advanced Testing Research
+
+### Testing Strategies
+
+#### Enhanced Unit Testing
+- **Jest**: Better test runner
+- **React Testing Library**: Enhanced component testing
+- **MSW**: Better API mocking
+
+#### Advanced Integration Testing
+- **Playwright**: Enhanced E2E testing
+- **Cypress**: Better alternative E2E testing
+- **Storybook**: Enhanced component development
+
+#### Advanced Performance Testing
+- **Lighthouse CI**: Enhanced automated performance testing
+- **WebPageTest**: Better detailed performance analysis
+- **Bundle Analyzer**: Enhanced bundle size analysis
+
+## Future Considerations
+
+### Scalability
+- Enhanced database migration
+- Better caching strategies
+- Improved CDN optimization
+- Advanced microservices architecture
+
+### Feature Extensions
+- Enhanced real-time updates
+- Better collaborative editing
+- Advanced analytics
+- Improved mobile applications
+
+### Technology Evolution
+- Enhanced React Server Components
+- Better edge computing
+- Advanced AI integration
+- Enhanced Web3 features

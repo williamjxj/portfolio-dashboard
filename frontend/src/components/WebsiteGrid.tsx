@@ -22,6 +22,12 @@ export const WebsiteGrid: React.FC<WebsiteGridProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   
   const filteredWebsites = useMemo(() => {
+    // Safety check: ensure websites is an array
+    if (!Array.isArray(websites)) {
+      console.error('Websites is not an array:', websites);
+      return [];
+    }
+    
     if (!searchTerm) return websites;
     return websites.filter(website => 
       website.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -59,7 +65,7 @@ export const WebsiteGrid: React.FC<WebsiteGridProps> = ({
     );
   }
 
-  if (websites.length === 0) {
+  if (!Array.isArray(websites) || websites.length === 0) {
     return (
       <div className={`flex items-center justify-center min-h-64 ${className}`}>
         <div className="text-center">

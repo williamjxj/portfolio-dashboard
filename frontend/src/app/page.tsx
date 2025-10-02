@@ -23,7 +23,15 @@ export default function HomePage() {
         }
         
         const data = await response.json();
-        setWebsites(data);
+        // Handle the API response structure
+        if (data.websites && Array.isArray(data.websites)) {
+          setWebsites(data.websites);
+        } else if (Array.isArray(data)) {
+          setWebsites(data);
+        } else {
+          console.error('Invalid data structure received:', data);
+          setError('Invalid data format received from server');
+        }
       } catch (err) {
         console.error('Error fetching websites:', err);
         setError(err instanceof Error ? err.message : 'Failed to load websites');
