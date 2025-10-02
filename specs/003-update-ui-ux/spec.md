@@ -64,31 +64,44 @@ As a site owner, I want to access a dedicated tech stack information tab alongsi
 4. **Given** the user wants to return to the main dashboard, **When** they click the Dashboard tab, **Then** they are taken back to the clean website listing view.
 
 ### Edge Cases
-- What happens when tech stack information is missing for a website? → Show "Information not available" placeholder.
+- What happens when tech stack information is missing for a website? → Show "Information not available" placeholder with option to add data.
 - How does the system handle navigation between tabs? → Maintain consistent navigation state and active tab highlighting.
 - What if the tech stack page takes time to load? → Show loading indicator while fetching technical details.
+- What if a website has partial tech stack information? → Display available information with placeholders for missing categories.
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 - **FR-001**: System MUST provide a new navigation tab labeled "Tech Stack" alongside existing Dashboard and About tabs.
 - **FR-002**: System MUST display a dedicated tech stack page accessible via the new tab.
-- **FR-003**: System MUST show technical information for each website including [NEEDS CLARIFICATION: specific tech details to display - frameworks, libraries, deployment info, etc.?]
+- **FR-003**: System MUST show technical information for each website including frontend frameworks, backend technologies, database systems, deployment platforms, AI/ML tools, and other technologies.
 - **FR-004**: System MUST maintain consistent navigation across all three tabs (Dashboard, Tech Stack, About).
 - **FR-005**: System MUST preserve the clean, uncluttered design of the main dashboard by moving technical details to the dedicated tab.
-- **FR-006**: System MUST handle cases where technical information is not available for a website.
+- **FR-006**: System MUST handle cases where technical information is not available for a website by showing "Information not available" placeholder with option to add data.
 - **FR-007**: System MUST provide clear navigation between tabs with active state indication.
 - **FR-008**: System MUST maintain the existing functionality of the Dashboard and About pages.
 
 *Ambiguities*
-- **FR-009**: [NEEDS CLARIFICATION: What specific technical information should be displayed in the tech stack tab?]
-- **FR-010**: [NEEDS CLARIFICATION: How should the tech stack information be organized - by website, by technology, or by category?]
-- **FR-011**: [NEEDS CLARIFICATION: Should the tech stack tab show real-time information or static data?]
+- None remaining
+
+### Non-Functional Requirements
+- **NFR-001**: Tech stack page MUST load in under 2 seconds, consistent with main dashboard performance targets.
+- **NFR-002**: Tech stack page MUST maintain accessibility standards (WCAG 2.1 AA) for all technical information display.
+- **NFR-003**: Tech stack page MUST be responsive and work seamlessly across all device sizes.
 
 ### Key Entities *(include if feature involves data)*
 - **TechStackInfo**: technical details for each website including frameworks, libraries, deployment platform, version information
 - **NavigationTab**: represents the three main navigation sections (Dashboard, Tech Stack, About)
 - **WebsiteTechDetails**: relationship between websites and their technical specifications
+
+## Clarifications
+
+### Session 2025-01-27
+- Q: What specific technical information should be displayed in the tech stack tab? → A: Frontend frameworks, backend technologies, database systems, deployment platforms, AI/ML tools, and other technologies
+- Q: How should the tech stack information be organized? → A: By website - each website shows its complete tech stack in a dedicated card
+- Q: Should the tech stack tab show real-time information or static data? → A: Static data - pre-defined technical information that is manually updated
+- Q: What performance targets should the tech stack page meet? → A: Page load < 2 seconds, same as main dashboard
+- Q: How should the system handle missing or incomplete tech stack data? → A: Show "Information not available" placeholder with option to add data
 
 ---
 

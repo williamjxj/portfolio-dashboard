@@ -1,0 +1,335 @@
+openapi: 3.0.3
+info:
+  title: Tech Stack API
+  description: API endpoints for managing tech stack information in the website dashboard
+  version: 1.0.0
+  contact:
+    name: William Jiang
+    email: william.jiang@example.com
+
+servers:
+  - url: https://website-dashboard.vercel.app
+    description: Production server
+  - url: http://localhost:3000
+    description: Development server
+
+paths:
+  /api/websites:
+    get:
+      summary: Get all websites with tech stack information
+      description: Returns a list of all websites including their technical information
+      tags:
+        - Websites
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Website'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/websites/{id}:
+    get:
+      summary: Get website by ID with tech stack
+      description: Returns a specific website with its technical information
+      tags:
+        - Websites
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Website ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Website'
+        '404':
+          description: Website not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/tech-stack:
+    get:
+      summary: Get tech stack summary
+      description: Returns a summary of all tech stack information across websites
+      tags:
+        - Tech Stack
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TechStackSummary'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/tech-stack/categories:
+    get:
+      summary: Get tech stack categories
+      description: Returns available tech stack categories and their counts
+      tags:
+        - Tech Stack
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TechCategory'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Website:
+      type: object
+      required:
+        - id
+        - name
+        - url
+        - description
+        - screenshot
+        - logo
+        - favicon
+        - requiresAuth
+        - lastUpdated
+        - state
+        - techStack
+        - deploymentInfo
+        - features
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the website
+          example: "bestitconsultants"
+        name:
+          type: string
+          description: Display name of the website
+          example: "Best IT Consultants"
+        url:
+          type: string
+          format: uri
+          description: Website URL
+          example: "https://bestitconsultants.com"
+        description:
+          type: string
+          description: Website description
+          example: "AI-powered IT consulting services"
+        screenshot:
+          type: string
+          description: Path to screenshot image
+          example: "/assets/screenshots/bestitconsultants.png"
+        logo:
+          type: string
+          description: Path to logo image
+          example: "/assets/logos/bestitconsultants.png"
+        favicon:
+          type: string
+          description: Path to favicon image
+          example: "/assets/favicons/bestitconsultants.ico"
+        requiresAuth:
+          type: boolean
+          description: Whether the website requires authentication
+          example: false
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Last update timestamp
+          example: "2025-01-27T10:00:00Z"
+        state:
+          type: string
+          enum: [active, inactive, maintenance]
+          description: Website state
+          example: "active"
+        techStack:
+          $ref: '#/components/schemas/TechStackInfo'
+        deploymentInfo:
+          $ref: '#/components/schemas/DeploymentInfo'
+        features:
+          type: array
+          items:
+            type: string
+          description: List of website features
+          example: ["AI Integration", "Real-time Analytics", "Mobile Responsive"]
+
+    TechStackInfo:
+      type: object
+      required:
+        - frontend
+        - backend
+        - database
+        - deployment
+        - source
+      properties:
+        frontend:
+          type: array
+          items:
+            type: string
+          description: Frontend frameworks and libraries
+          example: ["React", "Next.js", "TypeScript", "Tailwind CSS"]
+        backend:
+          type: array
+          items:
+            type: string
+          description: Backend technologies and frameworks
+          example: ["Node.js", "Express", "Python", "FastAPI"]
+        database:
+          type: array
+          items:
+            type: string
+          description: Database systems and tools
+          example: ["PostgreSQL", "MongoDB", "Redis"]
+        deployment:
+          type: array
+          items:
+            type: string
+          description: Deployment platforms and services
+          example: ["Vercel", "AWS", "Docker"]
+        aiTools:
+          type: array
+          items:
+            type: string
+          description: AI/ML tools and frameworks
+          example: ["OpenAI API", "LangChain", "Hugging Face"]
+        other:
+          type: array
+          items:
+            type: string
+          description: Other technologies and tools
+          example: ["GitHub Actions", "Playwright", "ESLint"]
+        version:
+          type: string
+          description: Version information
+          example: "1.0.0"
+        source:
+          type: string
+          description: Data source or last updated timestamp
+          example: "2025-01-27T10:00:00Z"
+
+    DeploymentInfo:
+      type: object
+      required:
+        - platform
+        - region
+        - status
+      properties:
+        platform:
+          type: string
+          description: Deployment platform
+          example: "Vercel"
+        region:
+          type: string
+          description: Deployment region
+          example: "us-east-1"
+        status:
+          type: string
+          enum: [active, inactive, maintenance]
+          description: Deployment status
+          example: "active"
+        url:
+          type: string
+          format: uri
+          description: Deployment URL
+          example: "https://bestitconsultants.ca"
+
+    TechStackSummary:
+      type: object
+      required:
+        - totalWebsites
+        - totalTechnologies
+        - categories
+      properties:
+        totalWebsites:
+          type: integer
+          description: Total number of websites
+          example: 8
+        totalTechnologies:
+          type: integer
+          description: Total number of unique technologies
+          example: 45
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/TechCategory'
+          description: Technology categories and counts
+
+    TechCategory:
+      type: object
+      required:
+        - name
+        - count
+        - technologies
+      properties:
+        name:
+          type: string
+          description: Category name
+          example: "Frontend"
+        count:
+          type: integer
+          description: Number of technologies in this category
+          example: 12
+        technologies:
+          type: array
+          items:
+            type: string
+          description: List of technologies in this category
+          example: ["React", "Next.js", "TypeScript", "Tailwind CSS"]
+
+    Error:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: "ValidationError"
+        message:
+          type: string
+          description: Error message
+          example: "Invalid website ID provided"
+        details:
+          type: object
+          description: Additional error details
+          example:
+            field: "id"
+            value: "invalid-id"
+
+  tags:
+    - name: Websites
+      description: Website management endpoints
+    - name: Tech Stack
+      description: Tech stack information endpoints

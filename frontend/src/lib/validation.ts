@@ -1,174 +1,256 @@
-import { Website } from '@/models/Website';
-import { AuthenticationCredentials } from '@/models/AuthenticationCredentials';
+/**
+ * Validation utilities for tech stack data
+ * Provides validation functions for TechStackInfo fields with proper constraints
+ */
 
+import { TechStackInfo } from '@/models/TechStack';
+
+/**
+ * Validation result interface
+ */
 export interface ValidationResult {
   isValid: boolean;
   errors: string[];
+  warnings: string[];
 }
 
 /**
- * Validate website data
+ * Validate tech stack information
  */
-export function validateWebsite(website: Partial<Website>): ValidationResult {
+export function validateTechStackInfo(techStack: TechStackInfo): ValidationResult {
   const errors: string[] = [];
+  const warnings: string[] = [];
 
-  if (!website.id || typeof website.id !== 'string') {
-    errors.push('ID is required and must be a string');
+  if (!techStack) {
+    errors.push('Tech stack information is required');
+    return { isValid: false, errors, warnings };
   }
 
-  if (!website.name || typeof website.name !== 'string') {
-    errors.push('Name is required and must be a string');
+  // Validate required arrays
+  const requiredArrays = [
+    { field: 'frontend', label: 'Frontend' },
+    { field: 'backend', label: 'Backend' },
+    { field: 'database', label: 'Database' },
+    { field: 'deployment', label: 'Deployment' }
+  ];
+
+  for (const { field, label } of requiredArrays) {
+    const value = techStack[field as keyof TechStackInfo];
+    if (!Array.isArray(value)) {
+      errors.push(`${label} must be an array`);
+    } else if (value.length === 0) {
+      errors.push(`${label} cannot be empty`);
+    } else {
+      // Validate array items
+      value.forEach((item, index) => {
+        if (typeof item !== 'string' || item.trim().length === 0) {
+          errors.push(`${label}[${index}] must be a non-empty string`);
+        }
+      });
+    }
   }
 
-  if (!website.url || typeof website.url !== 'string') {
-    errors.push('URL is required and must be a string');
-  } else if (!isValidUrl(website.url)) {
-    errors.push('URL must be a valid HTTP/HTTPS URL');
+  // Validate optional arrays
+  const optionalArrays = [
+    { field: 'aiTools', label: 'AI Tools' },
+    { field: 'other', label: 'Other' }
+  ];
+
+  for (const { field, label } of optionalArrays) {
+    const value = techStack[field as keyof TechStackInfo];
+    if (value !== undefined && !Array.isArray(value)) {
+      errors.push(`${label} must be an array`);
+    } else if (Array.isArray(value)) {
+      value.forEach((item, index) => {
+        if (typeof item !== 'string' || item.trim().length === 0) {
+          errors.push(`${label}[${index}] must be a non-empty string`);
+        }
+      });
+    }
   }
 
-  if (!website.description || typeof website.description !== 'string') {
-    errors.push('Description is required and must be a string');
-  } else if (website.description.length < 50 || website.description.length > 200) {
-    errors.push('Description must be between 50 and 200 characters');
+  // Validate source field
+  if (!techStack.source || typeof techStack.source !== 'string') {
+    errors.push('Source is required and must be a string');
+  } else if (!isValidISODate(techStack.source)) {
+    warnings.push('Source should be a valid ISO date string');
   }
 
-  if (typeof website.requiresAuth !== 'boolean') {
-    errors.push('requiresAuth must be a boolean');
-  }
-
-  if (!website.lastUpdated || typeof website.lastUpdated !== 'string') {
-    errors.push('lastUpdated is required and must be a string');
-  } else if (!isValidDate(website.lastUpdated)) {
-    errors.push('lastUpdated must be a valid ISO date string');
+  // Validate version field if provided
+  if (techStack.version !== undefined) {
+    if (typeof techStack.version !== 'string') {
+      errors.push('Version must be a string');
+    } else if (!isValidSemanticVersion(techStack.version)) {
+      warnings.push('Version should follow semantic versioning (e.g., 1.0.0)');
+    }
   }
 
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
+    warnings
   };
 }
 
 /**
- * Validate authentication credentials
+ * Validate individual tech stack category
  */
-export function validateAuthCredentials(credentials: Partial<AuthenticationCredentials>): ValidationResult {
+export function validateTechStackCategory(
+  category: string,
+  technologies: string[]
+): ValidationResult {
   const errors: string[] = [];
+  const warnings: string[] = [];
 
-  if (!credentials.websiteId || typeof credentials.websiteId !== 'string') {
-    errors.push('websiteId is required and must be a string');
+  if (!Array.isArray(technologies)) {
+    errors.push(`${category} must be an array`);
+    return { isValid: false, errors, warnings };
   }
 
-  if (!credentials.method || !['email', 'oauth', 'sso'].includes(credentials.method)) {
-    errors.push('method must be one of: email, oauth, sso');
+  if (technologies.length === 0) {
+    warnings.push(`${category} is empty`);
   }
 
-  if (credentials.method === 'email') {
-    if (!credentials.username || typeof credentials.username !== 'string') {
-      errors.push('username is required for email authentication');
+  technologies.forEach((tech, index) => {
+    if (typeof tech !== 'string') {
+      errors.push(`${category}[${index}] must be a string`);
+    } else if (tech.trim().length === 0) {
+      errors.push(`${category}[${index}] cannot be empty`);
+    } else if (tech.length > 100) {
+      warnings.push(`${category}[${index}] is very long (${tech.length} characters)`);
     }
-    if (!credentials.password || typeof credentials.password !== 'string') {
-      errors.push('password is required for email authentication');
-    }
+  });
+
+  return {
+    isValid: errors.length === 0,
+    errors,
+    warnings
+  };
+}
+
+/**
+ * Validate tech stack completeness
+ */
+export function validateTechStackCompleteness(techStack: TechStackInfo): ValidationResult {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+
+  const requiredCategories = ['frontend', 'backend', 'database', 'deployment'];
+  const missingCategories = requiredCategories.filter(
+    category => !techStack[category as keyof TechStackInfo] || 
+    (Array.isArray(techStack[category as keyof TechStackInfo]) && 
+     (techStack[category as keyof TechStackInfo] as string[]).length === 0)
+  );
+
+  if (missingCategories.length > 0) {
+    errors.push(`Missing required categories: ${missingCategories.join(', ')}`);
   }
 
-  if (credentials.method === 'oauth') {
-    if (!credentials.oauthProvider || typeof credentials.oauthProvider !== 'string') {
-      errors.push('oauthProvider is required for OAuth authentication');
-    }
+  // Check for minimum technology count
+  const totalTechnologies = Object.values(techStack)
+    .filter(Array.isArray)
+    .reduce((total, arr) => total + arr.length, 0);
+
+  if (totalTechnologies === 0) {
+    errors.push('No technologies specified');
+  } else if (totalTechnologies < 3) {
+    warnings.push('Very few technologies specified (less than 3)');
   }
 
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
+    warnings
   };
 }
 
 /**
- * Validate URL format
+ * Sanitize tech stack data
  */
-export function isValidUrl(url: string): boolean {
-  try {
-    const urlObj = new URL(url);
-    return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
-  } catch {
-    return false;
+export function sanitizeTechStackInfo(techStack: TechStackInfo): TechStackInfo {
+  const sanitized = { ...techStack };
+
+  // Sanitize string arrays
+  const arrayFields = ['frontend', 'backend', 'database', 'deployment', 'aiTools', 'other'];
+  arrayFields.forEach(field => {
+    const value = sanitized[field as keyof TechStackInfo];
+    if (Array.isArray(value)) {
+      sanitized[field as keyof TechStackInfo] = value
+        .filter(item => typeof item === 'string' && item.trim().length > 0)
+        .map(item => item.trim())
+        .filter((item, index, arr) => arr.indexOf(item) === index); // Remove duplicates
+    }
+  });
+
+  // Sanitize source
+  if (sanitized.source && typeof sanitized.source === 'string') {
+    sanitized.source = sanitized.source.trim();
   }
+
+  // Sanitize version
+  if (sanitized.version && typeof sanitized.version === 'string') {
+    sanitized.version = sanitized.version.trim();
+  }
+
+  return sanitized;
 }
 
 /**
- * Validate date format
+ * Check if string is a valid ISO date
  */
-export function isValidDate(dateString: string): boolean {
+function isValidISODate(dateString: string): boolean {
   const date = new Date(dateString);
   return !isNaN(date.getTime()) && date.toISOString() === dateString;
 }
 
 /**
- * Validate email format
+ * Check if string is a valid semantic version
  */
-export function isValidEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+function isValidSemanticVersion(version: string): boolean {
+  const semverRegex = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
+  return semverRegex.test(version);
 }
 
 /**
- * Validate password strength
+ * Validate tech stack data from JSON
  */
-export function isValidPassword(password: string): boolean {
-  // At least 8 characters, contains letter and number
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/;
-  return passwordRegex.test(password);
-}
-
-/**
- * Sanitize input string
- */
-export function sanitizeString(input: string): string {
-  return input.trim().replace(/[<>]/g, '');
-}
-
-/**
- * Validate and sanitize website ID
- */
-export function validateWebsiteId(id: string): ValidationResult {
+export function validateTechStackFromJSON(data: any): ValidationResult {
   const errors: string[] = [];
+  const warnings: string[] = [];
 
-  if (!id || typeof id !== 'string') {
-    errors.push('Website ID is required and must be a string');
-  } else if (id.length < 3 || id.length > 50) {
-    errors.push('Website ID must be between 3 and 50 characters');
-  } else if (!/^[a-zA-Z0-9-_]+$/.test(id)) {
-    errors.push('Website ID can only contain letters, numbers, hyphens, and underscores');
+  if (!data || typeof data !== 'object') {
+    errors.push('Tech stack data must be an object');
+    return { isValid: false, errors, warnings };
   }
+
+  // Check for required fields
+  const requiredFields = ['frontend', 'backend', 'database', 'deployment', 'source'];
+  const missingFields = requiredFields.filter(field => !(field in data));
+  
+  if (missingFields.length > 0) {
+    errors.push(`Missing required fields: ${missingFields.join(', ')}`);
+  }
+
+  // Validate each field
+  Object.entries(data).forEach(([key, value]) => {
+    if (['frontend', 'backend', 'database', 'deployment', 'aiTools', 'other'].includes(key)) {
+      if (!Array.isArray(value)) {
+        errors.push(`${key} must be an array`);
+      }
+    } else if (key === 'source') {
+      if (typeof value !== 'string') {
+        errors.push('source must be a string');
+      }
+    } else if (key === 'version') {
+      if (typeof value !== 'string') {
+        errors.push('version must be a string');
+      }
+    }
+  });
 
   return {
     isValid: errors.length === 0,
-    errors
-  };
-}
-
-/**
- * Validate pagination parameters
- */
-export function validatePagination(page?: string, limit?: string): ValidationResult {
-  const errors: string[] = [];
-
-  if (page !== undefined) {
-    const pageNum = parseInt(page, 10);
-    if (isNaN(pageNum) || pageNum < 1) {
-      errors.push('Page must be a positive integer');
-    }
-  }
-
-  if (limit !== undefined) {
-    const limitNum = parseInt(limit, 10);
-    if (isNaN(limitNum) || limitNum < 1 || limitNum > 100) {
-      errors.push('Limit must be a positive integer between 1 and 100');
-    }
-  }
-
-  return {
-    isValid: errors.length === 0,
-    errors
+    errors,
+    warnings
   };
 }

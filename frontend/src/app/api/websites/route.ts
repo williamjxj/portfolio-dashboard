@@ -4,9 +4,11 @@ import { WebsiteModel } from '@/models/Website';
 import { AuthenticationCredentialsModel } from '@/models/AuthenticationCredentials';
 import { AssetMetadataModel } from '@/models/AssetMetadata';
 import { DataLoader } from '@/lib/data-loader';
+import { TechStackInfo } from '@/models/TechStack';
+import path from 'path';
 
 // Initialize data loader
-const dataLoader = new DataLoader('./data');
+const dataLoader = new DataLoader(path.join(process.cwd(), 'data'));
 
 export async function GET() {
   try {

@@ -98,7 +98,7 @@ Daycare service website (“Friendship Daycare”). Audience: parents/guardians.
 
 ---
 
-## 7. bestitconsulting.vercel.app / bestitconsultants.vercel.app
+## 7. bestitconsulting.ca / bestitconsultants.ca
 
 **Description**  
 Consulting business websites (Best IT Consulting / Best IT Consultants). Audience: potential clients, enterprises, businesses needing IT services. Notable: service offerings, portfolio, trust-building.

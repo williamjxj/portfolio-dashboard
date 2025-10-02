@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
+import { Navigation } from "@/components/Navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,6 +17,29 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "William Jiang's AI Products Dashboard",
   description: "A comprehensive dashboard showcasing AI-powered applications and products",
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
+      { url: '/favicon.svg', type: 'image/svg+xml' }
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
+    ]
+  },
+  manifest: '/manifest.json',
+  themeColor: '#3B82F6',
+  viewport: 'width=device-width, initial-scale=1',
+  openGraph: {
+    title: "William Jiang's AI Products Dashboard",
+    description: "A comprehensive dashboard showcasing AI-powered applications and products",
+    type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "William Jiang's AI Products Dashboard",
+    description: "A comprehensive dashboard showcasing AI-powered applications and products",
+  },
 };
 
 export default function RootLayout({
@@ -34,7 +58,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+            <Navigation />
+            <main className="flex-1">
+              {children}
+            </main>
+          </div>
         </ThemeProvider>
       </body>
     </html>

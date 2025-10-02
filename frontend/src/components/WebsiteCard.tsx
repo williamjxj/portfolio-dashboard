@@ -24,7 +24,7 @@ export const WebsiteCard: React.FC<WebsiteCardProps> = ({ website, className = '
   
   return (
     <Card 
-      className={`hover:shadow-lg hover:scale-105 transition-all duration-300 group ${className}`}
+      className={`hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group border-2 hover:border-blue-200 dark:hover:border-blue-800 ${className}`}
       data-testid="website-card"
     >
       {/* Screenshot or Demo Video */}

@@ -74,14 +74,25 @@ export const WebsiteGrid: React.FC<WebsiteGridProps> = ({
   return (
     <div className={className}>
       {/* Search Bar */}
-      <div className="mb-6">
-        <Input
-          type="text"
-          placeholder="Search websites..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="max-w-md"
-        />
+      <div className="mb-6 flex flex-col sm:flex-row gap-4">
+        <div className="flex-1">
+          <Input
+            type="text"
+            placeholder="Search websites..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full"
+          />
+        </div>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            onClick={() => setSearchTerm('')}
+            className="whitespace-nowrap"
+          >
+            Clear
+          </Button>
+        </div>
       </div>
 
       {/* Results count */}

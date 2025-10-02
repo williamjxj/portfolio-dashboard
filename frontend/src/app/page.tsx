@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { Website } from '@/models/Website';
 import { WebsiteGrid } from '@/components/WebsiteGrid';
-import { SummaryTable } from '@/components/SummaryTable';
-import { InteractiveFeatures } from '@/components/InteractiveFeatures';
 import { Layout } from '@/components/Layout';
 
 export default function HomePage() {
@@ -53,12 +51,6 @@ export default function HomePage() {
             screenshots, and insights.
           </p>
         </div>
-
-        {/* Summary Table */}
-        <SummaryTable websites={websites} />
-
-        {/* Interactive Features */}
-        <InteractiveFeatures websites={websites} />
 
         {/* Website Grid */}
         <div>

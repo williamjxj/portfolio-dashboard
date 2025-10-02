@@ -5,18 +5,49 @@
     "url": "https://face-fusion-agent.vercel.app/face-fusion",
     "description": "AI-powered face fusion application with advanced machine learning capabilities for image processing and facial recognition.",
     "screenshot": "/assets/screenshots/face-fusion-agent-1-screenshot-1758584082446.png",
-    "logo": "/assets/logos/face-fusion-agent-1-logo-1758584082600.svg",
+    "logo": "/assets/logos/face-fusion-agent-1-logo-1758584082600.png",
     "favicon": "/assets/favicons/face-fusion-agent-1-favicon-32x32.ico",
     "requiresAuth": false,
     "lastUpdated": "2025-01-22T23:52:00.000Z",
     "state": "completed",
     "techStack": {
-      "frontend": ["React", "Next.js", "TypeScript", "Tailwind CSS"],
-      "backend": ["Node.js", "Python", "FastAPI"],
-      "database": ["PostgreSQL", "Redis"],
-      "deployment": ["Vercel", "Docker"],
-      "aiTools": ["OpenAI", "TensorFlow", "PyTorch", "Computer Vision"],
-      "other": ["WebRTC", "Canvas API"]
+      "frontend": [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "Framer Motion"
+      ],
+      "backend": [
+        "Python",
+        "FastAPI",
+        "OpenCV",
+        "TensorFlow"
+      ],
+      "database": [
+        "PostgreSQL",
+        "Redis",
+        "Vector Database"
+      ],
+      "deployment": [
+        "Vercel",
+        "Docker",
+        "AWS"
+      ],
+      "aiTools": [
+        "OpenAI",
+        "TensorFlow",
+        "PyTorch",
+        "Computer Vision",
+        "Face Recognition"
+      ],
+      "other": [
+        "WebRTC",
+        "Canvas API",
+        "Image Processing",
+        "Machine Learning"
+      ],
+      "source": "2025-10-02T00:24:17.380Z"
     },
     "deploymentInfo": {
       "platform": "vercel",
@@ -25,7 +56,12 @@
       "lastDeployed": "2025-01-22T23:52:00.000Z",
       "githubRepo": "https://github.com/williamjiang/face-fusion-agent"
     },
-    "features": ["Real-time face fusion", "AI-powered image processing", "Advanced ML models", "Interactive UI"],
+    "features": [
+      "Real-time face fusion",
+      "AI-powered image processing",
+      "Advanced ML models",
+      "Interactive UI"
+    ],
     "demoVideo": "https://via.placeholder.com/400x300/3B82F6/FFFFFF?text=Face+Fusion+Demo"
   },
   {
@@ -34,18 +70,33 @@
     "url": "https://nextjs-supabase-kappa-nine.vercel.app/",
     "description": "Modern full-stack application built with Next.js and Supabase, featuring real-time data synchronization and authentication.",
     "screenshot": "/assets/screenshots/nextjs-supabase-kappa-nine-2-screenshot-1758584075928.png",
-    "logo": "/assets/logos/nextjs-supabase-kappa-nine-2-logo-1758584076750.svg",
+    "logo": "/assets/logos/nextjs-supabase-kappa-nine-2-logo-1758584076750.png",
     "favicon": "/assets/favicons/nextjs-supabase-kappa-nine-2-favicon-32x32.ico",
     "requiresAuth": false,
     "lastUpdated": "2025-01-22T23:52:00.000Z",
     "state": "completed",
     "techStack": {
-      "frontend": ["Next.js", "React", "TypeScript", "Tailwind CSS"],
-      "backend": ["Supabase", "PostgreSQL", "Edge Functions"],
-      "database": ["PostgreSQL", "Supabase Auth"],
-      "deployment": ["Vercel", "Supabase"],
-      "aiTools": ["Supabase AI", "OpenAI"],
-      "other": ["Real-time subscriptions", "Row Level Security"]
+      "frontend": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS"
+      ],
+      "backend": [
+        "Node.js",
+        "Express"
+      ],
+      "database": [
+        "PostgreSQL"
+      ],
+      "deployment": [
+        "Vercel"
+      ],
+      "aiTools": [],
+      "other": [
+        "Web Application"
+      ],
+      "source": "2025-10-02T00:24:17.380Z"
     },
     "deploymentInfo": {
       "platform": "vercel",
@@ -56,7 +107,12 @@
       "supabaseUrl": "https://kappa-nine.supabase.co",
       "githubRepo": "https://github.com/williamjiang/nextjs-supabase-kappa-nine"
     },
-    "features": ["Real-time data sync", "Authentication", "Database management", "API integration"],
+    "features": [
+      "Real-time data sync",
+      "Authentication",
+      "Database management",
+      "API integration"
+    ],
     "demoVideo": "https://via.placeholder.com/400x300/10B981/FFFFFF?text=Supabase+Demo"
   },
   {
@@ -65,18 +121,43 @@
     "url": "https://manus-ai-shop.vercel.app/",
     "description": "E-commerce platform powered by AI, featuring intelligent product recommendations and automated customer service.",
     "screenshot": "/assets/screenshots/manus-ai-shop-3-screenshot-1758583859104.png",
-    "logo": "/assets/logos/manus-ai-shop-3-logo-1758583859278.svg",
+    "logo": "/assets/logos/manus-ai-shop-3-logo-1758583859278.png",
     "favicon": "/assets/favicons/manus-ai-shop-3-favicon-32x32.ico",
     "requiresAuth": false,
     "lastUpdated": "2025-01-22T23:52:00.000Z",
     "state": "completed",
     "techStack": {
-      "frontend": ["Next.js", "React", "TypeScript", "Tailwind CSS", "Stripe"],
-      "backend": ["Node.js", "Express", "Supabase"],
-      "database": ["PostgreSQL", "Redis"],
-      "deployment": ["Vercel", "Supabase"],
-      "aiTools": ["OpenAI", "Machine Learning", "Recommendation Engine"],
-      "other": ["Payment processing", "Inventory management"]
+      "frontend": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Stripe"
+      ],
+      "backend": [
+        "Node.js",
+        "Express",
+        "Supabase"
+      ],
+      "database": [
+        "PostgreSQL",
+        "Supabase Auth",
+        "Stripe"
+      ],
+      "deployment": [
+        "Vercel",
+        "Supabase"
+      ],
+      "aiTools": [
+        "OpenAI",
+        "Product Recommendations"
+      ],
+      "other": [
+        "Payment Processing",
+        "Inventory Management",
+        "E-commerce"
+      ],
+      "source": "2025-10-02T00:24:17.380Z"
     },
     "deploymentInfo": {
       "platform": "vercel",
@@ -87,7 +168,12 @@
       "supabaseUrl": "https://manus-ai-shop.supabase.co",
       "githubRepo": "https://github.com/williamjiang/manus-ai-shop"
     },
-    "features": ["AI recommendations", "Automated customer service", "Payment processing", "Inventory management"],
+    "features": [
+      "AI recommendations",
+      "Automated customer service",
+      "Payment processing",
+      "Inventory management"
+    ],
     "demoVideo": "https://via.placeholder.com/400x300/8B5CF6/FFFFFF?text=AI+Shop+Demo"
   },
   {
@@ -96,18 +182,41 @@
     "url": "https://bidmaster-hub.vercel.app/",
     "description": "Professional bidding platform for contractors and service providers, featuring project management and client communication tools.",
     "screenshot": "/assets/screenshots/bidmaster-hub-4-screenshot-1758584095167.png",
-    "logo": "/assets/logos/bidmaster-hub-4-logo-1758584095431.svg",
+    "logo": "/assets/logos/bidmaster-hub-4-logo-1758584095431.png",
     "favicon": "/assets/favicons/bidmaster-hub-4-favicon-32x32.ico",
     "requiresAuth": false,
     "lastUpdated": "2025-01-22T23:52:00.000Z",
     "state": "completed",
     "techStack": {
-      "frontend": ["Next.js", "React", "TypeScript", "Tailwind CSS"],
-      "backend": ["Node.js", "Express", "Supabase"],
-      "database": ["PostgreSQL", "Supabase Auth"],
-      "deployment": ["Vercel", "Supabase"],
-      "aiTools": ["OpenAI", "Natural Language Processing"],
-      "other": ["Project management", "Communication tools"]
+      "frontend": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS"
+      ],
+      "backend": [
+        "Node.js",
+        "Express",
+        "Supabase"
+      ],
+      "database": [
+        "PostgreSQL",
+        "Supabase Auth"
+      ],
+      "deployment": [
+        "Vercel",
+        "Supabase"
+      ],
+      "aiTools": [
+        "OpenAI",
+        "Natural Language Processing"
+      ],
+      "other": [
+        "Project Management",
+        "Communication Tools",
+        "Bidding System"
+      ],
+      "source": "2025-10-02T00:24:17.380Z"
     },
     "deploymentInfo": {
       "platform": "vercel",
@@ -118,7 +227,12 @@
       "supabaseUrl": "https://bidmaster-hub.supabase.co",
       "githubRepo": "https://github.com/williamjiang/bidmaster-hub"
     },
-    "features": ["Project bidding", "Client communication", "Project management", "Contractor tools"],
+    "features": [
+      "Project bidding",
+      "Client communication",
+      "Project management",
+      "Contractor tools"
+    ],
     "demoVideo": "https://via.placeholder.com/400x300/F59E0B/FFFFFF?text=Bidmaster+Demo"
   },
   {
@@ -127,18 +241,43 @@
     "url": "https://nextjs-mcp-template.vercel.app/",
     "description": "Template application demonstrating Model Context Protocol (MCP) integration with Next.js for AI-powered applications.",
     "screenshot": "/assets/screenshots/nextjs-mcp-template-5-screenshot-1758584093569.png",
-    "logo": "/assets/logos/nextjs-mcp-template-5-logo-1758584093531.svg",
+    "logo": "/assets/logos/nextjs-mcp-template-5-logo-1758584093531.png",
     "favicon": "/assets/favicons/nextjs-mcp-template-5-favicon-32x32.ico",
     "requiresAuth": false,
     "lastUpdated": "2025-01-22T23:52:00.000Z",
     "state": "completed",
     "techStack": {
-      "frontend": ["Next.js", "React", "TypeScript", "Tailwind CSS"],
-      "backend": ["Node.js", "MCP Protocol", "OpenAI"],
-      "database": ["PostgreSQL", "Supabase"],
-      "deployment": ["Vercel", "Docker"],
-      "aiTools": ["Model Context Protocol", "OpenAI", "Claude", "Anthropic"],
-      "other": ["Template system", "AI integration"]
+      "frontend": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS"
+      ],
+      "backend": [
+        "Node.js",
+        "MCP Protocol",
+        "OpenAI"
+      ],
+      "database": [
+        "PostgreSQL",
+        "Supabase"
+      ],
+      "deployment": [
+        "Vercel",
+        "Docker"
+      ],
+      "aiTools": [
+        "Model Context Protocol",
+        "OpenAI",
+        "Claude",
+        "Anthropic"
+      ],
+      "other": [
+        "Template System",
+        "AI Integration",
+        "Demo Features"
+      ],
+      "source": "2025-10-02T00:24:17.380Z"
     },
     "deploymentInfo": {
       "platform": "vercel",
@@ -147,7 +286,12 @@
       "lastDeployed": "2025-01-22T23:52:00.000Z",
       "githubRepo": "https://github.com/williamjiang/nextjs-mcp-template"
     },
-    "features": ["MCP integration", "AI template system", "Model context protocol", "Template generation"]
+    "features": [
+      "MCP integration",
+      "AI template system",
+      "Model context protocol",
+      "Template generation"
+    ]
   },
   {
     "id": "friendshipdaycare-6",
@@ -155,18 +299,41 @@
     "url": "https://friendshipdaycare.vercel.app/",
     "description": "Childcare management system with parent communication, scheduling, and educational activity tracking.",
     "screenshot": "/assets/screenshots/friendshipdaycare-6-screenshot-1758583867578.png",
-    "logo": "/assets/logos/friendshipdaycare-6-logo-1758583683901.svg",
+    "logo": "/assets/logos/friendshipdaycare-6-logo-1758583683901.png",
     "favicon": "/assets/favicons/friendshipdaycare-6-favicon-32x32.ico",
     "requiresAuth": false,
     "lastUpdated": "2025-01-22T23:52:00.000Z",
     "state": "completed",
     "techStack": {
-      "frontend": ["Next.js", "React", "TypeScript", "Tailwind CSS"],
-      "backend": ["Node.js", "Express", "Supabase"],
-      "database": ["PostgreSQL", "Supabase Auth"],
-      "deployment": ["Vercel", "Supabase"],
-      "aiTools": ["OpenAI", "Educational AI"],
-      "other": ["Scheduling system", "Parent communication"]
+      "frontend": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS"
+      ],
+      "backend": [
+        "Node.js",
+        "Express",
+        "Supabase"
+      ],
+      "database": [
+        "PostgreSQL",
+        "Supabase Auth"
+      ],
+      "deployment": [
+        "Vercel",
+        "Supabase"
+      ],
+      "aiTools": [
+        "OpenAI",
+        "Customer Service Chat"
+      ],
+      "other": [
+        "Booking System",
+        "Parent Portal",
+        "Communication Tools"
+      ],
+      "source": "2025-10-02T00:24:17.380Z"
     },
     "deploymentInfo": {
       "platform": "vercel",
@@ -177,64 +344,127 @@
       "supabaseUrl": "https://friendship-daycare.supabase.co",
       "githubRepo": "https://github.com/williamjiang/friendship-daycare"
     },
-    "features": ["Parent communication", "Scheduling system", "Educational tracking", "Childcare management"]
+    "features": [
+      "Parent communication",
+      "Scheduling system",
+      "Educational tracking",
+      "Childcare management"
+    ]
   },
   {
     "id": "bestitconsulting-7",
     "name": "Best IT Consulting",
-    "url": "https://bestitconsulting.vercel.app/",
+    "url": "https://bestitconsulting.ca/",
     "description": "Professional IT consulting services website featuring technology solutions, consulting expertise, and client success stories.",
     "screenshot": "/assets/screenshots/bestitconsulting-7-screenshot-1758584104393.png",
-    "logo": "/assets/logos/bestitconsulting-7-logo-1758584104232.svg",
+    "logo": "/assets/logos/bestitconsulting-7-logo-1758584104232.png",
     "favicon": "/assets/favicons/bestitconsulting-7-favicon-32x32.ico",
     "requiresAuth": false,
     "lastUpdated": "2025-01-22T23:52:00.000Z",
     "state": "completed",
     "techStack": {
-      "frontend": ["Next.js", "React", "TypeScript", "Tailwind CSS"],
-      "backend": ["Node.js", "Express"],
-      "database": ["PostgreSQL"],
-      "deployment": ["Vercel"],
-      "aiTools": ["OpenAI", "Content generation"],
-      "other": ["Consulting tools", "Client management"]
+      "frontend": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS"
+      ],
+      "backend": [
+        "Node.js",
+        "Express",
+        "Contentful"
+      ],
+      "database": [
+        "PostgreSQL",
+        "Contentful CMS"
+      ],
+      "deployment": [
+        "Vercel",
+        "Netlify"
+      ],
+      "aiTools": [
+        "OpenAI",
+        "ChatGPT Integration"
+      ],
+      "other": [
+        "CMS",
+        "SEO Optimization",
+        "Analytics",
+        "Lead Generation"
+      ],
+      "source": "2025-10-02T00:24:17.380Z"
     },
     "deploymentInfo": {
       "platform": "vercel",
-      "url": "https://bestitconsulting.vercel.app/",
+      "url": "https://bestitconsulting.ca/",
       "status": "live",
       "lastDeployed": "2025-01-22T23:52:00.000Z",
       "githubRepo": "https://github.com/williamjiang/bestitconsulting"
     },
-    "features": ["IT consulting services", "Technology solutions", "Client success stories", "Professional expertise"]
+    "features": [
+      "IT consulting services",
+      "Technology solutions",
+      "Client success stories",
+      "Professional expertise"
+    ]
   },
   {
     "id": "bestitconsultants-8",
     "name": "Best IT Consultants",
-    "url": "https://bestitconsultants.vercel.app/",
+    "url": "https://bestitconsultants.ca/",
     "description": "Comprehensive IT consulting platform offering strategic technology guidance, digital transformation, and enterprise solutions.",
     "screenshot": "/assets/screenshots/bestitconsultants-8-screenshot-1758583873910.png",
-    "logo": "/assets/logos/bestitconsultants-8-logo-1758583874094.svg",
+    "logo": "/assets/logos/bestitconsultants-8-logo-1758583874094.png",
     "favicon": "/assets/favicons/bestitconsultants-8-favicon-32x32.ico",
     "requiresAuth": false,
     "lastUpdated": "2025-01-22T23:52:00.000Z",
     "state": "completed",
     "techStack": {
-      "frontend": ["Next.js", "React", "TypeScript", "Tailwind CSS"],
-      "backend": ["Node.js", "Express", "Supabase"],
-      "database": ["PostgreSQL", "Supabase Auth"],
-      "deployment": ["Vercel", "Supabase"],
-      "aiTools": ["OpenAI", "Enterprise AI", "Digital transformation"],
-      "other": ["Enterprise solutions", "Strategic guidance"]
+      "frontend": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS"
+      ],
+      "backend": [
+        "Node.js",
+        "Express",
+        "Contentful"
+      ],
+      "database": [
+        "PostgreSQL",
+        "Contentful CMS"
+      ],
+      "deployment": [
+        "Vercel",
+        "Netlify"
+      ],
+      "aiTools": [
+        "OpenAI",
+        "ChatGPT Integration"
+      ],
+      "other": [
+        "CMS",
+        "SEO Optimization",
+        "Analytics",
+        "Lead Generation"
+      ],
+      "source": "2025-10-02T00:24:17.380Z"
     },
     "deploymentInfo": {
       "platform": "vercel",
-      "url": "https://bestitconsultants.vercel.app/",
+      "url": "https://bestitconsultants.ca/",
       "status": "live",
       "lastDeployed": "2025-01-22T23:52:00.000Z",
       "supabaseProject": "bestitconsultants",
       "supabaseUrl": "https://bestitconsultants.supabase.co",
       "githubRepo": "https://github.com/williamjiang/bestitconsultants"
     },
-    "features": ["Strategic technology guidance", "Digital transformation", "Enterprise solutions", "IT consulting platform"]
+    "features": [
+      "Strategic technology guidance",
+      "Digital transformation",
+      "Enterprise solutions",
+      "IT consulting platform"
+    ]
   }
 ]

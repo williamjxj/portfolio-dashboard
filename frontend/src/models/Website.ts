@@ -1,3 +1,5 @@
+import { TechStackInfo } from './TechStack';
+
 export interface Website {
   id: string;
   name: string;
@@ -21,7 +23,7 @@ export interface Website {
   needsManualAuth?: boolean;
   assetError?: string;
   // Enhanced fields for comprehensive dashboard
-  techStack?: TechStack;
+  techStack?: TechStackInfo;
   deploymentInfo?: DeploymentInfo;
   features?: string[];
   demoVideo?: string;

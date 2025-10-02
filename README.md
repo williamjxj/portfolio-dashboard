@@ -5,12 +5,15 @@ A modern, responsive dashboard for managing and viewing website collections with
 ## Features
 
 - **Modern UI**: Built with shadcn/ui components for consistent, accessible design
+- **Three-Tab Navigation**: Dashboard, Tech Stack, and About pages
+- **Tech Stack Overview**: Detailed technical information for each website
 - **Responsive Grid**: Beautiful card-based layout that adapts to all screen sizes
 - **Search & Filter**: Real-time search across website names and descriptions
 - **Dark Mode**: Toggle between light and dark themes
 - **Asset Management**: Automated screenshot, logo, and favicon generation
 - **Interactive Details**: Click-through to detailed website views with asset previews
 - **Status Indicators**: Visual badges for authentication requirements and errors
+- **Performance Monitoring**: Built-in performance tracking and optimization
 
 ## Tech Stack
 
@@ -116,14 +119,24 @@ The dashboard currently manages these websites:
 src/
 ├── components/
 │   ├── ui/                 # shadcn/ui components
+│   ├── Navigation.tsx      # Three-tab navigation
+│   ├── TechStackTab.tsx    # Tech stack display component
 │   ├── WebsiteCard.tsx     # Individual website cards
 │   ├── WebsiteGrid.tsx     # Grid layout with search
 │   ├── WebsiteDetail.tsx   # Detailed website view
 │   └── ThemeToggle.tsx    # Dark/light mode toggle
 ├── app/
 │   ├── api/               # API routes
+│   │   ├── websites/      # Website endpoints
+│   │   └── tech-stack/    # Tech stack endpoints
+│   ├── tech-stack/        # Tech stack page
 │   └── website/[id]/      # Dynamic website pages
+├── models/                # TypeScript models
+│   ├── TechStack.ts       # Tech stack data model
+│   └── NavigationTab.ts   # Navigation state model
 └── lib/                   # Utilities and services
+    ├── performance.ts     # Performance monitoring
+    └── validation.ts      # Data validation
 ```
 
 ### Key Features

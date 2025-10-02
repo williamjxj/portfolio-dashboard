@@ -47,17 +47,17 @@ Description: A community-oriented daycare service site for parents seeking nurtu
 Logo: <img src="https://grok.x.ai/generated/logo-friendshipdaycare.svg" alt="friendshipdaycare logo" width="200" height="60" />  
 Favicon: <link rel="icon" href="https://grok.x.ai/generated/favicon-friendshipdaycare.ico" />
 
-https://bestitconsulting.vercel.app/
+https://bestitconsulting.ca/
 
-Website: https://bestitconsulting.vercel.app/  
+Website: https://bestitconsulting.ca/  
 Screenshot: <img src="https://grok.x.ai/generated/screenshot-bestitconsulting.jpg" alt="bestitconsulting preview" width="1200" height="800" />  
 Description: A professional IT consulting firm website targeting enterprises needing custom software solutions, cybersecurity, and digital transformation advice. It showcases case studies and service breakdowns for informed decision-making. Key features are a contact scheduler and interactive ROI calculator.  
 Logo: <img src="https://grok.x.ai/generated/logo-bestitconsulting.svg" alt="bestitconsulting logo" width="200" height="60" />  
 Favicon: <link rel="icon" href="https://grok.x.ai/generated/favicon-bestitconsulting.ico" />
 
-https://bestitconsultants.vercel.app/
+https://bestitconsultants.ca/
 
-Website: https://bestitconsultants.vercel.app/  
+Website: https://bestitconsultants.ca/  
 Screenshot: <img src="https://grok.x.ai/generated/screenshot-bestitconsultants.jpg" alt="bestitconsultants preview" width="1200" height="800" />  
 Description: Similar to its counterpart, this site promotes IT consulting services for SMBs, with a focus on cloud migration, app development, and tech audits. It offers free initial assessments to build trust. Notable is its blog section with timely industry insights and client success metrics.  
 Logo: <img src="https://grok.x.ai/generated/logo-bestitconsultants.svg" alt="bestitconsultants logo" width="200" height="60" />  

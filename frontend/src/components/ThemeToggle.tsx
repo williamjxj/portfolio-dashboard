@@ -1,18 +1,37 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from 'next-themes';
 
 export const ThemeToggle: React.FC = () => {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <Button
+        variant="outline"
+        size="sm"
+        className="w-9 h-9 p-0"
+        disabled
+      >
+        <div className="h-4 w-4 animate-pulse bg-gray-300 rounded"></div>
+      </Button>
+    );
+  }
 
   return (
     <Button
       variant="outline"
       size="sm"
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className="w-9 h-9 p-0"
+      className="w-9 h-9 p-0 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      aria-label="Toggle theme"
     >
       <svg
         className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"

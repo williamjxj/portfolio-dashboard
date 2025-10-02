@@ -86,8 +86,8 @@ As a site owner, I want a centralized dashboard listing my websites with key det
   - `https://bidmaster-hub.vercel.app/`
   - `https://nextjs-mcp-template.vercel.app/`
   - `https://friendshipdaycare.vercel.app/`
-  - `https://bestitconsulting.vercel.app/`
-  - `https://bestitconsultants.vercel.app/`
+  - `https://bestitconsulting.ca/`
+  - `https://bestitconsultants.ca/`
 - **FR-009**: System MUST reflect content truthfully from the referenced docs; if conflicts arise, the dashboard MUST flag the discrepancy for resolution.
 - **FR-010**: System SHOULD provide quick external links to each site and open in a new tab.
 - **FR-011**: System SHOULD include a reference link to MCP (Model Context Protocol) documentation for future integrations.
