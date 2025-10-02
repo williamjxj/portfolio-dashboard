@@ -254,3 +254,75 @@ export function validateTechStackFromJSON(data: any): ValidationResult {
     warnings
   };
 }
+
+/**
+ * Asset validation constants (from specs/006-create-logo-favicon/research.md)
+ */
+export const ASSET_VALIDATION_LIMITS = {
+  logo: {
+    allowedMimeTypes: [
+      'image/svg+xml',
+      'image/png'
+    ],
+    maxBytes: 200 * 1024
+  },
+  favicon: {
+    allowedMimeTypes: [
+      'image/x-icon',
+      'image/vnd.microsoft.icon',
+      'image/png'
+    ],
+    sizesPx: [32, 48],
+    maxBytes: 50 * 1024
+  },
+  previewImage: {
+    allowedMimeTypes: [
+      'image/webp'
+    ],
+    width: 1200,
+    height: 675,
+    maxBytes: 400 * 1024
+  }
+} as const;
+
+export type AssetTypeKey = keyof typeof ASSET_VALIDATION_LIMITS;
+
+/**
+ * Lightweight validators for asset metadata
+ */
+export function isAllowedMimeType(assetType: AssetTypeKey, mimeType: string | undefined): boolean {
+  if (!mimeType) return false;
+  return ASSET_VALIDATION_LIMITS[assetType].allowedMimeTypes.includes(mimeType as any);
+}
+
+export function isWithinByteLimit(assetType: AssetTypeKey, byteSize: number | undefined): boolean {
+  if (typeof byteSize !== 'number' || Number.isNaN(byteSize)) return false;
+  return byteSize <= ASSET_VALIDATION_LIMITS[assetType].maxBytes;
+}
+
+export function isValidPreviewDimensions(width?: number, height?: number): boolean {
+  return width === ASSET_VALIDATION_LIMITS.previewImage.width &&
+    height === ASSET_VALIDATION_LIMITS.previewImage.height;
+}
+
+export function validateAssetMeta(
+  assetType: AssetTypeKey,
+  params: { mimeType?: string; byteSize?: number; width?: number; height?: number }
+): ValidationResult {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+
+  if (!isAllowedMimeType(assetType, params.mimeType)) {
+    errors.push(`Invalid mimeType for ${assetType}`);
+  }
+  if (!isWithinByteLimit(assetType, params.byteSize)) {
+    errors.push(`File too large for ${assetType}`);
+  }
+  if (assetType === 'previewImage') {
+    if (!isValidPreviewDimensions(params.width, params.height)) {
+      errors.push('Preview image must be 1200x675');
+    }
+  }
+
+  return { isValid: errors.length === 0, errors, warnings };
+}

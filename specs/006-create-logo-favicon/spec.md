@@ -52,6 +52,15 @@ When creating this spec from a user prompt:
 
 ---
 
+## Clarifications
+
+### Session 2025-10-02
+- Q: What is the primary source of truth for logos/favicons/previews? → A: Hybrid: manual preferred, automated fallback if missing
+- Q: Preferred asset formats and sizes? → A: Logo SVG; Favicon ICO+PNG; Images WebP; Video MP4
+- Q: How many previews per site and how often to refresh? → A: 1 image; refresh on demand only
+ - Q: Any licensing/compliance constraints for generated media? → A: Internal use only; no external redistribution
+- Q: Asset retention/versioning on refresh? → A: Keep last 3 versions per asset
+
 ## User Scenarios *(mandatory)*
 
 ### Primary User Story
@@ -78,20 +87,23 @@ As a dashboard owner, I want each site managed by the dashboard to have a recogn
 - **FR-004**: The system MUST associate each asset set with its site and present them in dashboard list and detail views.
 - **FR-005**: The system MUST allow asset refresh/update for a site without disrupting existing links.
 - **FR-006**: The system MUST indicate when assets are missing and show a branded placeholder.
-- **FR-007**: The system MUST support basic constraints for assets (dimensions, size limits, accepted formats).
+ - **FR-007**: The system MUST enforce basic constraints (dimensions, size limits) and accepted formats per type: Logo (SVG), Favicon (ICO and PNG), Images (WebP), Video (MP4).
 - **FR-008**: The system MUST record whether a site requires authentication that may limit asset capture or display.
 - **FR-009**: The system MUST ensure consistent naming/metadata so assets can be organized and retrieved per site.
+-.
+- **FR-010**: The system MUST use a hybrid sourcing model: manual upload is the primary source; automated capture (e.g., via site metadata/content) is used only as a fallback when specific assets are missing.
+ - **FR-011**: The system MUST provide exactly one preview image per site by default.
+ - **FR-012**: The system MUST refresh assets only via manual trigger (no automated schedule).
+ - **FR-013**: The system MUST retain the last 3 versions per asset upon refresh and remove older versions.
+ - **FR-014**: The system MUST restrict generated and captured media to internal use only and prevent external redistribution; record license metadata for each asset.
 
 *Ambiguities to clarify:*
-- **[NEEDS CLARIFICATION]**: Preferred asset formats and sizes (e.g., logo SVG/PNG, favicon ICO/PNG, image JPG/PNG/WebP, video MP4/WebM)?
-- **[NEEDS CLARIFICATION]**: Desired number of preview images/videos per site and capture cadence.
-- **[NEEDS CLARIFICATION]**: Branding source of truth (manual upload vs. automated capture/extraction).
-- **[NEEDS CLARIFICATION]**: Retention policy for old assets upon refresh and versioning.
-- **[NEEDS CLARIFICATION]**: Any licensing or compliance constraints for generated media.
+  
+ - **[NEEDS CLARIFICATION]**: Exact dimension targets and maximum file sizes per asset type.
 
 ### Key Entities *(include if feature involves data)*
 - **Site**: Represents a managed website; attributes include identifier, name, URL, requiresAuth flag.
-- **SiteAssets**: Represents the asset set for a site; attributes include logo, favicon, previews (images/videos), updatedAt, notes.
+- **SiteAssets**: Represents the asset set for a site; attributes include logo, favicon, previews (images/videos), updatedAt, notes, sourcingStrategy ("hybrid" with manual preferred and automated fallback), per-asset provenance flags (e.g., logoSource: manual|automated, faviconSource: manual|automated), and per-asset format metadata (e.g., mimeType, width/height when applicable, byteSize).
 
 ---
 

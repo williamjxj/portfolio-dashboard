@@ -16,7 +16,7 @@ export interface Website {
   tags?: string[];
   status?: 'ok' | 'unavailable' | 'missing-assets';
   requiresAuth: boolean;
-  authCredentials?: AuthenticationCredentials;
+  authCredentials?: any;
   lastUpdated: string;
   state?: WebsiteState;
   authError?: string;
@@ -75,28 +75,6 @@ export interface DeploymentInfo {
 
 export type WebsiteState = 'pending' | 'processing' | 'completed' | 'failed' | 'retry';
 
-export interface AuthenticationCredentials {
-  websiteId: string;
-  method: 'email' | 'oauth' | 'sso';
-  username?: string;
-  password?: string;
-  oauthProvider?: string;
-  additionalFields?: Record<string, any>;
-}
-
-export interface AssetMetadata {
-  websiteId: string;
-  assetType: 'screenshot' | 'logo' | 'favicon';
-  filePath: string;
-  fileSize: number;
-  dimensions: {
-    width: number;
-    height: number;
-  };
-  format: 'png' | 'jpg' | 'webp' | 'svg' | 'ico';
-  generatedAt: string;
-  optimized: boolean;
-}
 
 export class WebsiteModel {
   private websites: Website[] = [];

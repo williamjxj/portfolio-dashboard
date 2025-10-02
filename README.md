@@ -111,6 +111,13 @@ The dashboard currently manages these websites:
 - https://bestitconsulting.ca/
 - https://bestitconsultants.ca/
 
+## API Routes
+
+- Assets
+  - GET `/api/assets/[websiteId]`
+  - PUT `/api/assets/[websiteId]` (manual refresh)
+  - POST `/api/assets/[websiteId]/upload` (multipart upload)
+
 ## Architecture
 
 ### Component Structure

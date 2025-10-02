@@ -7,6 +7,8 @@ import { Website } from '@/models/Website';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 interface WebsiteDetailProps {
@@ -126,10 +128,36 @@ export const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website, className
           </div>
         </div>
 
-        {/* Assets */}
+        {/* Assets & Upload */}
         <div className="mb-6">
-          <CardTitle className="text-lg mb-3">Assets</CardTitle>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <Tabs defaultValue="assets">
+            <div className="flex items-center justify-between mb-3">
+              <CardTitle className="text-lg">Assets</CardTitle>
+              <TabsList>
+                <TabsTrigger value="assets">View</TabsTrigger>
+              </TabsList>
+            </div>
+
+            <TabsContent value="assets">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-xs text-muted-foreground">
+                  Internal use only. Logos, favicons, and previews are licensed for internal dashboard usage.
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={async () => {
+                    try {
+                      await fetch(`/api/assets/${website.id}`, { method: 'PUT' });
+                    } catch (e) {
+                      console.error('Failed to refresh assets', e);
+                    }
+                  }}
+                >
+                  Refresh Assets
+                </Button>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Screenshot */}
             <Dialog>
               <DialogTrigger asChild>
@@ -218,7 +246,10 @@ export const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website, className
                 />
               </DialogContent>
             </Dialog>
-          </div>
+              </div>
+            </TabsContent>
+
+          </Tabs>
         </div>
 
         {/* Actions */}

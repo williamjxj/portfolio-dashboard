@@ -1,0 +1,149 @@
+openapi: 3.0.3
+info:
+  title: Website Assets API
+  version: 1.0.0
+  description: API contracts for managing site assets (logos, favicons, previews)
+servers:
+  - url: https://example.local
+paths:
+  /assets/{siteId}:
+    get:
+      summary: Get assets for a site
+      parameters:
+        - in: path
+          name: siteId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteAssets'
+        '404':
+          description: Not found
+    put:
+      summary: Refresh assets (manual trigger)
+      parameters:
+        - in: path
+          name: siteId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+      responses:
+        '202':
+          description: Refresh initiated
+  /assets/{siteId}/upload:
+    post:
+      summary: Upload one or more assets manually
+      parameters:
+        - in: path
+          name: siteId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                logo:
+                  type: string
+                  format: binary
+                faviconIco:
+                  type: string
+                  format: binary
+                faviconPng:
+                  type: string
+                  format: binary
+                previewImage:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Uploaded
+components:
+  schemas:
+    SiteAssets:
+      type: object
+      properties:
+        siteId:
+          type: string
+        logo:
+          type: string
+        faviconIco:
+          type: string
+        faviconPng:
+          type: string
+        previewImage:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+        sourcingStrategy:
+          type: string
+          enum: [hybrid]
+        provenance:
+          type: object
+          properties:
+            logoSource:
+              type: string
+              enum: [manual, automated]
+            faviconSource:
+              type: string
+              enum: [manual, automated]
+            previewSource:
+              type: string
+              enum: [manual, automated]
+        format:
+          type: object
+          properties:
+            logo:
+              type: object
+              properties:
+                mimeType:
+                  type: string
+                byteSize:
+                  type: integer
+            faviconIco:
+              type: object
+              properties:
+                mimeType:
+                  type: string
+                byteSize:
+                  type: integer
+            faviconPng:
+              type: object
+              properties:
+                mimeType:
+                  type: string
+                byteSize:
+                  type: integer
+            previewImage:
+              type: object
+              properties:
+                mimeType:
+                  type: string
+                width:
+                  type: integer
+                height:
+                  type: integer
+                byteSize:
+                  type: integer
+        license:
+          type: object
+          properties:
+            scope:
+              type: string
+              enum: [internal-only]
+            notes:
+              type: string
+        versionsKept:
+          type: integer
+

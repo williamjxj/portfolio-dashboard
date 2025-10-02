@@ -20,11 +20,9 @@ jest.mock('next/navigation', () => ({
 
 // Mock Next.js Link component
 jest.mock('next/link', () => {
-  return ({ children, href, ...props }: any) => (
-    <a href={href} {...props}>
-      {children}
-    </a>
-  );
+  return ({ children, href, ...props }: any) => {
+    return React.createElement('a', { href, ...props }, children);
+  };
 });
 
 describe('Navigation Component', () => {
@@ -213,6 +211,7 @@ describe('Performance', () => {
     expect(renderTime).toBeLessThan(100);
   });
 });
+
 
 
 
