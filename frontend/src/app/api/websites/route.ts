@@ -80,18 +80,9 @@ export async function GET(request: NextRequest) {
  */
 async function loadWebsitesData(): Promise<Website[]> {
   try {
-    // Use fetch to get the data from the public directory
-    const baseUrl = process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}` 
-      : 'http://localhost:3000';
-    
-    // Use absolute URL for serverless environment
-    const response = await fetch(`${baseUrl}/websites.json`);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch data: ${response.status}`);
-    }
-    
-    const websites = await response.json();
+    // Import the data directly as a static import
+    const websitesData = await import('@/../public/websites.json');
+    const websites = websitesData.default || websitesData;
     
     // Enhance websites with visual metadata
     return websites.map((website: any) => ({
