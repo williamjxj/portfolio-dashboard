@@ -83,11 +83,15 @@ async function loadWebsitesData(): Promise<Website[]> {
     // Use fetch to get the data from the public directory
     const baseUrl = process.env.VERCEL_URL 
       ? `https://${process.env.VERCEL_URL}` 
-      : process.env.NODE_ENV === 'production'
-        ? 'https://frontend-b5mm31ej3-williamjxj-projects.vercel.app'
-        : 'http://localhost:3000';
+      : 'http://localhost:3000';
     
-    const response = await fetch(`${baseUrl}/websites.json`);
+    // Try relative path first, then absolute
+    let response;
+    try {
+      response = await fetch('/websites.json');
+    } catch {
+      response = await fetch(`${baseUrl}/websites.json`);
+    }
     if (!response.ok) {
       throw new Error(`Failed to fetch data: ${response.status}`);
     }
