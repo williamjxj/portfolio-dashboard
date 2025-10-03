@@ -80,12 +80,20 @@ export async function GET(request: NextRequest) {
  */
 async function loadWebsitesData(): Promise<Website[]> {
   try {
-    // In a real implementation, this would load from a database
-    // For now, we'll return mock data or load from existing JSON
+    // Try to load from public directory first (for Vercel)
     const fs = await import('fs/promises');
     const path = await import('path');
     
-    const dataPath = path.join(process.cwd(), 'data', 'websites.json');
+    let dataPath;
+    try {
+      // Try public directory first
+      dataPath = path.join(process.cwd(), 'public', 'websites.json');
+      await fs.access(dataPath);
+    } catch {
+      // Fallback to data directory
+      dataPath = path.join(process.cwd(), 'data', 'websites.json');
+    }
+    
     const data = await fs.readFile(dataPath, 'utf-8');
     const websites = JSON.parse(data);
     
@@ -114,6 +122,7 @@ async function loadWebsitesData(): Promise<Website[]> {
     }));
   } catch (error) {
     console.error('Error loading websites data:', error);
+    // Return empty array if file loading fails
     return [];
   }
 }
