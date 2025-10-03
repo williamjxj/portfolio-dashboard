@@ -85,13 +85,8 @@ async function loadWebsitesData(): Promise<Website[]> {
       ? `https://${process.env.VERCEL_URL}` 
       : 'http://localhost:3000';
     
-    // Try relative path first, then absolute
-    let response;
-    try {
-      response = await fetch('/websites.json');
-    } catch {
-      response = await fetch(`${baseUrl}/websites.json`);
-    }
+    // Use absolute URL for serverless environment
+    const response = await fetch(`${baseUrl}/websites.json`);
     if (!response.ok) {
       throw new Error(`Failed to fetch data: ${response.status}`);
     }
