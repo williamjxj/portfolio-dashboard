@@ -80,22 +80,19 @@ export async function GET(request: NextRequest) {
  */
 async function loadWebsitesData(): Promise<Website[]> {
   try {
-    // Try to load from public directory first (for Vercel)
-    const fs = await import('fs/promises');
-    const path = await import('path');
+    // Use fetch to get the data from the public directory
+    const baseUrl = process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}` 
+      : process.env.NODE_ENV === 'production' 
+        ? 'https://frontend-lilac-three-60.vercel.app'
+        : 'http://localhost:3000';
     
-    let dataPath;
-    try {
-      // Try public directory first
-      dataPath = path.join(process.cwd(), 'public', 'websites.json');
-      await fs.access(dataPath);
-    } catch {
-      // Fallback to data directory
-      dataPath = path.join(process.cwd(), 'data', 'websites.json');
+    const response = await fetch(`${baseUrl}/websites.json`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data: ${response.status}`);
     }
     
-    const data = await fs.readFile(dataPath, 'utf-8');
-    const websites = JSON.parse(data);
+    const websites = await response.json();
     
     // Enhance websites with visual metadata
     return websites.map((website: any) => ({
