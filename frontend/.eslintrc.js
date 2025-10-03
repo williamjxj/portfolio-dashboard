@@ -10,3 +10,5 @@ module.exports = {
     '@next/next/no-img-element': 'warn'
   }
 };
+
+
